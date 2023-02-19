@@ -72,25 +72,29 @@ export default function Primary_Header() {
     }
 
     useEffect(() => {
-        //1 get the weather (will set the currentWeather state)
+        // run get weather function which will set the currentWeather state, only if it has not already been set
         if(!currentWeather){ getWeather()}
-        //2 set an interval to run every minute testing if check if it is 1, 16, 31 or 46 past
+        // if the app has not yet been synced to 15 minute intervals
         if (!isFetchSyncedTo15Min) {
-            let checkInterval = setInterval(() => {
-                console.log('Checking for 15 minute interval startpoint')
+            // set an interval to run every minute testing if check if it is 0, 15, 30 or 45 past (when the weather api updates - give 1 minute of buffer time to allow for api to update)
+            let timeCheckInterval = setInterval(() => {
+                // if the current time is 0, 15, 30, or 45 past, (with 1 minute of buffer) fetch the weather then 'sync' the app to fetch the weather every 15 minutes thereafter
+                // additionally, clear the interval being used to test if the current time for above conditions 
                 if ((new Date().getMinutes() % 15 === 1)) {
+                    // get the weather
+                    getWeather()
+                    // set the state of our app to have been 'synced'
                     setIsFetchSyncedTo15Min(true);
-                    console.log('15 min interval synced, setting new')
-                    //if it is set a new interval to run every 15 minutes to fetch the weather and cancel current interval
+                    //set a new interval to run every 15 minutes to fetch the weather
                     setInterval(() => {
-                        console.log('Fetching weather on specified interval')
                         getWeather();
                     }, 15*60 * 1000)
-                    clearInterval(checkInterval)
+                    //clear the interval being used to test the current time 
+                    clearInterval(timeCheckInterval)
                 }
             }, 60000)
         }
-    }, [currentWeather])
+    }, [])
 
 
     const isBreakpoint = useMediaQuery(720)
