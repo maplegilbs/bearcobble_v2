@@ -1,0 +1,10 @@
+@use '../styles/global_variables.scss';
+
+.layout_container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
