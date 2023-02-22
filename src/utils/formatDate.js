@@ -16,7 +16,7 @@ export function formatTime(inputTime) {
     return(
         {
             dow: dow,
-            date: `${month}/${day}/${year}`, 
+            date: `${month}/${day}`, 
             time: `${hour}:${minute}`,
             amPm: amPM,
             inputTime: inputTime

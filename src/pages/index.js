@@ -1,3 +1,6 @@
-export default function Home(){
-    return (<div>Hello</div>)
+//Libraries
+
+
+export default function Home({sensor_json}){
+    return (<></>)
 }

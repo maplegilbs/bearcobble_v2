@@ -1,0 +1,66 @@
+@use '../styles/global_variables.scss';
+
+.dial_container {
+    font-family: global_variables.$global_fonts;
+    width: 19%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 5px;
+
+    .outer_dial {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+
+        .inner_dial {
+            background-color: white;
+            border-radius: 50%;
+            width: 85%;
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            flex-direction: column;
+
+
+            .vac_reading {
+                color: black;
+                font-family: 'Roboto', sans-serif;
+                font-size: 2.25rem;
+              }
+
+            .shadow_div {
+                background-color: rgba(255, 255, 255, .75);
+                background: radial-gradient(rgba(135, 135, 135, 0.25) 20%, white);
+                height: 15px;
+                width: 50%;
+                border-radius: 50%;
+                margin-top: .5rem;
+            }
+
+            .section_label{
+                margin-top: 1rem;
+                font-weight: 600;
+                font-size: 1rem;
+                text-transform: uppercase;
+            }
+
+            .reading_time {
+                font-size: .75rem;
+                text-align: center;
+                font-weight: 600;
+                margin-top: 1rem;
+            }
+        }
+    }
+
+}

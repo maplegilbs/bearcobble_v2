@@ -106,7 +106,7 @@ export default function Primary_Header() {
                 <div className={header_styles.weather_info}>{currentDateTime.time} <span className={header_styles.am_pm}> &nbsp;{currentDateTime.amPm} </span>&nbsp;&nbsp;
                     {/* if the current weather is older than ~30 minutes, do not display */}
                     {new Date() - new Date(currentWeather.obsTimeLocal) < 1800000 ?
-                        `${currentWeather.obsTimeLocal} ${'\u00b0'}`
+                        `${currentWeather.imperial.temp}${'\u00b0'}`
                         :
                         ''
                     }
