@@ -8,8 +8,8 @@ export default function Primary_Layout({ children }) {
 
     return (
         <div className={LayoutStyles.layout_container}>
-            <Primary_Header />
-            <main>{children}</main>
+            {/* <Primary_Header /> */}
+            <main className={LayoutStyles.main_container}>{children}</main>
             <Primary_Footer />
         </div>
     )

@@ -22,7 +22,7 @@ export default function Dial_Gauge({ section, current_vacuum_level, reading_time
                     <h1 className={gauge_dial_styles.vac_reading}>{current_vacuum_level}</h1>
                     <div className={gauge_dial_styles.shadow_div}></div>
                     <p className={gauge_dial_styles.section_label}>{section}</p>
-                    <p className={gauge_dial_styles.reading_time}>{reading_time.time}{reading_time.amPm}<br/>{reading_time.dow} {reading_time.date}</p>
+                    <p className={gauge_dial_styles.reading_time}>{reading_time.time} {reading_time.amPm}<br/>{reading_time.dow} {reading_time.date}</p>
                 </div>
             </div>
         </div>

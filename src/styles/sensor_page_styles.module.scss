@@ -1,5 +1,30 @@
-.vacuum_gauge_container{
+@use '../styles/global_variables.scss';
+
+.section_heading_container {
+    margin: 75px auto 5px auto;
+    font-family: global_variables.$global_fonts;
+    text-transform: uppercase;
+
+    h1{
+        font-weight: 700;
+    font-size: 1.5em;
+    }
+
+    .section_heading_hr {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 30%;
+        border-bottom: 3px solid #fff;
+    }
+}
+
+.vacuum_gauge_container {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    margin: 10px auto 50px auto;
+    background: rgba(255,255,255,.9);
+    border-radius: 2px;
+    box-shadow: 2px 2px 3px 3px #333;
+    padding: 10px;
 }

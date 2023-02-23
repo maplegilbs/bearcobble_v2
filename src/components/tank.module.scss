@@ -1,0 +1,46 @@
+@use '../styles/global_variables.scss';
+
+.tank_outer_container {
+    font-family: global_variables.$global_fonts;
+    width: 19%;
+    margin: 0 auto;
+
+    .tank_inner_container {
+        border: 2px solid black;
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 3px;
+        padding: 5%;
+
+        * {
+            margin: 5% auto;
+            text-align: center;
+        }
+
+        .tank_number {
+            margin: 1rem auto;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        .tank_volume {
+            font-size: 2.15rem;
+            font-weight: 800;
+        }
+
+        .tank_level {
+            font-size: 1.2rem;
+        }
+
+        .tank_level_gallons {
+            font-size: 1rem;
+        }
+
+        .reading_time {
+            font-size: .75rem;
+            font-weight: 600;
+        }
+    }
+
+}
