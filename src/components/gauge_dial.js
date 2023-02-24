@@ -6,7 +6,7 @@ import gauge_dial_styles from './gauge_dial.module.scss';
 const degreesPerVacLevel = 180 / 30;
 function getIndicatorColorFromVacLevel(vacLevel) {
     if (vacLevel > 25) return 'rgba(40,225,40,.9)';
-    else if (vacLevel > 20) return 'goldenrod';
+    else if (vacLevel >= 20) return 'goldenrod';
     else if (vacLevel > 0) return 'red';
     else return 'lightgrey'
 }

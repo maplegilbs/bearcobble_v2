@@ -9,11 +9,11 @@
         border: 2px solid black;
         width: 80%;
         margin: 0 auto;
-        border-radius: 3px;
+        border-radius: 4px;
         padding: 5%;
 
         * {
-            margin: 5% auto;
+            margin: 10% auto;
             text-align: center;
         }
 
@@ -21,6 +21,7 @@
             margin: 1rem auto;
             font-weight: 600;
             font-size: 1rem;
+            text-decoration: underline;
         }
 
         .tank_volume {

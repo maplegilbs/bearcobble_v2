@@ -17,7 +17,7 @@ export default function Primary_Nav({ isMobileMenuDisplayed, setIsMobileMenuDisp
             className={`${nav_styles.primary_nav} ${isMobileMenuDisplayed ? nav_styles.selected : ''}`}
             onClick={() => setIsMobileMenuDisplayed((prev) => !prev)}
         >
-            <Link href="/"><span>Home</span><Image src={HomeIcon} alt='Icon of a bearclaw'></Image></Link>
+            <Link href="/"><span>Home</span><Image className={nav_styles.home_icon} src={HomeIcon} alt='Icon of a bearclaw'></Image></Link>
             <hr className={nav_styles.nav_hr} />
             <Link href="/weather"><span>Weather</span><Image src={WeatherIcon} alt='Icon of a cloud and sun'></Image></Link>
             <hr className={nav_styles.nav_hr} />
