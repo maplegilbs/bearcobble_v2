@@ -8,7 +8,7 @@
     justify-content: space-between;
     background: linear-gradient(9deg, white, #e8e9ea);
     box-shadow: 0px 4px 3px #777;
-    margin-bottom: 20px;
+    z-index: 1;
 
     .weather_info {
         display: flex;

@@ -5,8 +5,8 @@ export default function Primary_Footer() {
 
     return (
         <header className={footer_styles.primary_footer}>
-            <p>Hello</p>
-            <p>Goodbye</p>
+            <p>Footer</p>
+            <p></p>
         </header>
     )
 }

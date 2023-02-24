@@ -19,7 +19,7 @@
         width: 100%;
         aspect-ratio: 1;
         border-radius: 50%;
-        margin-bottom: -25%;
+        margin-bottom: -18%;
 
         .inner_dial {
             background-color: white;
@@ -60,6 +60,9 @@
                 text-align: center;
                 font-weight: 600;
                 margin-top: 1rem;
+                padding: 5px;
+                width: 100%;
+                border-radius: 4px;
             }
         }
     }
