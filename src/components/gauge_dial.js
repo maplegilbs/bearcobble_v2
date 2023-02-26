@@ -30,7 +30,7 @@ export default function Dial_Gauge({ section, current_vacuum_level, reading_time
         <div className={gauge_dial_styles.dial_container}>
             <div
                 className={gauge_dial_styles.outer_dial}
-                style={{ background: `conic-gradient(from 270deg, black, rgba(230,230,230,1) 1deg ${180 - current_vacuum_level * degreesPerVacLevel}deg, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${180 - current_vacuum_level * degreesPerVacLevel}deg 179deg, black 179deg, transparent 180deg  )` }}
+                style={{ background: `conic-gradient(from 270deg, black 1deg, rgba(230,230,230,1) 1deg ${180 - current_vacuum_level * degreesPerVacLevel}deg, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${180 - Math.round(current_vacuum_level * degreesPerVacLevel)}deg 180deg, black 180deg, transparent 181deg  )` }}
             >
                 <div className={gauge_dial_styles.inner_dial}>
                     <h1 className={gauge_dial_styles.vac_reading}>{current_vacuum_level}</h1>

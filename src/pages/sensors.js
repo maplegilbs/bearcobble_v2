@@ -1,7 +1,8 @@
 //Libraries
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 //Components
 import Dial_Gauge from "@/components/gauge_dial";
+import Box_Gauge from "@/components/gauge_box";
 import Tank_Container from "@/components/tank";
 //Functions
 import { formatTime } from "@/utils/formatDate";
@@ -11,6 +12,26 @@ import sensor_page_styles from "../styles/sensor_page_styles.module.scss";
 export default function Sensors() {
     const [vacuumData, setVacuumData] = useState()
     const [tankData, setTankData] = useState();
+
+    //custom hook, see https://github.com/vercel/next.js/discussions/14810
+    const useMediaQuery = (width) => {
+        //set state variable
+        const [targetReached, setTargetReached] = useState(false);
+        //set a function to update state variable based on if the media query matches
+        const updateTarget = useCallback(e => e.matches ? setTargetReached(true) : setTargetReached(false), []);
+        useEffect(() => {
+            //Will return a media query list object that can be used to determine if the document matches the passed in media query string
+            //The mql object handles sending notifications to listeners when the media query state has changed
+            const media = window.matchMedia(`(max-width: ${width}px)`)
+            //Update the targetReached state variable whenever media query changes (whenever the test of if max-width exceeds our passed in media query string changes from true to false or vice-versa)
+            media.addEventListener("change", updateTarget);
+            //check on mount
+            if (media.matches) { setTargetReached(true) }
+            //cleanup
+            return () => media.removeEventListener("change", updateTarget);
+        }, [])
+        return targetReached;
+    }
 
     useEffect(() => {
         async function getSensorData() {
@@ -87,18 +108,29 @@ export default function Sensors() {
 
     }, [])
 
-    let dial_gauges = []
+    const isBreakpoint = useMediaQuery(1000);
+    let gauge_containers = [];
+
     if (vacuumData) {
         for (let section_data in vacuumData) {
-            dial_gauges.push(
-                <Dial_Gauge
-                    key={vacuumData[section_data].section_name}
-                    section={vacuumData[section_data].section_name}
-                    current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
-                    reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
-                />)
+            gauge_containers.push(
+                (isBreakpoint ?
+                    <Box_Gauge
+                        key={vacuumData[section_data].section_name}
+                        section={vacuumData[section_data].section_name}
+                        current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
+                        reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
+                    /> : 
+                    <Dial_Gauge
+                        key={vacuumData[section_data].section_name}
+                        section={vacuumData[section_data].section_name}
+                        current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
+                        reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
+                    />)
+            )
         }
     }
+
     let tank_containers = [];
     if (tankData) {
         for (let tank_data in tankData) {
@@ -119,16 +151,16 @@ export default function Sensors() {
                 <h1>Vacuum</h1>
                 <hr className={sensor_page_styles.section_heading_hr} />
             </div>
-            <div className={sensor_page_styles.vacuum_gauge_container}>
+            <div className={sensor_page_styles.sensor_container}>
                 {vacuumData &&
-                    dial_gauges
+                    gauge_containers
                 }
             </div>
             <div className={sensor_page_styles.section_heading_container}>
                 <h1>Tanks</h1>
                 <hr className={sensor_page_styles.section_heading_hr} />
             </div>
-            <div className={sensor_page_styles.vacuum_gauge_container}>
+            <div className={sensor_page_styles.sensor_container}>
                 {tankData &&
                     tank_containers.reverse()
                 }
