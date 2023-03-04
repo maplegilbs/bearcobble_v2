@@ -1,7 +1,9 @@
 //Libraries
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 //Components
 import Section_History from './section_history_container.js'
+const Line_Plot = dynamic(()=> {return import ("./plotly_line_graph.js")}, {ssr: false})
 //Functions
 import { adjustForUTC } from '@/utils/adjForUTCDate.js';
 //Styles
@@ -37,7 +39,7 @@ export default function Vacuum_History() {
                 <tr>
                     <td>{currentData[`dbEntryTime`]}</td>
                     <td>{vacReading}</td>
-                    <td style={{backgroundColor: vacChange>0? 'rgba(120,255,120,.25)': vacChange<0? 'rgba(255,120,120,.25)': '', fontWeight: vacChange != 0? '600': '400'}}>{vacChange > 0? `+${vacChange}`: `${vacChange}`}</td>
+                    <td style={{ backgroundColor: vacChange > 0 ? 'rgba(120,255,120,.25)' : vacChange < 0 ? 'rgba(255,120,120,.25)' : '', fontWeight: vacChange != 0 ? '600' : '400' }}>{vacChange > 0 ? `+${vacChange}` : `${vacChange}`}</td>
                 </tr>
             )
         }
@@ -58,6 +60,9 @@ export default function Vacuum_History() {
                     <option value='48'>Prior 2 days</option>
                     <option value='168'>Prior 1 week</option>
                 </select>
+            </div>
+            <div className={vac_history_styles.plotly_container}>
+                <Line_Plot />
             </div>
             <div className={vac_history_styles.vac_history_container}>
                 <Section_History section_num={1} tableData={tableData[0]} />
