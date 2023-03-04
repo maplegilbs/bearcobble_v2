@@ -1,0 +1,56 @@
+@use '../styles/global_variables.scss';
+
+.section_history_container {
+    font-family: global_variables.$global_fonts;
+    font-size: .9rem;
+    font-weight: 500;
+    width: 95%;
+    margin: 10px auto;
+    background-color: white;
+    padding: 5px 3px;
+
+    h3 {
+        padding-left: 10px;
+        background-color: honeydew;
+        position: sticky;
+        top: 0px;
+        height: 1.5rem;
+        border: 2px solid black
+    }
+
+
+    table{
+        width: 100%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+
+        thead{
+            position: sticky;
+            top: 1.5rem;
+            background-color: white;
+        }
+
+        td, th{
+            text-align: center;
+            width: 31%;
+        }
+
+        th {
+            border-bottom: 1px solid black;
+        }
+
+        tr:nth-child(even){
+            background-color: rgba(235,235,230,.6);
+        }
+    }
+}
+
+@media screen and (min-width: 720px) {
+    .section_history_container{
+        width: 19%;
+    }
+    
+}

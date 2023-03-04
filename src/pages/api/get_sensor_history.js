@@ -21,9 +21,10 @@ export default async function getSensorHistory(req, res){
             ).promise()
             const query = `
             select *,
-            date_format(recordDateTime, '%b %d %y, %H:%i') as dbEntryTime
+            date_format(recordDateTime, '%m/%d %H:%i') as dbEntryTime
             from ${database_lookup_ref[req.query.sensor_type]}
             where recordDateTime between '${req.query.period_start}' and '${req.query.period_end}'
+            order by recordDateTime desc
             `;
             const historical_data = await pool.query(query)
             res.send(historical_data)
