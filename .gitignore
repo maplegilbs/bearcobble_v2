@@ -31,3 +31,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+
+#testing files
+/src/utils/databaseTest.js

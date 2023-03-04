@@ -1,0 +1,32 @@
+.groove {
+    display: inline-block;
+    transform: translateY(8px);
+    padding: 0;
+    margin: 0 20px;
+    width: 55px;
+    height: 27px;
+    background-color: rgba(190,190,190,.75);
+    border-radius: 25px;
+    border: 2px solid black;
+    transition: all 1s ease;
+    box-shadow: inset 0px 2px 1px rgb(33 33 33 / 75%);
+
+    .slider {
+        display: block;
+        width: 27px;
+        height: 23px;
+        border-radius: 25px;
+        background-color: white;
+        transition: transform 1s ease;
+        box-shadow: 2px 1px 2px #333, -2px 1px 2px #333;
+        border: 1px solid black;
+    }
+}
+
+.toggle_on {
+    transform: translateX(24px);
+}
+
+.groove_toggle_on {
+    background-color: rgb(84 121 151);
+}

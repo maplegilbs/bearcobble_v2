@@ -7,7 +7,11 @@
 
     h1{
         font-weight: 700;
-    font-size: 1.5em;
+        font-size: 1.5em;
+    }
+
+    h3 {
+        display: inline-block;
     }
 
     .section_heading_hr {
@@ -27,4 +31,10 @@
     border-radius: 2px;
     box-shadow: 2px 2px 3px 3px #333;
     padding: 10px;
+}
+
+@media screen and (min-width: 720px) {
+    .sensor_container{
+        min-height: 35vh;
+    }
 }

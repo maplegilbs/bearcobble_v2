@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Dial_Gauge from "@/components/gauge_dial";
 import Box_Gauge from "@/components/gauge_box";
 import Tank_Container from "@/components/tank";
+import Slider_Toggler from "@/components/slider_toggler";
+import Vacuum_History from "@/components/vacuum_history";
 //Functions
 import { formatTime } from "@/utils/formatDate";
 //Styles
@@ -12,6 +14,8 @@ import sensor_page_styles from "../styles/sensor_page_styles.module.scss";
 export default function Sensors() {
     const [vacuumData, setVacuumData] = useState()
     const [tankData, setTankData] = useState();
+    const [isVacuumHistoryShown, setIsVacuumHistoryShown] = useState(false)
+    const [isTankHistoryShown, setIsTankHistoryShown] = useState(false)
 
     //custom hook, see https://github.com/vercel/next.js/discussions/14810
     const useMediaQuery = (width) => {
@@ -105,7 +109,6 @@ export default function Sensors() {
         setInterval(() => {
             getSensorData()
         }, 30000);
-
     }, [])
 
     const isBreakpoint = useMediaQuery(1000);
@@ -120,7 +123,7 @@ export default function Sensors() {
                         section={vacuumData[section_data].section_name}
                         current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
                         reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
-                    /> : 
+                    /> :
                     <Dial_Gauge
                         key={vacuumData[section_data].section_name}
                         section={vacuumData[section_data].section_name}
@@ -157,6 +160,14 @@ export default function Sensors() {
                 }
             </div>
             <div className={sensor_page_styles.section_heading_container}>
+                <h3>Vacuum History</h3><Slider_Toggler istoggled={isVacuumHistoryShown} setIsToggled={setIsVacuumHistoryShown}/>
+                <hr className={sensor_page_styles.section_heading_hr} />
+            </div>
+            <div>
+                {isVacuumHistoryShown &&
+                <Vacuum_History />}
+            </div>
+            <div className={sensor_page_styles.section_heading_container}>
                 <h1>Tanks</h1>
                 <hr className={sensor_page_styles.section_heading_hr} />
             </div>
@@ -164,6 +175,10 @@ export default function Sensors() {
                 {tankData &&
                     tank_containers.reverse()
                 }
+            </div>
+            <div className={sensor_page_styles.section_heading_container}>
+                <h3>Tank History</h3><Slider_Toggler istoggled={isTankHistoryShown} setIsToggled={setIsTankHistoryShown}/>
+                <hr className={sensor_page_styles.section_heading_hr} />
             </div>
         </>
     )
