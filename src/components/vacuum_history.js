@@ -26,7 +26,6 @@ export default function Vacuum_History() {
         } catch (error) { console.error(`There was an error fetching historical vacuum data: ${error}`) }
     }, [dateRange])
 
-    console.log(historicalData)
 
     const tableData = [[], [], [], [], []];
     for (let i = 0; i < historicalData.length - 1; i++) {
@@ -53,10 +52,12 @@ export default function Vacuum_History() {
         <>
             <div className={vac_history_styles.vac_history_options}>
                 <label htmlFor='history_select'>Select Range For Data Records</label>
-                <select className={vac_history_styles.vac_daterange_select} id='history_select' onChange={(e) => {
-                    setDateRange([convertDateForSQL(adjustForUTC(new Date(Date.now() - (parseInt(e.target.value) * 60 * 60 * 1000)))), convertDateForSQL(adjustForUTC(new Date()))])
-                    console.log(dateRange)
-                }}>
+                <select
+                    className={vac_history_styles.vac_daterange_select}
+                    id='history_select'
+                    onChange={(e) => {
+                        setDateRange([convertDateForSQL(adjustForUTC(new Date(Date.now() - (parseInt(e.target.value) * 60 * 60 * 1000)))), convertDateForSQL(adjustForUTC(new Date()))])
+                    }}>
                     <option value='4'>Prior 4 hrs</option>
                     <option value='12'>Prior 12 hrs</option>
                     <option value='24'>Prior 1 day</option>

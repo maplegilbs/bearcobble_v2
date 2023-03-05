@@ -3,15 +3,16 @@
 
 .vac_history_options{
     margin: 10px;
+    font-family: global_variables.$global_fonts;
 
     label {
         margin: 5px;
-        font-family: global_variables.$global_fonts;
         font-weight: 500;
     }
     select{
         border-radius: 2px;
         padding: 3px 5px;
+        font-family: global_variables.$global_fonts;
     }
 
 }
