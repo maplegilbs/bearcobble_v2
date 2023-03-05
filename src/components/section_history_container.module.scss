@@ -14,8 +14,21 @@
         background-color: honeydew;
         position: sticky;
         top: 0px;
-        height: 1.5rem;
-        border: 2px solid black
+        height: max-content;
+        border: 2px solid black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        span{
+            background: rgba(255,255,255,.8);
+            text-align: center;
+            padding-right: 2px;
+        }
+
+        .time_remaining{
+            font-size: .8rem;
+        }
     }
 
 
@@ -36,6 +49,10 @@
 
         td, th{
             text-align: center;
+        }
+
+        td:nth-child(1){
+            font-size: .75rem;
         }
 
         th {

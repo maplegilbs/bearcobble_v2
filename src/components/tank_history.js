@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 //Components
 import Section_History from './section_history_container.js'
-const Line_Plot = dynamic(() => { return import("./plotly_line_graph.js") }, { ssr: false })
+const Line_Plot = dynamic(() => { return import("./plotly_tank_line_graph.js") }, { ssr: false })
 //Functions
 import { adjustForUTC } from '@/utils/adjForUTCDate.js';
 import { remainingFillTime } from '@/utils/tankInfoHelpers.js';
@@ -28,7 +28,8 @@ export default function Tank_History() {
     }, [dateRange])
 
 
-    const tableData = [[], [], [], [], []];
+    let tableData = [[], [], [], [], []];
+    let timeRemaining = []
     for (let i = 0; i < historicalData.length - 1; i++) {
         for (let j = 1; j < 6; j++) {
             let currentData = historicalData[i];
@@ -38,16 +39,16 @@ export default function Tank_History() {
             let tankReadingTime = currentData[`tank${j}TimeFormatted`];
             let currentTime = currentData[`tank${j}Time`];
             let priorTime = priorData[`tank${j}Time`];
-            let timeChange =  (new Date(currentTime) - new Date(priorTime))/(1000*60*60) //fraction of an hour
+            let timeChange = (new Date(currentTime) - new Date(priorTime)) / (1000 * 60 * 60) //fraction of an hour
             let tankChange = (currentData[`tank${j}Vol`] - priorData[`tank${j}Vol`]); //
             let tankChangePerHour = Math.round(tankChange / timeChange);
+            if(i===0) {timeRemaining.push(remainingFillTime(tankReading, tankChangePerHour))}
             if (tankReadingTime != priorData[`tank${j}TimeFormatted`]) {
-                tableData[j-1].push(
+                tableData[j - 1].push(
                     <tr>
                         <td>{tankReadingTime}</td>
                         <td>{tankReading}</td>
-                        <td>{tankChangePerHour >0? `+${tankChangePerHour}`: tankChangePerHour}</td>
-                        <td>{i===0? `${remainingFillTime(tankReading, tankChangePerHour)}`: ''}</td>
+                        <td>{tankChangePerHour > 0 ? `+${tankChangePerHour}` : tankChangePerHour}</td>
                     </tr>
                 )
             }
@@ -57,7 +58,7 @@ export default function Tank_History() {
 
     return (
         <>
-             <div className={tank_history_styles.tank_history_options}>
+            <div className={tank_history_styles.tank_history_options}>
                 <label htmlFor='history_select'>Select Range For Data Records</label>
                 <select
                     className={tank_history_styles.tank_daterange_select}
@@ -72,15 +73,15 @@ export default function Tank_History() {
                     <option value='168'>Prior 1 week</option>
                 </select>
             </div>
-            {/*<div className={tank_history_styles.plotly_container}>
+            <div className={tank_history_styles.plotly_container}>
                 <Line_Plot graph_data={historicalData} />
-                </div>*/}
+            </div>
             <div className={tank_history_styles.tank_history_container}>
-                <Section_History type={'Tank'} section_num={5} tableData={tableData[4]} />
-                <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} />
-                <Section_History type={'Tank'} section_num={3} tableData={tableData[2]} />
-                <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} />
-                <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} />
+                <Section_History type={'Tank'} section_num={5} tableData={tableData[4]} timeRemaining={timeRemaining[4]} />
+                <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} timeRemaining={timeRemaining[3]}/>
+                <Section_History type={'Tank'} section_num={3} tableData={tableData[2]} timeRemaining={timeRemaining[2]}/>
+                <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]}/>
+                <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]}/>
             </div>
         </>
     )

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 //Components
 import Section_History from './section_history_container.js'
-const Line_Plot = dynamic(() => { return import("./plotly_line_graph.js") }, { ssr: false })
+const Line_Plot = dynamic(() => { return import("./plotly_vac_line_graph.js") }, { ssr: false })
 //Functions
 import { adjustForUTC } from '@/utils/adjForUTCDate.js';
 //Styles
