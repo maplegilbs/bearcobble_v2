@@ -69,11 +69,11 @@ export default function Vacuum_History() {
                 <Line_Plot graph_data={historicalData} />
             </div>
             <div className={vac_history_styles.vac_history_container}>
-                <Section_History section_num={1} tableData={tableData[0]} />
-                <Section_History section_num={2} tableData={tableData[1]} />
-                <Section_History section_num={3} tableData={tableData[2]} />
-                <Section_History section_num={4} tableData={tableData[3]} />
-                <Section_History section_num={5} tableData={tableData[4]} />
+                <Section_History type={'Section'} section_num={1} tableData={tableData[0]} />
+                <Section_History type={'Section'} section_num={2} tableData={tableData[1]} />
+                <Section_History type={'Section'} section_num={3} tableData={tableData[2]} />
+                <Section_History type={'Section'} section_num={4} tableData={tableData[3]} />
+                <Section_History type={'Section'} section_num={5} tableData={tableData[4]} />
             </div>
         </>
     )

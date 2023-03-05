@@ -6,6 +6,7 @@ import Box_Gauge from "@/components/gauge_box";
 import Tank_Container from "@/components/tank";
 import Slider_Toggler from "@/components/slider_toggler";
 import Vacuum_History from "@/components/vacuum_history";
+import Tank_History from "@/components/tank_history";
 //Functions
 import { formatTime } from "@/utils/formatDate";
 //Styles
@@ -179,6 +180,10 @@ export default function Sensors() {
             <div className={sensor_page_styles.section_heading_container}>
                 <h3>Tank History</h3><Slider_Toggler istoggled={isTankHistoryShown} setIsToggled={setIsTankHistoryShown}/>
                 <hr className={sensor_page_styles.section_heading_hr} />
+            </div>
+            <div>
+                {isTankHistoryShown &&
+                <Tank_History />}
             </div>
         </>
     )

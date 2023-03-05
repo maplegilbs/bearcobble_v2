@@ -1,7 +1,7 @@
 //Libraries
 import { useEffect, useState } from 'react';
 //Functions
-import { calcVolFromHeight } from '@/utils/tankVolFromHeight';
+import { calcVolFromHeight } from '@/utils/tankInfoHelpers';
 //Styles
 import tank_styles from './tank.module.scss';
 
