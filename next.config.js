@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 //Libraries
-export const nextConfig = {
+const nextConfig = {
   experimental: {
     appDir: true,
     reactStrictMode: true
   }
 }
 
-// module.exports = nextConfig
+module.exports = nextConfig

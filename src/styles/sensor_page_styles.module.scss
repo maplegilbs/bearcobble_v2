@@ -4,6 +4,7 @@
     margin: 75px auto 5px auto;
     font-family: global_variables.$global_fonts;
     text-transform: uppercase;
+    
 
     h1{
         font-weight: 700;
@@ -26,11 +27,15 @@
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    margin: 10px auto 50px auto;
+    margin: 10px auto 30px auto;
     background: white;
     border-radius: 2px;
     box-shadow: 2px 2px 3px 3px #333;
     padding: 10px;
+
+    + .section_heading_container {
+        margin-top: 5px;
+    }
 }
 
 @media screen and (min-width: 720px) {

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 //Components
 import Section_History from './section_history_container.js'
-const Line_Plot = dynamic(()=> {return import ("./plotly_line_graph.js")}, {ssr: false})
+const Line_Plot = dynamic(() => { return import("./plotly_line_graph.js") }, { ssr: false })
 //Functions
 import { adjustForUTC } from '@/utils/adjForUTCDate.js';
 //Styles
@@ -26,22 +26,25 @@ export default function Vacuum_History() {
         } catch (error) { console.error(`There was an error fetching historical vacuum data: ${error}`) }
     }, [dateRange])
 
-
+    console.log(historicalData)
 
     const tableData = [[], [], [], [], []];
     for (let i = 0; i < historicalData.length - 1; i++) {
         for (let j = 0; j < 5; j++) {
             let currentData = historicalData[i];
             let priorData = historicalData[i + 1];
+            let vacReadingTime = currentData[`vac${j + 1}TimeFormatted`]
             let vacReading = Number(currentData[`vac${j + 1}`]).toFixed(1);
             let vacChange = (currentData[`vac${j + 1}`] - priorData[`vac${j + 1}`]).toFixed(1);
-            tableData[j].push(
-                <tr>
-                    <td>{currentData[`dbEntryTime`]}</td>
-                    <td>{vacReading}</td>
-                    <td style={{ backgroundColor: vacChange > 0 ? 'rgba(120,255,120,.25)' : vacChange < 0 ? 'rgba(255,120,120,.25)' : '', fontWeight: vacChange != 0 ? '600' : '400' }}>{vacChange > 0 ? `+${vacChange}` : `${vacChange}`}</td>
-                </tr>
-            )
+            if (vacReadingTime != priorData[`vac${j + 1}TimeFormatted`]) {
+                tableData[j].push(
+                    <tr>
+                        <td>{vacReadingTime}</td>
+                        <td>{vacReading}</td>
+                        <td style={{ backgroundColor: vacChange > 0 ? 'rgba(120,255,120,.25)' : vacChange < 0 ? 'rgba(255,120,120,.25)' : '', fontWeight: vacChange != 0 ? '600' : '400' }}>{vacChange > 0 ? `+${vacChange}` : `${vacChange}`}</td>
+                    </tr>
+                )
+            }
         }
     }
 
@@ -62,7 +65,7 @@ export default function Vacuum_History() {
                 </select>
             </div>
             <div className={vac_history_styles.plotly_container}>
-                <Line_Plot />
+                <Line_Plot graph_data={historicalData} />
             </div>
             <div className={vac_history_styles.vac_history_container}>
                 <Section_History section_num={1} tableData={tableData[0]} />

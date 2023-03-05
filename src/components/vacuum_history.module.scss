@@ -26,8 +26,14 @@
 }
 
 .plotly_container{
-    width: 300px;
-    height: 300px;
+    width: 96%;
+    // height: 75vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    background: white;
+    border: 2px solid black;
+    margin-bottom: 15px;
 }
 
 @media screen and (min-width: 720px) {
