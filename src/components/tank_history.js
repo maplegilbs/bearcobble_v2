@@ -42,7 +42,7 @@ export default function Tank_History() {
             let timeChange = (new Date(currentTime) - new Date(priorTime)) / (1000 * 60 * 60) //fraction of an hour
             let tankChange = (currentData[`tank${j}Vol`] - priorData[`tank${j}Vol`]); //
             let tankChangePerHour = Math.round(tankChange / timeChange);
-            if(i===0) {timeRemaining.push(remainingFillTime(tankReading, tankChangePerHour))}
+            if (i === 0) { timeRemaining.push(remainingFillTime(tankReading, tankChangePerHour)) }
             if (tankReadingTime != priorData[`tank${j}TimeFormatted`]) {
                 tableData[j - 1].push(
                     <tr>
@@ -73,16 +73,18 @@ export default function Tank_History() {
                     <option value='168'>Prior 1 week</option>
                 </select>
             </div>
-            <div className={tank_history_styles.plotly_container}>
-                <Line_Plot graph_data={historicalData} />
-            </div>
             <div className={tank_history_styles.tank_history_container}>
                 <Section_History type={'Tank'} section_num={5} tableData={tableData[4]} timeRemaining={timeRemaining[4]} />
-                <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} timeRemaining={timeRemaining[3]}/>
-                <Section_History type={'Tank'} section_num={3} tableData={tableData[2]} timeRemaining={timeRemaining[2]}/>
-                <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]}/>
-                <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]}/>
+                <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} timeRemaining={timeRemaining[3]} />
+                <Section_History type={'Tank'} section_num={3} tableData={tableData[2]} timeRemaining={timeRemaining[2]} />
+                <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]} />
+                <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]} />
             </div>
+            { historicalData.length > 0 &&
+                <div className={tank_history_styles.plotly_container}>
+                    <Line_Plot graph_data={historicalData} />
+                </div>
+            }
         </>
     )
 

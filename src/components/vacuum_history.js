@@ -65,9 +65,11 @@ export default function Vacuum_History() {
                     <option value='168'>Prior 1 week</option>
                 </select>
             </div>
-            <div className={vac_history_styles.plotly_container}>
-                <Line_Plot graph_data={historicalData} />
-            </div>
+            {historicalData.length > 0 &&
+                <div className={vac_history_styles.plotly_container}>
+                    <Line_Plot graph_data={historicalData} />
+                </div>
+            }
             <div className={vac_history_styles.vac_history_container}>
                 <Section_History type={'Section'} section_num={1} tableData={tableData[0]} />
                 <Section_History type={'Section'} section_num={2} tableData={tableData[1]} />

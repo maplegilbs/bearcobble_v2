@@ -7,7 +7,6 @@
     width: 98%;
     margin: 10px auto;
     background-color: white;
-    // padding: 5px 3px;
 
     h3 {
         padding-left: 10px;
@@ -21,11 +20,10 @@
         align-items: center;
 
         span{
-            background: rgba(255,255,255,.8);
             text-align: center;
-            padding-right: 2px;
+            padding: 5px;
         }
-
+        
         .time_remaining{
             font-size: .8rem;
         }

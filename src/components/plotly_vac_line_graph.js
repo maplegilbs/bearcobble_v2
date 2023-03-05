@@ -34,7 +34,7 @@ export default function ({ graph_data }) {
             {
                 x: plotPoints[0][0].reverse(),
                 y: plotPoints[0][1].reverse(),
-                type: 'scatter',
+                type: 'line',
                 mode: 'lines',
                 line: { color: 'blue', shape: 'spline'  },
                 name: '1'
@@ -42,7 +42,7 @@ export default function ({ graph_data }) {
             {
                 x: plotPoints[1][0].reverse(),
                 y: plotPoints[1][1].reverse(),
-                type: 'scatter',
+                type: 'line',
                 mode: 'lines',
                 line: { color: 'orange', shape: 'spline'  },
                 name: '2'
@@ -50,7 +50,7 @@ export default function ({ graph_data }) {
             {
                 x: plotPoints[2][0].reverse(),
                 y: plotPoints[2][1].reverse(),
-                type: 'scatter',
+                type: 'line',
                 mode: 'lines',
                 line: { color: 'gold', shape: 'spline'  },
                 name: '3'
@@ -58,7 +58,7 @@ export default function ({ graph_data }) {
             {
                 x: plotPoints[3][0].reverse(),
                 y: plotPoints[3][1].reverse(),
-                type: 'scatter',
+                type: 'line',
                 mode: 'lines',
                 line: { color: 'gold', shape: 'spline',  dash: 'dash' },
                 name: '4'
@@ -66,7 +66,7 @@ export default function ({ graph_data }) {
             {
                 x: plotPoints[4][0].reverse(),
                 y: plotPoints[4][1].reverse(),
-                type: 'scatter',
+                type: 'line',
                 mode: 'lines',
                 line: { color: 'green', shape: 'spline' },
                 name: '5'

@@ -8,7 +8,7 @@ export default async function (req, res) {
 
     if(req.method === 'GET') {
         try {
-            let fetchedWeatherRes = await fetch (`https://api.weather.com/v2/pws/observations/current?stationId=KVTBRIST29&format=json&units=e&apiKey=${process.env.WUNDERGROUND_APIKEY}`);
+            let fetchedWeatherRes = await fetch (`https://api.weather.com/v2/pws/observations/current?stationId=${process.env.WU_STATIONID}&format=json&units=e&apiKey=${process.env.WU_APIKEY}`);
             let fetchedWeatherJSON = await fetchedWeatherRes.json();
             console.log(fetchedWeatherJSON)
             res.send(fetchedWeatherJSON);

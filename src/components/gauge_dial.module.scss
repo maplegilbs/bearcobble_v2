@@ -73,3 +73,15 @@
     }
 
 }
+
+@media screen and (min-width: 1200px) {
+    .dial_container{
+        .outer_dial {
+            .inner_dial{
+                .vac_reading { font-size: 3rem}
+
+            }
+        }
+    }
+    
+}

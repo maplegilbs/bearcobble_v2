@@ -24,15 +24,15 @@ export function calcVolFromHeight(height) {
 
 }
 
-export let cautionFlag = "black";
 export function remainingFillTime(currentLevel, fillRate) {
+  let cautionFlag = "black";
   const maxFill = 8500;
   if (currentLevel <= 0) {
     cautionFlag = "black";
-    return "EMPTY";
+    return ["EMPTY", cautionFlag]
   } else if (currentLevel >= maxFill) {
     cautionFlag = "black";
-    return "FULL";
+    return ["FULL", cautionFlag];
   } else if (fillRate > 0) {
     let timetofull = (maxFill - currentLevel) / fillRate;
     switch (true) {
@@ -53,7 +53,7 @@ export function remainingFillTime(currentLevel, fillRate) {
     if (minutes < 10) {
       minutes = "0" + minutes.toString();
     }
-    return hours + "h" + minutes + "m";
+    return [hours + "h" + minutes + "m", cautionFlag];
   } else if (fillRate < 0) {
     let timetoempty = (0 - currentLevel) / fillRate;
     switch (true) {
@@ -74,8 +74,8 @@ export function remainingFillTime(currentLevel, fillRate) {
     if (minutes < 10) {
       minutes = "0" + minutes.toString();
     }
-    return hours + "h" + minutes + "m";
+    return [hours + "h" + minutes + "m", cautionFlag];
   } else {
-    return `${'\u221e'}`;
+    return [`${'\u221e'}`, cautionFlag];
   }
 }
