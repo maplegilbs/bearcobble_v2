@@ -1,0 +1,12 @@
+
+.loader {
+    height: 80px;
+    width: 80px;
+    margin-top: -40px;
+    margin-left: -40px;
+    border: 7px solid #222233;
+    border-top: 7px solid #ffffff;
+    border-bottom: 7px solid #ffffff;
+    border-radius: 100%;
+    animation: loaderspin 3s linear infinite;
+}
