@@ -55,6 +55,7 @@ export default function Tank_History() {
         }
     }
 
+    console.log(historicalData)
 
     return (
         <>
@@ -80,7 +81,7 @@ export default function Tank_History() {
                 <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]} />
                 <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]} />
             </div>
-            { historicalData.length > 0 &&
+            {historicalData.length > 0 &&
                 <div className={tank_history_styles.plotly_container}>
                     <Line_Plot graph_data={historicalData} />
                 </div>
