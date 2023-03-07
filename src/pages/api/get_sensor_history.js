@@ -2,7 +2,7 @@
 import mysql from 'mysql2'
 
 
-export default async function getSensorHistory(req, res){
+export default async function (req, res){
     if(req.method === 'GET'){
         console.log(req.query)
         const database_lookup_ref = {
