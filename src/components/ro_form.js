@@ -9,11 +9,11 @@ import ro_form_styles from './ro_form.module.scss'
 
 
 export default function RO_Form() {
-    const [formValues, setFormValues] = useState({isBenchmark: false})
+    const [formValues, setFormValues] = useState({is_benchmark: false})
     const [membraneInputs, setMembraneInputs] = useState([])
 
     function changeHandler(e) {
-        if(e.target.hasOwnProperty('checked')){setFormValues({ ...formValues, [e.target.name]: e.target.checked })}
+        if(e.target.id==='isBenchmark'){setFormValues({ ...formValues, [e.target.name]: e.target.checked })}
         else{setFormValues({ ...formValues, [e.target.name]: e.target.value })}
         // setFormValues(Object.assign(formValues, {[e.target.name]: e.target.value })) //this doesn't work why
     }
@@ -24,7 +24,7 @@ export default function RO_Form() {
             membrane_inputs.push(
                 <div key={`membrane${i}Row`} className={ro_form_styles.input_container_row}>
                     <label htmlFor={`membrane${i}`}>Membrane {i}</label>
-                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name={`membrane_${i}`} onChange={(e) => changeHandler(e, formValues)} id={`membrane${i}`} placeholder="gpm" value={formValues[`membrane${i}`] ? formValues[`membrane${i}`] : ''}></input>
+                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name={`membrane_${i}`} onChange={(e) => changeHandler(e, formValues)} id={`membrane${i}`} placeholder="gpm" value={formValues[`membrane_${i}`] ? formValues[`membrane_${i}`] : ''}></input>
                 </div>
             )
         }
@@ -34,7 +34,7 @@ export default function RO_Form() {
     useEffect(() => {
         function timeSetter() {
             let now = formatTime(new Date());
-            setFormValues({ ...formValues, recordDateTime: `${now.year}-${now.month}-${now.day}T${now.time24Hr}` })
+            setFormValues({ ...formValues, record_date: `${now.year}-${now.month}-${now.day}T${now.time24Hr}` })
         }
         timeSetter();
     }, [])
@@ -54,13 +54,20 @@ export default function RO_Form() {
         return gpm;
     }
 
+    async function submitForm (event){
+        event.preventDefault()
+        // let formData = new FormData(formValues)
+        let submittedData = await fetch('../api/ro_records', {
+        method: 'POST',
+        header: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formValues)
+        })
+    }
+
 
     return (
         <>
-            <form className={ro_form_styles.ro_form} onSubmit={(event)=>{
-                event.preventDefault();
-                console.log(formValues)
-            }}>
+            <form className={ro_form_styles.ro_form} onSubmit={submitForm}>
                 <h2>RO Performance Record</h2>
                 <hr />
                 <h3>Select RO</h3>
@@ -77,7 +84,7 @@ export default function RO_Form() {
                 <div className={ro_form_styles.form_row}>
                     <div className={ro_form_styles.input_container}>
                         <label htmlFor='recordDateTime'>Date / Time of Reading</label>
-                        <input id="recordDateTime" name="record_date" type="datetime-local" onChange={changeHandler} defaultValue={formValues.recordDateTime} />
+                        <input id="recordDateTime" name="record_date" type="datetime-local" onChange={changeHandler} defaultValue={formValues.record_date} />
                     </div>
                 </div>
                 <div className={ro_form_styles.form_row}>
@@ -89,7 +96,7 @@ export default function RO_Form() {
                     </div>
                     <div className={ro_form_styles.input_container}>
                         <label htmlFor="temperature">Temperature {`${'\u00b0'}`}</label>
-                        <input className={`${ro_form_styles.membrane_input}`} type="number" step={1} min={0} max={20} name="temperature" id="temperature" onChange={changeHandler} value={formValues.temperature}></input>
+                        <input className={`${ro_form_styles.membrane_input}`} type="number" step={1} min={0} max={120} name="temperature" id="temperature" onChange={changeHandler} value={formValues.temperature}></input>
                     </div>
                 </div>
                 <br />
@@ -103,7 +110,7 @@ export default function RO_Form() {
                     </div>
                 </div>
                 <div className={ro_form_styles.form_row}>
-                    <h3>Concentrate GPH</h3><h3>{formValues.concentrateFlow ? formValues.concentrateFlow * 60 : '--'}</h3>
+                    <h3>Concentrate GPH</h3><h3>{formValues.conc_flow ? formValues.conc_flow * 60 : '--'}</h3>
                 </div>
                 <br />
                 <h2 style={{ borderBottom: '1px solid black', textAlign: 'left', marginLeft: '10%', width: '70%', alignSelf: 'flex-start' }}>Permeate</h2><br />
@@ -121,9 +128,6 @@ export default function RO_Form() {
                     <input type="checkbox" onChange={changeHandler} name="is_benchmark" id="isBenchmark" />
                 </div>
                 <br/>
-
-
-
                 <input type="submit" value="Save Record To Database"/>
             </form>
         </>
