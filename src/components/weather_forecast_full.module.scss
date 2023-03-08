@@ -26,3 +26,11 @@
         margin: 2px 5px;
     }
 }
+
+@media screen and (min-width: 720px) {
+    .forecast_container, .source_select_container {
+        width: 80%;
+        margin: 30px auto;
+    }
+
+}

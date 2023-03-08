@@ -17,7 +17,6 @@ export default function Weather_Forecast_Full() {
 
     useEffect(() => {
         async function getForecast() {
-            console.log('fetch called')
             let forecast_data = await fetch(`../api/weather_forecast_daily?source=${forecastSource.toLowerCase()}`)
             let forecast_json = await forecast_data.json();
             setForecastData(forecast_json)
@@ -67,7 +66,7 @@ export default function Weather_Forecast_Full() {
     const forecast_source_icons = {
         'noaa': <Image src={noaaIcon} alt='Logo of National Oceanic and Atmospheric Administration' width={35} height={35} />,
         'weatherunderground': <Image src={wuIcon} alt='Logo of Weather Underground' width={35} height={35} />,
-        'accuweather': <Image src={awIcon} alt='Logo of Accuweather' width={35} height={35} />,
+        'accuweather': <Image src={awIcon} alt='Logo of Accuweather' width={40} height={40} />,
     }
 
 
@@ -76,6 +75,7 @@ export default function Weather_Forecast_Full() {
             <div className={weather_forecast_styles.source_select_container}>
                 <h3>Choose forecast source</h3>
                 <div className={weather_forecast_styles.source_select_inner_container}>
+                    {forecast_source_icons[forecastSource]}
                     <select
                         className={weather_forecast_styles.source_select}
                         onChange={(e) => {
@@ -86,7 +86,6 @@ export default function Weather_Forecast_Full() {
                         <option value='weatherunderground'>Weather Underground</option>
                         <option value='accuweather'>Accuweather</option>
                     </select>
-                    {forecast_source_icons[forecastSource]}
                 </div>
             </div>
             <div className={weather_forecast_styles.forecast_container}>

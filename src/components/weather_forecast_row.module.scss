@@ -38,3 +38,14 @@
         align-items: flex-start;
     }
 }
+
+@media screen and (min-width: 720px) {
+    .weather_row {
+            .left_box, .right_box {
+                img {
+                    width: 35%;
+                }
+            }
+    }
+    
+}
