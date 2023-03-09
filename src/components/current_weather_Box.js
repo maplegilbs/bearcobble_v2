@@ -55,7 +55,6 @@ export default function Current_Weather_Box() {
     }, [])
 
 
-    console.log(currentWeather)
     return (
         <>
         { currentWeather &&

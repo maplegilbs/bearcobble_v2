@@ -74,6 +74,11 @@ export default function Tank_History() {
                     <option value='168'>Prior 1 week</option>
                 </select>
             </div>
+            {historicalData.length > 0 &&
+                <div className={tank_history_styles.plotly_container}>
+                    <Line_Plot graph_data={historicalData} />
+                </div>
+            }
             <div className={tank_history_styles.tank_history_container}>
                 <Section_History type={'Tank'} section_num={5} tableData={tableData[4]} timeRemaining={timeRemaining[4]} />
                 <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} timeRemaining={timeRemaining[3]} />
@@ -81,11 +86,6 @@ export default function Tank_History() {
                 <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]} />
                 <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]} />
             </div>
-            {historicalData.length > 0 &&
-                <div className={tank_history_styles.plotly_container}>
-                    <Line_Plot graph_data={historicalData} />
-                </div>
-            }
         </>
     )
 
