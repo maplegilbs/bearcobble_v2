@@ -41,7 +41,7 @@ export default function Sensors() {
     useEffect(() => {
         async function getSensorData() {
             try {
-                const sensor_data = await fetch(`../api/sensor_data`);
+                const sensor_data = await fetch(`../api/sensor_data_read`);
                 const sensor_json = await sensor_data.json();
                 let extracted_sensor_data =
                     [

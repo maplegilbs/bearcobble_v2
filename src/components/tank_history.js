@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 //Components
 import Section_History from './section_history_container.js'
+import Snapshot_Button from './take_snapshot_button.js';
 const Line_Plot = dynamic(() => { return import("./plotly_tank_line_graph.js") }, { ssr: false })
 //Functions
 import { adjustForUTC } from '@/utils/adjForUTCDate.js';
@@ -15,17 +16,18 @@ function convertDateForSQL(inputDate) { return inputDate.toISOString().slice(0, 
 export default function Tank_History() {
     const [historicalData, setHistoricalData] = useState([]);
     const [dateRange, setDateRange] = useState([convertDateForSQL(adjustForUTC(new Date(Date.now() - (4 * 60 * 60 * 1000)))), convertDateForSQL(adjustForUTC(new Date()))])
-
+    const [updatedRecordID, setUpdatedRecordID] = useState();
+    
     useEffect(() => {
         try {
             async function getData() {
-                let fetchedData = await fetch(`api/get_sensor_history?sensor_type=tank&period_start=${dateRange[0]}&period_end=${dateRange[1]}`);
+                let fetchedData = await fetch(`api/get_sensor_history?sensor_type=tank&period_start=${dateRange[0]}&period_end=${convertDateForSQL(adjustForUTC(new Date()))}`);
                 let fetchedJSON = await fetchedData.json();
                 setHistoricalData(fetchedJSON[0])
             }
             getData();
         } catch (error) { console.error(`There was an error fetching historical tank data: ${error}`) }
-    }, [dateRange])
+    }, [dateRange, updatedRecordID])
 
 
     let tableData = [[], [], [], [], []];
@@ -35,7 +37,6 @@ export default function Tank_History() {
             let currentData = historicalData[i];
             let priorData = historicalData[i + 1];
             let tankReading = Math.round(Number(currentData[`tank${j}Vol`]));
-            console.log(currentData)
             let tankReadingTime = currentData[`tank${j}TimeFormatted`];
             let currentTime = currentData[`tank${j}Time`];
             let priorTime = priorData[`tank${j}Time`];
@@ -45,7 +46,7 @@ export default function Tank_History() {
             if (i === 0) { timeRemaining.push(remainingFillTime(tankReading, tankChangePerHour)) }
             if (tankReadingTime != priorData[`tank${j}TimeFormatted`]) {
                 tableData[j - 1].push(
-                    <tr>
+                    <tr key={tankReadingTime}>
                         <td>{tankReadingTime}</td>
                         <td>{tankReading}</td>
                         <td>{tankChangePerHour > 0 ? `+${tankChangePerHour}` : tankChangePerHour}</td>
@@ -55,11 +56,12 @@ export default function Tank_History() {
         }
     }
 
-    console.log(historicalData)
+    
 
     return (
         <>
             <div className={tank_history_styles.tank_history_options}>
+                <div>
                 <label htmlFor='history_select'>Select Range For Data Records</label>
                 <select
                     className={tank_history_styles.tank_daterange_select}
@@ -73,12 +75,15 @@ export default function Tank_History() {
                     <option value='48'>Prior 2 days</option>
                     <option value='168'>Prior 1 week</option>
                 </select>
+                </div>
+                <Snapshot_Button type={'tank'} onClick={setUpdatedRecordID}/>
             </div>
-            {historicalData.length > 0 &&
+            {historicalData.length > 1 &&
                 <div className={tank_history_styles.plotly_container}>
                     <Line_Plot graph_data={historicalData} />
                 </div>
             }
+            {historicalData.length > 1 &&
             <div className={tank_history_styles.tank_history_container}>
                 <Section_History type={'Tank'} section_num={5} tableData={tableData[4]} timeRemaining={timeRemaining[4]} />
                 <Section_History type={'Tank'} section_num={4} tableData={tableData[3]} timeRemaining={timeRemaining[3]} />
@@ -86,6 +91,10 @@ export default function Tank_History() {
                 <Section_History type={'Tank'} section_num={2} tableData={tableData[1]} timeRemaining={timeRemaining[1]} />
                 <Section_History type={'Tank'} section_num={1} tableData={tableData[0]} timeRemaining={timeRemaining[0]} />
             </div>
+            }
+             {historicalData.length <=1 &&
+                <h3>No historical data available for the selected time period: {dateRange.join('  to  ')}</h3>
+            }
         </>
     )
 

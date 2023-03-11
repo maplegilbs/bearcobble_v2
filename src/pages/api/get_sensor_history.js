@@ -7,7 +7,7 @@ export default async function (req, res){
         console.log(req.query)
         const database_lookup_ref = {
             'tank': {
-                db_name: 'tanklogs',
+                db_name: 'tanksnapshots',
                 key_shorthand: 'tank'
             },
             'vacuum': {

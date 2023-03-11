@@ -10,9 +10,9 @@ export function formatTime(inputTime) {
 	if(month < 10) {month = "0"+month.toString()}
 	let year = inputTime.getFullYear();
 	let hour24 = inputTime.getHours();
-	let hour;
+	let hour = hour24;
 	let amPM = "am";
-	if (hour24==12) {amPM="pm"}24
+	if (hour24==12) {amPM="pm"}
 	if(hour24>12) {hour = hour24-12; amPM = "pm"}
 	let minute = inputTime.getMinutes();
 	if(minute < 10) {minute = "0"+minute.toString()}

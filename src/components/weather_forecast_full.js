@@ -17,9 +17,14 @@ export default function Weather_Forecast_Full() {
 
     useEffect(() => {
         async function getForecast() {
-            let forecast_data = await fetch(`../api/weather_forecast_daily?source=${forecastSource.toLowerCase()}`)
-            let forecast_json = await forecast_data.json();
-            setForecastData(forecast_json)
+            try {
+                let forecast_data = await fetch(`../api/weather_forecast_daily?source=${forecastSource.toLowerCase()}`)
+                let forecast_json = await forecast_data.json();
+                setForecastData(forecast_json)
+            } catch (error) {
+                console.log(`There was an error fetching the forecast from ${forecastSource}.  Error: ${error}`)
+                setForecastData(null)
+            }
         }
         getForecast();
     }, [forecastSource])
@@ -60,6 +65,11 @@ export default function Weather_Forecast_Full() {
                 }
             }
             setForecastRows(forecast_jsx);
+        }
+        else {
+            setForecastRows([
+                <h3>Forecast data from {forecastSource} currently unavailable.  Try selecting a different forecast provider.</h3>
+            ])
         }
     }, [forecastData])
 

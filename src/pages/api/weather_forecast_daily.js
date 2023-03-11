@@ -9,11 +9,15 @@ export default async function (req, res) {
         if(Object.keys(api_lookup).includes(req.query.source)){
             try {
                 let forecast_data = await fetch(api_lookup[req.query.source])
-                let forecast_json = await forecast_data.json();
-                console.log(forecast_json);
-                res.send(forecast_json)
+                if(forecast_data.ok){
+                    let forecast_json = await forecast_data.json();
+                    console.log(forecast_json);
+                    res.send(forecast_json)
+                }
+                else throw(`The response returned no data from ${api_lookup[req.query.source]}`)
             } catch (error) {
                 console.error(`There was an error fetching the forecast data: ${error}`)
+                res.send(null)
             }
         }
         res.send(null)

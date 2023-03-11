@@ -153,14 +153,3 @@ export async function compileGraphData(){
     if(tmrwIOGraphValues.length>0) dataObj.tmrwIOHourlyTemps = tmrwIOGraphValues;
     return(dataObj)
 }
-
-
-
-
-// async function showGraph() {
-//     await buildHourlyObj();
-//     let rectShapesArray = rectShapes(xAxisTimeStampArray);
-//     buildGraph(rectShapesArray);
-// }
-
-// showGraph();

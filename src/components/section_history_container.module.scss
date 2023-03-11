@@ -1,5 +1,4 @@
 @use '../styles/global_variables.scss';
-
 .section_history_container {
     font-family: global_variables.$global_fonts;
     font-size: .9rem;
@@ -43,6 +42,10 @@
             top: calc(1.5rem + 19px);
             background-color: white;
             box-shadow: 0px 2px black;
+        }
+
+        thead.vacuum_thead{
+            top: calc(1.5rem + 10px);
         }
 
         td, th{

@@ -15,7 +15,7 @@ export default function Section_History({ type, section_num, tableData, timeRema
                     </span>
                 }</h3>
             <table>
-                <thead>
+                <thead className={`${type === 'Section'? section_history_styles.vacuum_thead: ''}`}>
                     <tr><th>Time</th>
                         <th>{type == 'Tank' ? 'Level' : 'in Hg'}</th>
                         <th>{type == 'Tank' ? `${'\u0394'}/hr` : 'Change'}</th>

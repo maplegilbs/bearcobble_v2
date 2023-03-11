@@ -1,0 +1,43 @@
+@use '@/styles/global_variables.scss';
+
+.snapshot_button {
+    font-family: global_variables.$global_fonts;
+    border: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    box-shadow: 2px 2px;
+    background-color: rgb(239, 239, 239);
+    padding: 3px 5px;
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    span {
+        text-shadow: none;
+        color: black;
+        font-size: .7rem;
+        margin: 2px;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    .snapshot_button {
+        .icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        span {
+            text-shadow: none;
+            color: black;
+            font-size: 1rem;
+            margin: 2px;
+        }
+    }
+}

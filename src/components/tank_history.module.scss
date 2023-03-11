@@ -2,8 +2,12 @@
 
 
 .tank_history_options{
-    margin: 10px;
     font-family: global_variables.$global_fonts;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto;
+    align-items: center;
 
     label {
         margin: 5px;
