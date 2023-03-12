@@ -1,0 +1,22 @@
+@use './global_variables.scss';
+
+.map_container{
+    border: 2px solid black;
+}
+
+.zoom_to_me {
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    appearance: button;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    margin: 10px;
+    padding: 0 0.5em;
+    height: 40px;
+    font: 600 12px global_variables.$global_fonts, Arial, sans-serif;
+    overflow: hidden;
+}
