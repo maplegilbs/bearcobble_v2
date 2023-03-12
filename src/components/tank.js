@@ -15,7 +15,6 @@ export default function Tank_Container({ tank_num, current_tank_level, reading_t
 
     useEffect(() => {
         function checkIfStale() {
-            console.log(reading_time.time)
             if (new Date() - new Date(reading_time.inputTime) > msTillDataIsStale) setIsStale(true);
             else setIsStale(false)
         }

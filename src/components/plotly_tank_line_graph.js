@@ -28,7 +28,7 @@ export default function ({ graph_data }) {
         }
     }
 
-    console.log(plotPoints)
+    
     return (
         <Plot data={[
             {

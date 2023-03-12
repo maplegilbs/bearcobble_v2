@@ -2,7 +2,6 @@
   "name": "bearcobble2023",
   "version": "0.1.0",
   "private": true,
-  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@react-google-maps/api": "^2.18.1",
     "dotenv": "^16.0.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
