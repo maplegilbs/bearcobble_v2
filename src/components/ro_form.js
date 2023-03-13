@@ -8,9 +8,10 @@ import ro_form_styles from './ro_form.module.scss'
 
 
 
-export default function RO_Form() {
+export default function RO_Form({updateTable}) {
     const [formValues, setFormValues] = useState({is_benchmark: false})
     const [membraneInputs, setMembraneInputs] = useState([])
+    const [wasSubmitted, setWasSubmitted] = useState(false)
 
     function changeHandler(e) {
         if(e.target.id==='isBenchmark'){setFormValues({ ...formValues, [e.target.name]: e.target.checked })}
@@ -57,16 +58,31 @@ export default function RO_Form() {
     async function submitForm (event){
         event.preventDefault()
         // let formData = new FormData(formValues)
-        let submittedData = await fetch('../api/ro_records', {
-        method: 'POST',
-        header: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formValues)
-        })
+        try {
+            let submittedData = await fetch('../api/ro_records_write', {
+            method: 'POST',
+            header: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formValues)
+            })
+            let submittedJSON = await submittedData.json();
+            console.log(submittedJSON)
+            if(submittedJSON.success){
+                console.log(submittedJSON.inserted_id)
+                updateTable(prev => prev + 1)
+                setWasSubmitted(prev => !prev)
+            }
+            
+        } catch (error) {
+            
+        }
     }
 
 
     return (
         <>
+        {wasSubmitted?
+        <p>Submitted</p>
+        :
             <form className={ro_form_styles.ro_form} onSubmit={submitForm}>
                 <h2>RO Performance Record</h2>
                 <hr />
@@ -128,8 +144,10 @@ export default function RO_Form() {
                     <input type="checkbox" onChange={changeHandler} name="is_benchmark" id="isBenchmark" />
                 </div>
                 <br/>
-                <input type="submit" value="Save Record To Database"/>
+                <input type="submit" value="Add Record To Database"/>
             </form>
+}
         </>
+        
     )
 }

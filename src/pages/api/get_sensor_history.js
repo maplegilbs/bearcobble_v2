@@ -7,11 +7,11 @@ export default async function (req, res){
         console.log(req.query)
         const database_lookup_ref = {
             'tank': {
-                db_name: 'tanksnapshots',
+                table_name: 'tanksnapshots',
                 key_shorthand: 'tank'
             },
             'vacuum': {
-                db_name: 'vacuumlogs',
+                table_name: 'vacuumlogs',
                 key_shorthand: 'vac'
             }
         }
@@ -19,7 +19,7 @@ export default async function (req, res){
         try {
             const pool = mysql.createPool(
                 {
-                    host: process.env.MYSWL_DB_HOST,
+                    host: process.env.MYSQL_DB_HOST,
                     user: process.env.MYSQL_DB_USER,
                     password: process.env.MYSQL_DB_PASSWORD,
                     database: process.env.MYSQL_DB_NAME
@@ -33,7 +33,7 @@ export default async function (req, res){
             date_format(${database_lookup_ref[req.query.sensor_type].key_shorthand}3Time, '%m/%d %H:%i') as ${database_lookup_ref[req.query.sensor_type].key_shorthand}3TimeFormatted,
             date_format(${database_lookup_ref[req.query.sensor_type].key_shorthand}4Time, '%m/%d %H:%i') as ${database_lookup_ref[req.query.sensor_type].key_shorthand}4TimeFormatted,
             date_format(${database_lookup_ref[req.query.sensor_type].key_shorthand}5Time, '%m/%d %H:%i') as ${database_lookup_ref[req.query.sensor_type].key_shorthand}5TimeFormatted
-            from ${database_lookup_ref[req.query.sensor_type].db_name}
+            from ${database_lookup_ref[req.query.sensor_type].table_name}
             where recordDateTime between '${req.query.period_start}' and '${req.query.period_end}'
             order by recordDateTime desc
             `;

@@ -19,7 +19,7 @@ export default function Woods_Map({ apiKey }) {
     function locate() {
         map.setZoom(19);
         navigator.geolocation.getCurrentPosition(initialLocate, locateError, options)
-        navigator.geolocation.watchPosition(locateSuccess, locateError, options)
+        // navigator.geolocation.watchPosition(locateSuccess, locateError, options)
     }
 
     function initialLocate(position) {
@@ -43,7 +43,7 @@ export default function Woods_Map({ apiKey }) {
     };
 
     function locateError() {
-        alert("Error: Make sure location settings are on and the site is entered using https - https://bearcobble.com/map.");
+        alert("Error: Make sure location settings are on and the site is using https - https://bearcobble.com/map.");
     };
 
     const options = {
@@ -56,7 +56,7 @@ export default function Woods_Map({ apiKey }) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(
             browserHasGeolocation
-                ? "Error: Make sure location settings are on and the site is entered using https - https://bearcobble.com/map."
+                ? "Error: Make sure location settings are on and the site is using https - https://bearcobble.com/map."
                 : "Error: Your browser doesn't support geolocation."
         );
         infoWindow.open(map);
