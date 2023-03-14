@@ -4,21 +4,30 @@ import { useEffect, useState } from 'react';
 //Styles
 import ro_table_styles from './ro_records_table.module.scss';
 
-export default function RO_Table({ selectedRecords, newestRecord }) {
-    const [selectedRows, setSelectedRows] = useState([]);
+export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords }) {
+    const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [isPrimaryRender, setIsPrimaryRender] = useState(true)
 
-    console.log(selectedRows)
+    console.log(selectedRowIds)
 
     function selectRow(id) {
         if(isPrimaryRender) setIsPrimaryRender(false)
-        selectedRows.includes(id)? 
-        setSelectedRows(prev =>{
-            let updateArray = [...prev];
-            updateArray.splice(updateArray.indexOf(id), 1)
-            setSelectedRows(updateArray)
-        }):
-        setSelectedRows(prev =>  [...prev, id]);
+        if(selectedRowIds.includes(id)){
+            setSelectedRowIds(prev =>{
+                let updateArray = [...prev];
+                updateArray.splice(updateArray.indexOf(id), 1)
+                setSelectedRowIds(updateArray)
+            })
+            setComparisonRecords(prev =>{
+                let updateArray = [...prev]
+                updateArray.splice(updateArray.indexOf(updateArray.filter(record => record.id === id)[0]),1)
+                setComparisonRecords(updateArray)
+            })
+        } 
+        else{
+            setComparisonRecords(prev => [...prev, selectedRecords.filter(record => record.id === id)[0]])
+            setSelectedRowIds(prev =>  [...prev, id]);
+        }
     }
 
     // useEffect()
@@ -29,17 +38,18 @@ export default function RO_Table({ selectedRecords, newestRecord }) {
         return (
             <tr 
             className={newestRecord === rowdata.id && isPrimaryRender ? ro_table_styles.added_row : ''} 
-            style={{backgroundColor: selectedRows.includes(rowdata.id)?  'red': 'initial'}}
+            style={{backgroundColor: selectedRowIds.includes(rowdata.id)?  'rgb(198 218 233)': 'initial', opacity: selectedRowIds.length > 1 && !selectedRowIds.includes(rowdata.id)? '.25': ''}}
             data-id={rowdata.id}
             >
                 <td>
                     <input type="checkbox" 
-                    disabled = {selectedRows.length >= 2 && !selectedRows.includes(rowdata.id)? true : false} 
+                    disabled = {selectedRowIds.length >= 2 && !selectedRowIds.includes(rowdata.id)? true : false} 
                     onChange = {()=>selectRow(rowdata.id)}
-                    checked = {selectedRows.includes(rowdata.id)? true: false}></input>
+                    checked = {selectedRowIds.includes(rowdata.id)? true: false}></input>
                 </td>
                 <td className={ro_table_styles.column_separator}>{rowdata.selected_ro.slice(2)}</td>
                 <td>{formattedTime}</td>
+                <td>{rowdata.is_benchmark ? 'Y': ''}</td>
                 <td className={ro_table_styles.column_separator}>{rowdata.sugar_percent_in ? rowdata.sugar_percent_in : ''} {'\u2192'} {rowdata.sugar_percent_out ? rowdata.sugar_percent_out : ''}</td>
                 <td>{rowdata.temperature}</td>
                 <td className={ro_table_styles.column_separator}>{rowdata.conc_flow}</td>
@@ -58,7 +68,7 @@ export default function RO_Table({ selectedRecords, newestRecord }) {
     return (
         <div className={ro_table_styles.ro_table_container}>
             <div className={ro_table_styles.heading_container}>
-                <h2>RO Performance Records</h2><button>Compare Selected</button>
+                <h2>RO Performance Records</h2><p>Select Two To Compare</p>
             </div>
             <hr />
             <table className={ro_table_styles.ro_table}>
@@ -67,6 +77,7 @@ export default function RO_Table({ selectedRecords, newestRecord }) {
                         <th>Select</th>
                         <th className={ro_table_styles.column_separator}>RO</th>
                         <th>Date</th>
+                        <th>Benchmark</th>
                         <th className={ro_table_styles.column_separator}> &nbsp; &nbsp; &#176;Bx In  &#8680;  &#176;Bx Out</th>
                         <th>Temp</th>
                         <th className={ro_table_styles.column_separator}>Conc Flow</th>

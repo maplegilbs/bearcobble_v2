@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 //Components
 import RO_Form from "@/components/ro_form";
 import RO_Table from "@/components/ro_records_table";
+import Records_Comparison_Table from "@/components/ro_records_compare_table";
 //Styles
 import ro_styles from '@/styles/ro_page_styles.module.scss';
 
@@ -21,6 +22,8 @@ export async function getServerSideProps(){
 export default function ROs({selected_records}){
     const [selectedRecords, setSelectedRecords ] = useState(selected_records)
     const [newestRecord, setNewestRecord] = useState();
+    const[canCompare, setCanCompare] = useState(false)
+    const [comparisonRecords, setComparisonRecords] = useState([]);
 
     useEffect(()=>{
         async function getRecords(){
@@ -35,14 +38,16 @@ export default function ROs({selected_records}){
         getRecords();
     },[newestRecord])
 
-    console.log(selected_records)
     return (
         <>
         <div className={ro_styles.ro_form_container}>
         <RO_Form updateTable={setNewestRecord}/>
         </div>
         {selected_records &&
-        <RO_Table selectedRecords={selectedRecords} newestRecord={newestRecord}/>
+        <RO_Table selectedRecords={selectedRecords} newestRecord={newestRecord} setComparisonRecords={setComparisonRecords}/>
+        }
+        {selectedRecords &&
+        <Records_Comparison_Table comparisonRecords={comparisonRecords}/>
         }
         </>
     )
