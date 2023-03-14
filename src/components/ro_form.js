@@ -57,7 +57,6 @@ export default function RO_Form({updateTable}) {
 
     async function submitForm (event){
         event.preventDefault()
-        // let formData = new FormData(formValues)
         try {
             let submittedData = await fetch('../api/ro_records_write', {
             method: 'POST',
@@ -67,8 +66,7 @@ export default function RO_Form({updateTable}) {
             let submittedJSON = await submittedData.json();
             console.log(submittedJSON)
             if(submittedJSON.success){
-                console.log(submittedJSON.inserted_id)
-                updateTable(prev => prev + 1)
+                updateTable(submittedJSON.inserted_id)
                 setWasSubmitted(prev => !prev)
             }
             

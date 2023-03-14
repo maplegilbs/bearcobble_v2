@@ -20,7 +20,7 @@ export async function getServerSideProps(){
 
 export default function ROs({selected_records}){
     const [selectedRecords, setSelectedRecords ] = useState(selected_records)
-    const [updateCount, setUpdateCount] = useState(0);
+    const [newestRecord, setNewestRecord] = useState();
 
     useEffect(()=>{
         async function getRecords(){
@@ -33,16 +33,16 @@ export default function ROs({selected_records}){
             }
         }
         getRecords();
-    },[updateCount])
+    },[newestRecord])
 
-    console.log(updateCount)
+    console.log(selected_records)
     return (
         <>
         <div className={ro_styles.ro_form_container}>
-        <RO_Form updateTable={setUpdateCount}/>
+        <RO_Form updateTable={setNewestRecord}/>
         </div>
         {selected_records &&
-        <RO_Table selectedRecords={selectedRecords}/>
+        <RO_Table selectedRecords={selectedRecords} newestRecord={newestRecord}/>
         }
         </>
     )
