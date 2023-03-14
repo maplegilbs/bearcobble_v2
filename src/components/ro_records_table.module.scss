@@ -4,7 +4,7 @@
     font-family: global_variables.$global_fonts;
     width: 96%;
     font-weight: 500;
-    font-size: .8rem;
+    font-size: .6rem;
     margin: 10px auto;
     border: 2px solid #333;
     border-radius: 5px;
@@ -38,12 +38,14 @@
             top: 0;
             background-color: white;
             box-shadow: 0px 2px black;
+            font-weight: 500;
         }
 
         td,
         th {
             text-align: center;
             padding: 2px 1px;
+            font-size: .4rem;
 
             input {
                 margin: 2px;
@@ -85,6 +87,16 @@
 
 
 @media screen and (min-width: 720px) {
-   
+    .ro_table_container {
+        font-size: .8rem;
+
+        .ro_table {
+
+            td,
+            th {
+                font-size: .8rem;
+            }
+        }
+    }
 
 }

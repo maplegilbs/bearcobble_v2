@@ -19,7 +19,7 @@ export default function Woods_Map({ apiKey }) {
     function locate() {
         map.setZoom(19);
         navigator.geolocation.getCurrentPosition(initialLocate, locateError, options)
-        // navigator.geolocation.watchPosition(locateSuccess, locateError, options)
+        navigator.geolocation.watchPosition(locateSuccess, locateError, options)
     }
 
     function initialLocate(position) {

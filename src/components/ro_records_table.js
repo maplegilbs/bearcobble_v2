@@ -34,7 +34,7 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
 
     function ROTableRow({ rowdata }) {
         let recordDate = formatTime(new Date(rowdata.record_date))
-        let formattedTime = `${recordDate.date}/${recordDate.year}`
+        let formattedTime = `${recordDate.date}/${recordDate.year.toString().slice(-2)}`
         return (
             <tr 
             className={newestRecord === rowdata.id && isPrimaryRender ? ro_table_styles.added_row : ''} 
