@@ -68,7 +68,7 @@ export default function Weather_Forecast_Full() {
         }
         else {
             setForecastRows([
-                <h3>Forecast data from {forecastSource} currently unavailable.  Try selecting a different forecast provider.</h3>
+                <h3 key='nodata'>Forecast data from {forecastSource} currently unavailable.  Try selecting a different forecast provider.</h3>
             ])
         }
     }, [forecastData])
