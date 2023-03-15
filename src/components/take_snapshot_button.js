@@ -1,5 +1,5 @@
 //Images
-import camera_icon from 'public/IconColor - camera.png'
+import camera_icon from 'public/IconColor-Camera.png'
 //Components
 import Image from 'next/image';
 //Styles
