@@ -106,7 +106,7 @@ export default function RO_Form({updateTable}) {
                         <label htmlFor="sugarPercentIn">% Sugar In</label>
                         <input className={`${ro_form_styles.membrane_input}`} type="number" step={.1} min={0} max={20} name="sugar_percent_in" id="sugarPercentIn" onChange={changeHandler} value={formValues.sugarPercentIn}></input>
                         <label htmlFor="sugarPercentOut">% Sugar Out</label>
-                        <input className={`${ro_form_styles.membrane_input}`} type="number" step={.1} min={0} max={20} name="sugar_percent_out" id="sugarPercentOut" onChange={changeHandler} value={formValues.sugarPercentOut}></input>
+                        <input className={`${ro_form_styles.membrane_input}`} type="number" step={.1} min={0} max={40} name="sugar_percent_out" id="sugarPercentOut" onChange={changeHandler} value={formValues.sugarPercentOut}></input>
                     </div>
                     <div className={ro_form_styles.input_container}>
                         <label htmlFor="temperature">Temperature {`${'\u00b0'}`}</label>
