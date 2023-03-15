@@ -20,14 +20,8 @@ export default function Comparison_Bar_Graph({graph_data}){
     if(graph_data.length > 1){
         let record1Date = formatTime(new Date(graph_data[0].record_date))
         let record1DateFormatted = `${record1Date.date}/${record1Date.year} @ ${record1Date.time}`
-        // let record1PermTotal = Object.keys(graph_data[0]).reduce((acc, key) => { 
-        //     console.log(key, graph_data[0][key]);
-        //     return key.includes('membrane')? acc+Number(graph_data[0][key]): acc+0}, 0)
         let record2Date = formatTime(new Date(graph_data[1].record_date))
         let record2DateFormatted = `${record2Date.date}/${record2Date.year} @ ${record2Date.time}`
-        // let record2PermTotal = Object.keys(graph_data[1]).reduce((acc, key) => { 
-        //     console.log(key, graph_data[1][key]);
-        //     return key.includes('membrane')? acc+Number(graph_data[1][key]): acc+0}, 0)
         return (
             <Plot 
             data={[
@@ -35,13 +29,19 @@ export default function Comparison_Bar_Graph({graph_data}){
                     x: xAxis,
                     y:[graph_data[0].conc_flow, graph_data[0].membrane_1, graph_data[0].membrane_2, graph_data[0].membrane_3, graph_data[0].membrane_4, graph_data[0].membrane_5, graph_data[0].membrane_6, graph_data[0].membrane_7, graph_data[0].membrane_8],
                     type: 'bar',
-                    name: `#${graph_data[0].selected_ro.slice(2)} ${record1DateFormatted}`
+                    name: `#${graph_data[0].selected_ro.slice(2)} ${record1DateFormatted}`,
+                    marker: {
+                        color: 'rgba(10,180,40,.85)'
+                    }
                 },
                 {
                     x: xAxis,
                     y:[graph_data[1].conc_flow, graph_data[1].membrane_1, graph_data[1].membrane_2, graph_data[1].membrane_3, graph_data[1].membrane_4, graph_data[1].membrane_5, graph_data[1].membrane_6, graph_data[1].membrane_7, graph_data[1].membrane_8],
                     type: 'bar',
-                    name: `#${graph_data[1].selected_ro.slice(2)} ${record2DateFormatted}`
+                    name: `#${graph_data[1].selected_ro.slice(2)} ${record2DateFormatted}`,
+                    marker: {
+                        color: 'rgba(40,70,240,.85)'
+                    }
                 }
             ]}
             layout={{

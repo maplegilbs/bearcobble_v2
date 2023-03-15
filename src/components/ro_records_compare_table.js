@@ -135,7 +135,7 @@ export default function Records_Comparison_Table({ comparison_records }) {
                             }%
                             </td>
                         </tr>
-                        <tr style={{ borderTop: '2px solid #333', backgroundColor: 'rgb(198 218 233)', fontWeight: '600' }}>
+                        <tr style={{ borderTop: '2px solid #333', backgroundColor: 'rgb(18, 218, 23)', fontWeight: '600' }}>
                             <td>Flow Totals (gph)</td>
                             <td>{record1TotalGPH}</td>
                             <td>{record2TotalGPH}</td>

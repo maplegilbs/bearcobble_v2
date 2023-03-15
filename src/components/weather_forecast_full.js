@@ -76,7 +76,6 @@ export default function Weather_Forecast_Full() {
     const forecast_source_icons = {
         'noaa': <Image src={noaaIcon} alt='Logo of National Oceanic and Atmospheric Administration' width={35} height={35} />,
         'weatherunderground': <Image src={wuIcon} alt='Logo of Weather Underground' width={35} height={35} />,
-        'accuweather': <Image src={awIcon} alt='Logo of Accuweather' width={40} height={40} />,
     }
 
 
@@ -94,7 +93,7 @@ export default function Weather_Forecast_Full() {
                     >
                         <option value='noaa'>NOAA</option>
                         <option value='weatherunderground'>Weather Underground</option>
-                        <option value='accuweather'>Accuweather</option>
+                        {/* <option value='accuweather'>Accuweather</option> */}
                     </select>
                 </div>
             </div>
