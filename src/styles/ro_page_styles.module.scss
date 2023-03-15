@@ -9,3 +9,13 @@
     background: linear-gradient(170deg, rgba(255,255,255,1) 10%, rgba(210,210,210,1) 60%, rgba(180,180,180,1));
     padding-top: 15px;
 }
+
+.plotly_container{
+    width: 96%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    background: white;
+    border: 2px solid black;
+    margin-bottom: 15px;
+}

@@ -35,7 +35,7 @@ export default function ({ graph_data }) {
                 y: plotPoints[0][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'blue', shape: 'spline'  },
+                line: { color: 'blue', shape: 'spline' },
                 name: '1'
             },
             {
@@ -43,7 +43,7 @@ export default function ({ graph_data }) {
                 y: plotPoints[1][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'orange', shape: 'spline'  },
+                line: { color: 'orange', shape: 'spline' },
                 name: '2'
             },
             {
@@ -51,7 +51,7 @@ export default function ({ graph_data }) {
                 y: plotPoints[2][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'gold', shape: 'spline'  },
+                line: { color: 'gold', shape: 'spline' },
                 name: '3'
             },
             {
@@ -59,7 +59,7 @@ export default function ({ graph_data }) {
                 y: plotPoints[3][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'gold', shape: 'spline',  dash: 'dash' },
+                line: { color: 'gold', shape: 'spline', dash: 'dash' },
                 name: '4'
             },
             {
@@ -86,14 +86,14 @@ export default function ({ graph_data }) {
                 autosize: false,
                 title: {
                     text: 'Vacuum History',
-                    font:  {family: 'Overpass'}
+                    font: { family: 'Overpass' }
                 },
                 showlegend: true,
                 legend: {
                     xanchor: "center",
                     yanchor: "top",
-                    y: -0.5, // play with it
-                    x: 0.5,   // play with it
+                    y: -0.5,
+                    x: 0.5,
                     "orientation": "h"
                 }
             }}

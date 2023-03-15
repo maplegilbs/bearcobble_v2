@@ -8,7 +8,6 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
     const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [isPrimaryRender, setIsPrimaryRender] = useState(true)
 
-    console.log(selectedRowIds)
 
     function selectRow(id) {
         if(isPrimaryRender) setIsPrimaryRender(false)
@@ -16,12 +15,13 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
             setSelectedRowIds(prev =>{
                 let updateArray = [...prev];
                 updateArray.splice(updateArray.indexOf(id), 1)
-                setSelectedRowIds(updateArray)
+                console.log(updateArray)
+                return updateArray
             })
             setComparisonRecords(prev =>{
                 let updateArray = [...prev]
                 updateArray.splice(updateArray.indexOf(updateArray.filter(record => record.id === id)[0]),1)
-                setComparisonRecords(updateArray)
+                return updateArray
             })
         } 
         else{
@@ -38,7 +38,7 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
         return (
             <tr 
             className={newestRecord === rowdata.id && isPrimaryRender ? ro_table_styles.added_row : ''} 
-            style={{backgroundColor: selectedRowIds.includes(rowdata.id)?  'rgb(198 218 233)': 'initial', opacity: selectedRowIds.length > 1 && !selectedRowIds.includes(rowdata.id)? '.25': ''}}
+            style={{backgroundColor: selectedRowIds.includes(rowdata.id)?  'rgb(198 218 233)': 'initial', opacity: selectedRowIds.length > 1 && !selectedRowIds.includes(rowdata.id)? '.25': '1'}}
             data-id={rowdata.id}
             >
                 <td>

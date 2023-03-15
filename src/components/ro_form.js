@@ -40,9 +40,9 @@ export default function RO_Form({updateTable}) {
         timeSetter();
     }, [])
 
-    useEffect(() => {
-        console.log(formValues)
-    }, [formValues])
+    // useEffect(() => {
+    //     console.log(formValues)
+    // }, [formValues])
 
 
     let permeateGPM = () => {
