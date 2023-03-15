@@ -13,31 +13,32 @@ let oWMGraphValues = [];
 let tmrwIOGraphValues = [];
 
 function convertDateForIOS(date) {
-	let dateArray = date.split(/[- :T]/);
-	let formattedDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
-	return formattedDate;
+    let dateArray = date.split(/[- :T]/);
+    let formattedDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
+    return formattedDate;
 }
 
 //formatted as 'Saturday, 1/15/2022 @ 12:15 PM' or 'Saturday, 1/15/2022
 function formatDate(inputDate) {
-      let minute, hour, day;
-      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      inputDate.getMinutes() < 10 ? minute = "0" + inputDate.getMinutes(): minute = inputDate.getMinutes();
-      inputDate.getHours() < 10 ? hour = "0" + inputDate.getHours() : hour = inputDate.getHours();
-      day = inputDate.getDate();
-      let dayOfWeek = daysOfWeek[(inputDate.getDay())]
-      let formattedDate = dayOfWeek + " " + hour + ":" + minute;
-      return formattedDate;
-    }
+    let minute, hour, day;
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    inputDate.getMinutes() < 10 ? minute = "0" + inputDate.getMinutes() : minute = inputDate.getMinutes();
+    inputDate.getHours() < 10 ? hour = "0" + inputDate.getHours() : hour = inputDate.getHours();
+    day = inputDate.getDate();
+    let dayOfWeek = daysOfWeek[(inputDate.getDay())]
+    let formattedDate = dayOfWeek + " " + hour + ":" + minute;
+    return formattedDate;
+}
 
 
 //get fetched data and push to the hourly data array.  if the fetch function throws an error log the error and push a null value to the hourly data array
 async function getHourlyData() {
     try {
-        let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
-            let forecast_json = await forecast_data.json();
-            if( typeof forecast_json !== 'object'){ throw('Hourly forecast fetch did not return a data array.');}
-            hourlyData = forecast_json;
+        // let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
+        let forecast_data = await fetch(`https://bearcobble.herokuapp.com//api/weather_forecast_hourly`)
+        let forecast_json = await forecast_data.json();
+        if (typeof forecast_json !== 'object') { throw ('Hourly forecast fetch did not return a data array.'); }
+        hourlyData = forecast_json;
     }
     catch (e) {
         console.log(e)
@@ -49,9 +50,9 @@ async function getHourlyData() {
 
 async function buildHourlyObj() {
     let comparisonTimes = [];
-    let noaaData = hourlyData.filter(dataEntry=> dataEntry.source === 'noaa')[0]? hourlyData.filter(dataEntry=> dataEntry.source === 'noaa')[0]: null;
-    let oWMData = hourlyData.filter(dataEntry=> dataEntry.source === 'open_weather')[0]? hourlyData.filter(dataEntry=> dataEntry.source === 'open_weather')[0]: null;
-    let tmrwIOData = hourlyData.filter(dataEntry=> dataEntry.source === 'tomorrow_io')[0] ? hourlyData.filter(dataEntry=> dataEntry.source === 'tomorrow_io')[0] : null;
+    let noaaData = hourlyData.filter(dataEntry => dataEntry.source === 'noaa')[0] ? hourlyData.filter(dataEntry => dataEntry.source === 'noaa')[0] : null;
+    let oWMData = hourlyData.filter(dataEntry => dataEntry.source === 'open_weather')[0] ? hourlyData.filter(dataEntry => dataEntry.source === 'open_weather')[0] : null;
+    let tmrwIOData = hourlyData.filter(dataEntry => dataEntry.source === 'tomorrow_io')[0] ? hourlyData.filter(dataEntry => dataEntry.source === 'tomorrow_io')[0] : null;
     //build an array of timeStamps from noaa and push that to our comparison times array only if the zero index of the hourly data array (in this case our noaa data) is not null
     let noaaHrlyInfByTime = {};
     if (noaaData !== null) {
@@ -102,9 +103,9 @@ async function buildHourlyObj() {
     compareTimes(comparisonTimes)
     //format the x axis time stamp array for display
     xAxisTimeStampArrayFormatted = xAxisTimeStampArray.map(timeStamp => formatDate(timeStamp))
-    noaaData !== null? noaaGraphValues = buildYValuesArray(noaaHrlyInfByTime): noaaGraphValues = [null];
-    oWMData !== null?  oWMGraphValues = buildYValuesArray(oWMHrlyInfByTime):  oWMGraphValues = [null];
-    tmrwIOData !== null?  tmrwIOGraphValues = buildYValuesArray(tmrwIOHrlyInfByTime):  tmrwIOGraphValues = [null];
+    noaaData !== null ? noaaGraphValues = buildYValuesArray(noaaHrlyInfByTime) : noaaGraphValues = [null];
+    oWMData !== null ? oWMGraphValues = buildYValuesArray(oWMHrlyInfByTime) : oWMGraphValues = [null];
+    tmrwIOData !== null ? tmrwIOGraphValues = buildYValuesArray(tmrwIOHrlyInfByTime) : tmrwIOGraphValues = [null];
 }
 
 
@@ -114,7 +115,7 @@ function buildYValuesArray(inputObj) {
     let valuesArray = [];
     let inputObjTimes = Object.keys(inputObj);
     for (let i = 0; i < xAxisTimeStampArray.length; i++) {
-        xAxisTimeStampArray[i] == inputObjTimes[i]?  valuesArray.push(inputObj[inputObjTimes[i]]) : valuesArray.push(null);
+        xAxisTimeStampArray[i] == inputObjTimes[i] ? valuesArray.push(inputObj[inputObjTimes[i]]) : valuesArray.push(null);
     }
     return valuesArray;
 }
@@ -141,15 +142,15 @@ function compareTimes(timeStampArrays) {
     return xAxisTimeStampArray;
 }
 
-export async function compileGraphData(){
+export async function compileGraphData() {
     await getHourlyData();
     buildHourlyObj();
     let dataObj = {};
     dataObj.formatDate = formatDate;
-    if(xAxisTimeStampArray.length >0) dataObj.timeAxis = xAxisTimeStampArray;
-    if(xAxisTimeStampArrayFormatted.length >0) dataObj.timeAxisFormatted = xAxisTimeStampArrayFormatted;
-    if(noaaGraphValues.length>0) dataObj.noaaHourlyTemps = noaaGraphValues;
-    if(oWMGraphValues.length>0) dataObj.oWMHourlyTemps = oWMGraphValues;
-    if(tmrwIOGraphValues.length>0) dataObj.tmrwIOHourlyTemps = tmrwIOGraphValues;
-    return(dataObj)
+    if (xAxisTimeStampArray.length > 0) dataObj.timeAxis = xAxisTimeStampArray;
+    if (xAxisTimeStampArrayFormatted.length > 0) dataObj.timeAxisFormatted = xAxisTimeStampArrayFormatted;
+    if (noaaGraphValues.length > 0) dataObj.noaaHourlyTemps = noaaGraphValues;
+    if (oWMGraphValues.length > 0) dataObj.oWMHourlyTemps = oWMGraphValues;
+    if (tmrwIOGraphValues.length > 0) dataObj.tmrwIOHourlyTemps = tmrwIOGraphValues;
+    return (dataObj)
 }
