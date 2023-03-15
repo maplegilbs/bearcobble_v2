@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 const Plot = dynamic(() => { return import("react-plotly.js") }, { ssr: false })
 
-export default function ({ graph_data }) {
+export default function Tank_Line_Graph({ graph_data }) {
     const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
     let plotPoints = [

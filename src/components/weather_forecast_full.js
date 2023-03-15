@@ -42,7 +42,7 @@ export default function Weather_Forecast_Full() {
                     'wind_speed': period.windSpeed,
                     'wind_dir': period.windDirection,
                 }
-                return <Weather_Row row_data={row_data} />
+                return <Weather_Row key={row_data.period_identifier} row_data={row_data} />
             })
             setForecastRows(forecast_jsx)
         }
@@ -61,7 +61,7 @@ export default function Weather_Forecast_Full() {
                         'wind_speed': forecast_periods.windSpeed[i],
                         'wind_dir': forecast_periods.windDirectionCardinal[i],
                     }
-                    forecast_jsx.push(<Weather_Row row_data={row_data} />);
+                    forecast_jsx.push(<Weather_Row key={row_data.period_identifier} row_data={row_data} />);
                 }
             }
             setForecastRows(forecast_jsx);
