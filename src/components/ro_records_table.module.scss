@@ -14,6 +14,7 @@
     .heading_container {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 5px;
 
         button {
@@ -28,7 +29,7 @@
 
     .ro_table {
         width: 100%;
-        margin: 5px auto;
+        // margin: 5px auto;
         border: 2px solid black;
         background-color: white;
         border-collapse: collapse;
@@ -48,7 +49,7 @@
             font-size: .4rem;
 
             input {
-                margin: 2px;
+                margin: 5px;
             }
         }
 
@@ -75,12 +76,17 @@
             border-left: 2px solid black;
         }
 
-        th {
-            padding: 5px 0px;
-        }
 
-        tr:nth-child(even) {
-            background-color: rgba(235, 235, 230, .6);
+        .table_body {
+  
+            tr:nth-child(even) {
+                background-color: rgba(235, 235, 230, .6);
+            }
+
+            tr.selected_row{
+                background-color: rgb(198 218 233);
+            }
+
         }
     }
 }

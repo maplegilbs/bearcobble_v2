@@ -11,7 +11,7 @@ function populateMembraneRows(records) {
         while (i < 9) {
             membraneRows.push(
                 <tr key={`membrane_${i}`}>
-                    <td>Membrane {i} (gpm)</td>
+                    <td>Mem {i} (gpm)</td>
                     <td>{records[0][`membrane_${i}`]}</td>
                     <td>{records[1][`membrane_${i}`]}</td>
                     <td>{records[1][`membrane_${i}`] - records[0][`membrane_${i}`] > 0 ?
@@ -67,10 +67,10 @@ export default function Records_Comparison_Table({ comparison_records }) {
                     <thead>
                         <tr>
                             <th>Cateogry</th>
-                            <th>{`#${comparisonRecords[0].selected_ro.slice(2)} ${record1DateFormatted}`}</th>
-                            <th>{`#${comparisonRecords[1].selected_ro.slice(2)} ${record2DateFormatted}`}</th>
-                            <th>Difference</th>
-                            <th>Difference %</th>
+                            <th>{`#${comparisonRecords[0].selected_ro.slice(2)} ${record1DateFormatted.substring(0,6)+record1DateFormatted.substring(8)}`}</th>
+                            <th>{`#${comparisonRecords[1].selected_ro.slice(2)} ${record2DateFormatted.substring(0,6)+record2DateFormatted.substring(8)}`}</th>
+                            <th>{'\u2206'}</th>
+                            <th>{`\u2206`} %</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,7 +135,7 @@ export default function Records_Comparison_Table({ comparison_records }) {
                             }%
                             </td>
                         </tr>
-                        <tr style={{ borderTop: '2px solid #333', backgroundColor: 'rgb(18, 218, 23)', fontWeight: '600' }}>
+                        <tr style={{ borderTop: '2px solid #333', backgroundColor: 'rgba(230, 230, 45, .4)', fontWeight: '600' }}>
                             <td>Flow Totals (gph)</td>
                             <td>{record1TotalGPH}</td>
                             <td>{record2TotalGPH}</td>
