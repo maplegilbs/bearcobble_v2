@@ -1,6 +1,8 @@
 //Libraries
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from "react"
+//Components
+import Loader from '@/components/loader.js';
 //Functions
 import { compileGraphData } from "@/utils/hourlyGraphHelpers"
 
@@ -11,7 +13,6 @@ const Plot = dynamic(() => { return import("react-plotly.js") }, { ssr: false })
 //take in the array from the x axis (timestamps) and build individual arrays of consecutive timestamps between those hours.  so we will have something like this [[Tue 7pm, Tue 8pm ..... Wed 7am], [Wed 7pm, Wed 8pm ..... Thur 7am]] 
 //then take the first and last item of each individual array and use that to build a new object to make a 'shape' object in the layout settings of plotly
 function buildShapes(inputAxisArray, dateFormatter) {
-    console.log(inputAxisArray)
     let rectStartEndArray = [];
     let nightArray = [];
     for (let i = 0; i < inputAxisArray.length; i++) {
@@ -80,11 +81,9 @@ function buildShapes(inputAxisArray, dateFormatter) {
 
 
 
-function buildGraph({timeAxisFormatted, noaaHourlyTemps, oWMHourlyTemps, tmrwIOHourlyTemps}) {
-    console.log(arguments)
+function buildGraph({ timeAxisFormatted, noaaHourlyTemps, oWMHourlyTemps, tmrwIOHourlyTemps }) {
     //declare empty array for plot data to be pushed to for display on the graph
     let graphData = [];
-
 
     if (noaaHourlyTemps.length > 0) {
         let noaaPlot = {
@@ -100,7 +99,7 @@ function buildGraph({timeAxisFormatted, noaaHourlyTemps, oWMHourlyTemps, tmrwIOH
         graphData.push(noaaPlot)
     }
 
-    if (oWMHourlyTemps.length > 0 ) {
+    if (oWMHourlyTemps.length > 0) {
         let owmPlot = {
             x: timeAxisFormatted,
             y: oWMHourlyTemps,
@@ -133,64 +132,66 @@ function buildGraph({timeAxisFormatted, noaaHourlyTemps, oWMHourlyTemps, tmrwIOH
 
 
 
-export default function Weather_Forecast_Hourly_Graph () {
+export default function Weather_Forecast_Hourly_Graph() {
     const windowSize = useRef([window.innerWidth, window.innerHeight]);
     const [graphData, setGraphData] = useState(null);
     const [plots, setPlots] = useState([])
     const [shapes, setShapes] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function populateGraphData() {
             let data = await compileGraphData()
+            setIsLoading(false)
             setGraphData(data)
         }
         populateGraphData();
     }, [])
 
-    useEffect(()=>{
-        if(graphData && graphData.hasOwnProperty('timeAxis')){
+    useEffect(() => {
+        if (graphData && graphData.hasOwnProperty('timeAxis')) {
             setShapes(buildShapes(graphData.timeAxis, graphData.formatDate))
-            setPlots(buildGraph({...graphData}));
+            setPlots(buildGraph({ ...graphData }));
         }
+        return (() => setShapes([]))
 
-    },[graphData])
+    }, [graphData])
 
 
 
-
-    console.log(shapes)
-    return (
-        <>
-        <Plot data={plots}
-
-        layout = {{
-            title: 'Hourly Temperature Forecast',
-            // margin: {
-            //     l: 50,
-            //     r: 40,
-            //     b: 30,
-            // },
-            margin: {
-                l: 40,
-                r: 40,
-            },
-            xaxis: {
-                automargin: true,
-                tickangle: windowSize.current[0] < 720 ? 75 : 'auto'
-            },
-            width: windowSize.current[0] * .75,
-            autosize: false,
-            legend: {
-                y: -.75,
-                "orientation": "h"
-            },
-            shapes: shapes
-        }}
     
-        config={{ responsive: true, displayModeBar: false, staticplot: true, scrollzoom: false }}
-        />
-        </>
-    )
+    // console.log(shapes)
+    if (isLoading) {
+        return (<Loader loader_text={'LOADING HOURLY DATA'}/>)
+    }
+    else {
+        return (
+            <>
+                <Plot
+                    data={plots}
+                    layout={{
+                        title: 'Hourly Temperature Forecast',
+                        margin: {
+                            l: windowSize.current[0] * .07,
+                            r: windowSize.current[0] * .07,
+                        },
+                        xaxis: {
+                            automargin: true,
+                            tickangle: windowSize.current[0] < 720 ? 75 : 'auto'
+                        },
+                        width: windowSize.current[0] * .85,
+                        autosize: false,
+                        legend: {
+                            y: -.75,
+                            orientation: 'h'
+                        },
+                        shapes: shapes
+                    }}
+                    config={{ responsive: true, displayModeBar: false, staticplot: true, scrollzoom: false }}
+                />
+            </>
+        )
+    }
 }
 
 

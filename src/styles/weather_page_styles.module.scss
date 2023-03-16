@@ -31,6 +31,8 @@
 }
 
 .plotly_container{
+    min-height: 350px;
+    height: max-content;
     width: 96%;
     margin: 0 auto;
     display: flex;

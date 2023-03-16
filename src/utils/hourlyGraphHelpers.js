@@ -34,8 +34,8 @@ function formatDate(inputDate) {
 //get fetched data and push to the hourly data array.  if the fetch function throws an error log the error and push a null value to the hourly data array
 async function getHourlyData() {
     try {
-        // let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
-        let forecast_data = await fetch(`https://bearcobble.herokuapp.com//api/weather_forecast_hourly`)
+        let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
+        // let forecast_data = await fetch(`https://bearcobble.herokuapp.com//api/weather_forecast_hourly`)
         let forecast_json = await forecast_data.json();
         if (typeof forecast_json !== 'object') { throw ('Hourly forecast fetch did not return a data array.'); }
         hourlyData = forecast_json;
@@ -86,7 +86,7 @@ async function buildHourlyObj() {
     //build an array of timeStamps from tomorrow.io and push that to our comparison times array only if the second index of the hourly data array (in this case our tomorrow.io data) is not null
     let tmrwIOHrlyInfByTime = {};
     if (tmrwIOData !== null) {
-        console.log(tmrwIOData)
+        // console.log(tmrwIOData)
         let tmrwIOHrlyInf = tmrwIOData.data.timelines[0].intervals;
         let tmrwIOHrlyInfKeys = Object.keys(tmrwIOHrlyInf);
         let tmrwIOHrlyTmStmps = [];
@@ -143,10 +143,17 @@ function compareTimes(timeStampArrays) {
 }
 
 export async function compileGraphData() {
+    hourlyData = [];
+    xAxisTimeStampArray = [];
+    xAxisTimeStampArrayFormatted = [];
+    noaaGraphValues = [];
+    oWMGraphValues = [];
+    tmrwIOGraphValues = [];
     await getHourlyData();
     buildHourlyObj();
     let dataObj = {};
     dataObj.formatDate = formatDate;
+    // console.log(xAxisTimeStampArray.length)
     if (xAxisTimeStampArray.length > 0) dataObj.timeAxis = xAxisTimeStampArray;
     if (xAxisTimeStampArrayFormatted.length > 0) dataObj.timeAxisFormatted = xAxisTimeStampArrayFormatted;
     if (noaaGraphValues.length > 0) dataObj.noaaHourlyTemps = noaaGraphValues;
