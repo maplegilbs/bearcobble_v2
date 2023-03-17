@@ -34,8 +34,8 @@ function formatDate(inputDate) {
 //get fetched data and push to the hourly data array.  if the fetch function throws an error log the error and push a null value to the hourly data array
 async function getHourlyData() {
     try {
-        // let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
-        let forecast_data = await fetch(`https://bearcobble.herokuapp.com//api/weather_forecast_hourly`)
+        let forecast_data = await fetch(`http://localhost:3000/api/weather_forecast_hourly`)
+        // let forecast_data = await fetch(`https://bearcobble.herokuapp.com//api/weather_forecast_hourly`)
         let forecast_json = await forecast_data.json();
         if (typeof forecast_json !== 'object') { throw ('Hourly forecast fetch did not return a data array.'); }
         hourlyData = forecast_json;

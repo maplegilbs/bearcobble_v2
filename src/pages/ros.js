@@ -10,8 +10,7 @@ import ro_styles from '@/styles/ro_page_styles.module.scss';
 
 export async function getServerSideProps() {
     try {
-        // let ro_records = await fetch('http://localhost:3000/api/ro_records_read');
-        let ro_records = await fetch('https://bearcobble.herokuapp.com/api/ro_records_read');
+        let ro_records = await fetch(`${process.env.BASE_URL}api/ro_records_read`);
         let ro_json = await ro_records.json();
         return ({ props: { selected_records: ro_json } })
     } catch (error) {
@@ -29,8 +28,8 @@ export default function ROs({ selected_records }) {
     useEffect(() => {
         async function getRecords() {
             try {
-                // let ro_records = await fetch('http://localhost:3000/api/ro_records_read');
-                let ro_records = await fetch('https://bearcobble.herokuapp.com/api/ro_records_read');
+                let ro_records = await fetch('http://localhost:3000/api/ro_records_read');
+                // let ro_records = await fetch('https://bearcobble.herokuapp.com/api/ro_records_read');
                 let ro_json = await ro_records.json();
                 setSelectedRecords(ro_json);
             } catch (error) {

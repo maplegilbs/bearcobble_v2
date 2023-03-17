@@ -1,11 +1,4 @@
-//Libraries
-import dotenv from 'dotenv';
-dotenv.config();
-
 export default async function (req, res) {
-
-    console.log('weather api connected')
-
     if(req.method === 'GET') {
         try {
             let fetchedWeatherRes = await fetch (`https://api.weather.com/v2/pws/observations/current?stationId=${process.env.WU_STATIONID}&format=json&units=e&apiKey=${process.env.WU_APIKEY}`);
@@ -17,5 +10,4 @@ export default async function (req, res) {
             res.send(null)
         }
     }
-    
 }

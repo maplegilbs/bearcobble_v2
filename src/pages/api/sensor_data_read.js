@@ -1,7 +1,4 @@
 //Libraries
-//Development only
-// import dotenv from 'dotenv'
-// dotenv.config()
 
 export default async function (req, res){
     if (req.method === 'GET'){
