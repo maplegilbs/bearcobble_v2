@@ -19,73 +19,17 @@ export default async function (req, res) {
         }
     }
     if (req.method === 'POST') {
-        let extractedSensorData;
+        let extracted_sensor_data;
         try {
-            let sensorResponse = await fetch(process.env.SMARTREK_SENSORS_JSON_URL);
-            let sensorJSON = await sensorResponse.json();
-            extractedSensorData =
-                [
-                    {
-                        section1: {
-                            section_name: 'Section 1',
-                            vacuum_reading: sensorJSON.database.table.row[1].data_EXT.PRESSURE,
-                            reading_time: sensorJSON.database.table.row[1].timeTag_EXT.realtime
-                        },
-                        section2: {
-                            section_name: 'Section 2',
-                            vacuum_reading: sensorJSON.database.table.row[1].data_EXT.PRESSURE2,
-                            reading_time: sensorJSON.database.table.row[1].timeTag_EXT.realtime
-                        },
-                        section3: {
-                            section_name: 'Section 3',
-                            vacuum_reading: sensorJSON.database.table.row[2].data_EXT.PRESSURE2,
-                            reading_time: sensorJSON.database.table.row[2].timeTag_EXT.realtime
-                        },
-                        section4: {
-                            section_name: 'Section 4',
-                            vacuum_reading: sensorJSON.database.table.row[3].data_EXT.PRESSURE,
-                            reading_time: sensorJSON.database.table.row[3].timeTag_EXT.realtime
-                        },
-                        section5: {
-                            section_name: 'Section 5',
-                            vacuum_reading: sensorJSON.database.table.row[3].data_EXT.PRESSURE2,
-                            reading_time: sensorJSON.database.table.row[3].timeTag_EXT.realtime
-                        },
-                    },
-                    {
-                        tank1: {
-                            tank_name: 'Tank 1',
-                            tank_level: sensorJSON.database.table.row[4].data_1,
-                            reading_time: sensorJSON.database.table.row[4].timeTag_EXT.realtime
-                        },
-                        tank2: {
-                            tank_name: 'Tank 2',
-                            tank_level: sensorJSON.database.table.row[5].data_1,
-                            reading_time: sensorJSON.database.table.row[5].timeTag_EXT.realtime
-                        },
-                        tank3: {
-                            tank_name: 'Tank 3',
-                            tank_level: sensorJSON.database.table.row[6].data_1,
-                            reading_time: sensorJSON.database.table.row[6].timeTag_EXT.realtime
-                        },
-                        tank4: {
-                            tank_name: 'Tank 4',
-                            tank_level: sensorJSON.database.table.row[7].data_1,
-                            reading_time: sensorJSON.database.table.row[7].timeTag_EXT.realtime
-                        },
-                        tank5: {
-                            tank_name: 'Tank 5',
-                            tank_level: sensorJSON.database.table.row[8].data_1,
-                            reading_time: sensorJSON.database.table.row[8].timeTag_EXT.realtime
-                        }
-                    }
-                ];
+            let sensor_response = await fetch(process.env.SMARTREK_SENSORS_JSON_URL);
+            let sensor_json = await sensor_response.json();
+            extracted_sensor_data = extractSensorData(sensor_json);
         } catch (error) {
             console.error(`There was an error fetching the requested data: ${error}`)
             res.send(null);
         }
 
-        if (extractedSensorData.length > 0) {
+        if (extracted_sensor_data.length > 0) {
             const pool = mysql.createPool({
                 host: process.env.MYSQL_DB_HOST,
                 user: process.env.MYSQL_DB_USER,
@@ -98,11 +42,11 @@ export default async function (req, res) {
                     ` insert into vacuumlogs (recordDateTime, vac1, vac1Time, vac2, vac2Time, vac3, vac3Time, vac4, vac4Time, vac5, vac5Time) values (?,?,?,?,?,?,?,?,?,?,?)`,
                     [
                         convertDateForSQL(adjustForUTC(new Date())),
-                        extractedSensorData[0].section1.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extractedSensorData[0].section1.reading_time))),
-                        extractedSensorData[0].section2.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extractedSensorData[0].section2.reading_time))),
-                        extractedSensorData[0].section3.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extractedSensorData[0].section3.reading_time))),
-                        extractedSensorData[0].section4.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extractedSensorData[0].section4.reading_time))),
-                        extractedSensorData[0].section5.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extractedSensorData[0].section5.reading_time))),
+                        extracted_sensor_data[0].section1.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[0].section1.reading_time))),
+                        extracted_sensor_data[0].section2.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[0].section2.reading_time))),
+                        extracted_sensor_data[0].section3.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[0].section3.reading_time))),
+                        extracted_sensor_data[0].section4.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[0].section4.reading_time))),
+                        extracted_sensor_data[0].section5.vacuum_reading, convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[0].section5.reading_time))),
                     ]
                 )
                 console.log(insertedData)
@@ -113,11 +57,11 @@ export default async function (req, res) {
                     `insert into tanksnapshots (recordDateTime, tank1Height, tank1Vol,  tank1Time, tank2Height, tank2Vol,  tank2Time, tank3Height, tank3Vol,  tank3Time, tank4Height, tank4Vol,  tank4Time, tank5Height, tank5Vol,  tank5Time) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                     [
                         convertDateForSQL(adjustForUTC(new Date())),
-                        extractedSensorData[1].tank1.tank_level, calcVolFromHeight(extractedSensorData[1].tank1.tank_level), convertDateForSQL(adjustForUTC(new Date(extractedSensorData[1].tank1.reading_time))),
-                        extractedSensorData[1].tank2.tank_level, calcVolFromHeight(extractedSensorData[1].tank2.tank_level), convertDateForSQL(adjustForUTC(new Date(extractedSensorData[1].tank2.reading_time))),
-                        extractedSensorData[1].tank3.tank_level, calcVolFromHeight(extractedSensorData[1].tank3.tank_level), convertDateForSQL(adjustForUTC(new Date(extractedSensorData[1].tank3.reading_time))),
-                        extractedSensorData[1].tank4.tank_level, calcVolFromHeight(extractedSensorData[1].tank4.tank_level), convertDateForSQL(adjustForUTC(new Date(extractedSensorData[1].tank4.reading_time))),
-                        extractedSensorData[1].tank5.tank_level, calcVolFromHeight(extractedSensorData[1].tank5.tank_level), convertDateForSQL(adjustForUTC(new Date(extractedSensorData[1].tank5.reading_time))),
+                        extracted_sensor_data[1].tank1.tank_level, calcVolFromHeight(extracted_sensor_data[1].tank1.tank_level), convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[1].tank1.reading_time))),
+                        extracted_sensor_data[1].tank2.tank_level, calcVolFromHeight(extracted_sensor_data[1].tank2.tank_level), convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[1].tank2.reading_time))),
+                        extracted_sensor_data[1].tank3.tank_level, calcVolFromHeight(extracted_sensor_data[1].tank3.tank_level), convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[1].tank3.reading_time))),
+                        extracted_sensor_data[1].tank4.tank_level, calcVolFromHeight(extracted_sensor_data[1].tank4.tank_level), convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[1].tank4.reading_time))),
+                        extracted_sensor_data[1].tank5.tank_level, calcVolFromHeight(extracted_sensor_data[1].tank5.tank_level), convertDateForSQL(adjustForUTC(new Date(extracted_sensor_data[1].tank5.reading_time))),
 
                     ]
                 )
