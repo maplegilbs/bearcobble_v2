@@ -70,7 +70,7 @@ export default async function (req, res) {
                 res.send(fetched_json)
             } catch (error) {
                 console.error(`There was an error retrieving data from ${req.query.source}.  Error: ${error}`);
-                res.send('Unable to fetch requested data.  Please check the endpoint and try again.')
+                res.send(null)
             }
         }
         else if (Object.keys(hourly_data_sources).includes(req.query.source)) {
@@ -80,10 +80,10 @@ export default async function (req, res) {
                 res.send(fetched_json)
             } catch (error) {
                 console.error(`There was an error retrieving data from ${req.query.source}.  Error: ${error}`);
-                res.send('Unable to fetch requested data.  Please check the endpoint and try again.')
+                res.send(null)
             }
         }
-        else {res.send('Unable to fetch requested data.  Please check the endpoint and try again.')}
+        else {res.send(null)}
 
     } catch (error) {
         console.log(`There was an error retrieving hourly weather data: ${error}`)

@@ -152,7 +152,6 @@ export async function compileGraphData() {
     buildHourlyObj();
     let dataObj = {};
     dataObj.formatDate = formatDate;
-    // console.log(xAxisTimeStampArray.length)
     if (xAxisTimeStampArray.length > 0) dataObj.timeAxis = xAxisTimeStampArray;
     if (xAxisTimeStampArrayFormatted.length > 0) dataObj.timeAxisFormatted = xAxisTimeStampArrayFormatted;
     if (noaaGraphValues.length > 0) dataObj.noaaHourlyTemps = noaaGraphValues;
