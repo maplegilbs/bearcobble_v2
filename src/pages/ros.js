@@ -8,15 +8,17 @@ import Comparison_Bar_Graph from "@/components/ro_records_compare_graph";
 //Styles
 import ro_styles from '@/styles/ro_page_styles.module.scss';
 
+let ro_records_api_base_url = (process.env.NEXT_PUBLIC_BASE_URL + 'api/ro_records_read')
+
 export async function getServerSideProps() {
     try {
-        let ro_records = await fetch(`${process.env.BASE_URL}api/ro_records_read`);
+        let ro_records = await fetch(ro_records_api_base_url);
         let ro_json = await ro_records.json();
         return ({ props: { selected_records: ro_json } })
     } catch (error) {
         console.error(`There was an error fetching the selected records: ${error}`);
         return ({ props: { selected_records: null } })
-
+        
     }
 }
 
@@ -24,16 +26,15 @@ export default function ROs({ selected_records }) {
     const [selectedRecords, setSelectedRecords] = useState(selected_records)
     const [newestRecord, setNewestRecord] = useState();
     const [comparisonRecords, setComparisonRecords] = useState([]);
-
+    
     useEffect(() => {
         async function getRecords() {
             try {
-                let ro_records = await fetch('http://localhost:3000/api/ro_records_read');
-                // let ro_records = await fetch('https://bearcobble.herokuapp.com/api/ro_records_read');
+                let ro_records = await fetch(ro_records_api_base_url);
                 let ro_json = await ro_records.json();
                 setSelectedRecords(ro_json);
             } catch (error) {
-                console.error(`There was an error fetching the selected records: ${error}`);
+                console.error(`There was an error in fetching the selected records: ${error}`);
             }
         }
         getRecords();

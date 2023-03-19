@@ -6,7 +6,7 @@ import home_styles from '@/styles/home_page_styles.module.scss';
 export async function getServerSideProps() {
     let vacuumData, tankData;
     try {
-        const sensor_data = await fetch(`${process.env.BASE_URL}api/sensor_data_read`);
+        const sensor_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/sensor_data_read`);
         const sensor_json = await sensor_data.json();
         let extracted_sensor_data = extractSensorData(sensor_json);
         vacuumData = extracted_sensor_data[0];

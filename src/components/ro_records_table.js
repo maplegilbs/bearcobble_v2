@@ -49,8 +49,13 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
                 </td>
                 <td className={ro_table_styles.column_separator}>{rowdata.selected_ro.slice(2)}</td>
                 <td>{formattedTime}</td>
-                <td>{rowdata.is_benchmark ? 'Y' : ''}</td>
-                <td className={ro_table_styles.column_separator}>{rowdata.sugar_percent_in ? rowdata.sugar_percent_in : ''} {'\u2192'} {rowdata.sugar_percent_out ? rowdata.sugar_percent_out : ''}</td>
+                {/* <td>{rowdata.is_benchmark ? 'Y' : ''}</td> */}
+                <td className={ro_table_styles.column_separator}>
+                    {rowdata.is_benchmark ?
+                        'BENCHMARK' :
+                        `${rowdata.sugar_percent_in ? rowdata.sugar_percent_in : ''} ${'\u2192'} ${rowdata.sugar_percent_out ? rowdata.sugar_percent_out : ''}`
+                    }
+                </td>
                 <td>{rowdata.temperature}</td>
                 <td className={ro_table_styles.column_separator}>{Number(rowdata.conc_flow).toFixed(1)}</td>
                 <td className={ro_table_styles.column_separator}>{Number(rowdata.membrane_1).toFixed(1)}</td>
@@ -77,11 +82,11 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
                         <th rowSpan={2}>Select</th>
                         <th rowSpan={2} className={ro_table_styles.column_separator}>RO</th>
                         <th rowSpan={2}>Date</th>
-                        <th rowSpan={2}>Benchmark</th>
+                        {/* <th rowSpan={2}>Benchmark</th> */}
                         <th className={ro_table_styles.column_separator}>&#176;Bx In</th>
                         <th rowSpan={2}>Temp</th>
-                        <th rowSpan={2} className={ro_table_styles.column_separator}>Conc<br/>Flow</th>
-                        <th colspan={8} className={ro_table_styles.column_separator}>Membranes</th>
+                        <th rowSpan={2} className={ro_table_styles.column_separator}>Conc<br />Flow</th>
+                        <th colSpan={8} className={ro_table_styles.column_separator}>Membranes</th>
                     </tr>
                     <tr>
                         <th className={ro_table_styles.column_separator}> &#176;Bx Out</th>
