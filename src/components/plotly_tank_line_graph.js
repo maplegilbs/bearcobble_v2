@@ -60,7 +60,7 @@ export default function Tank_Line_Graph({ graph_data }) {
                 y: plotPoints[3][1].reverse(),
                 type: 'scatter',
                 mode: 'lines',
-                line: { color: 'springgreen' },
+                line: { color: 'mediumseagreen' },
                 name: '4'
             },
             {

@@ -19,11 +19,11 @@ function Hour_Container({ time, noaaData, owData }) {
         <div key={time} className={hourly_box_styles.hourly_record}>
             <h4>{new Date(time).getHours()}:00</h4>
             {noaaData ?
-                <p>{noaaData.temperature}°&nbsp; <img alt='Icon of weather conditions' src={noaaData.icon} width={30} height={32} /></p> :
+                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon.split(',0').join('')} width={30} height={32} /></p> :
                 <p>--</p>
             }
             {owData ?
-                <p>{Math.round(owData.temp)}°&nbsp; <img alt='Icon of weather conditions' src={`https://openweathermap.org/img/wn/${owData.weather[0].icon}@2x.png`} width={30} height={32} /></p> :
+                <p>{Math.round(owData.temp)}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={`https://openweathermap.org/img/wn/${owData.weather[0].icon}@2x.png`} width={30} height={32} /></p> :
                 <p>--</p>
             }
         </div>
@@ -43,7 +43,7 @@ export default function Hourly_Forecast_Box() {
                 'ow': {}
             }
         ))
-        console.log(hourly_array)
+        
         async function getHourly() {
             try {
                 let noaa_hourly_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/weather_forecast_hourly?source=noaa`);
@@ -72,7 +72,6 @@ export default function Hourly_Forecast_Box() {
         getHourly();
     }, [])
 
-    console.log(hourlyData)
     let hourly_columns = [];
     if (hourlyData.length > 0) {
         for (let i = 0; i < hoursToForecast; i++) {
@@ -82,10 +81,10 @@ export default function Hourly_Forecast_Box() {
 
     return (
         <div className={hourly_box_styles.hourly_container}>
-            <h2>Upcoming Weather - Next 6 hours</h2>
+            <h2>Six Hour Forecast</h2>
             <hr/>
             <div className={hourly_box_styles.hourly_record}>
-                <h3>Time</h3><h3>NOAA</h3><h3>Open Weather</h3>
+                <h3>Time</h3><h3 style={{justifyContent: 'center'}}>NOAA</h3><h3 style={{justifyContent: 'center'}}>Open Weather</h3>
             </div>
             {hourly_columns}
         </div>

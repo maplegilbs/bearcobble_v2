@@ -88,7 +88,9 @@
         height: auto;
         margin-top: 8px;
         margin-bottom: 8px;
-        border: 1px solid black;
+        border: 2px solid black;
+        box-shadow: 2px 2px;
+        border-radius: 3px;
         background-color: white;
         padding: 8px;
         display: flex;
@@ -96,31 +98,14 @@
         justify-content: space-evenly;
     }
 
-    .condition_details {
-        padding: 5%;
-        text-align: left;
-        margin: 0 auto;
-        width: 65%;
-
-        p {
-            font-size: .65rem;
-            margin: 2px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-
-            .category {
-                font-weight: 600;
-            }
-        }
-    }
-
     .hourly_forecast {
         width: 98%;
         height: auto;
         margin-top: 8px;
         margin-bottom: 8px;
-        border: 1px solid black;
+        border: 2px solid black;
+        box-shadow: 2px 2px;
+        border-radius: 3px;
         background-color: white;
         padding: 8px;
     }
@@ -130,7 +115,9 @@
         height: auto;
         margin-top: 8px;
         margin-bottom: 8px;
-        border: 1px solid black;
+        border: 2px solid black;
+        box-shadow: 2px 2px;
+        border-radius: 3px;
         background-color: white;
         padding: 8px;
     }

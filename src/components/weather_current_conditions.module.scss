@@ -1,0 +1,18 @@
+.condition_details {
+    padding: 5%;
+    text-align: left;
+    margin: 0 auto;
+    width: 65%;
+
+    p {
+        font-size: .65rem;
+        margin: 2px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .category {
+            font-weight: 600;
+        }
+    }
+}

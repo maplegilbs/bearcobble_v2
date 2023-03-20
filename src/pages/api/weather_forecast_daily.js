@@ -1,7 +1,8 @@
 const api_lookup = {
     'noaa': 'https://api.weather.gov/gridpoints/BTV/98,43/forecast',
     'weatherunderground': `https://api.weather.com/v3/wx/forecast/daily/5day?geocode=44.17,-72.96&format=json&units=e&language=en-US&apiKey=${process.env.WU_APIKEY}`,
-    'accuweather': `https://dataservice.accuweather.com/forecasts/v1/daily/5day/336184?apikey=${process.env.AW_APIKEY}`
+    'accuweather': `https://dataservice.accuweather.com/forecasts/v1/daily/5day/336184?apikey=${process.env.AW_APIKEY}`,
+    'openWeather': `https://api.openweathermap.org/data/3.0/onecall?lat=44.18&lon=-72.99&exclude=minutely,hourly,current,alerts&units=imperial&appid=${process.env.OW_APIKEY}`
 }
 
 export default async function (req, res) {

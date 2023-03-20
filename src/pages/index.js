@@ -3,25 +3,25 @@ import { useEffect } from 'react';
 //Compontents
 import Link from 'next/link';
 import Image from 'next/image';
+import Current_Conditions from '@/components/weather_current_conditions';
 import Hourly_Forecast_Box from '@/components/weather_hourly_box';
+import Short_Forecast from '@/components/weather_short_forecast';
+import Box_Gauge from '@/components/gauge_box';
 //Functions
 import { extractSensorData } from '@/utils/extractSensorData';
-// import { compileGraphData } from '@/utils/hourlyGraphHelpers';
 //Styles
 import home_styles from '@/styles/home_page_styles.module.scss';
 //Images
 import WeatherIcon from '../../public/IconColor-Weather.png'
 import SensorIcon from '../../public/IconColor-Sensor.png'
 import MapIcon from '../../public/IconColor-Map.png'
-import ROIcon from '../../public/IconColor-RO.png'
-import Box_Gauge from '@/components/gauge_box';
 
 export async function getServerSideProps() {
     let vacuumData = null;
     let tankData = null;
     let curWeatherData = null;
-    let weatherForecast = null;
-    let hourlyForecast = null;
+   
+    
     try {
         const sensor_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/sensor_data_read`);
         const sensor_json = await sensor_data.json();
@@ -38,12 +38,6 @@ export async function getServerSideProps() {
         console.error(`There was an error fetching current weather data: ${error}`)
         curWeatherData = null
     }
-    try {
-        const forecast_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/forecast_daily?source=noaa`);
-        const forecast_json = await forecast_data.json();
-        weatherForecast = forecast_json;
-    } catch (error) { console.error(`There was an error fetching weather forecast data: ${error}`) }
-
     return ({ props: { vacuumData: vacuumData, tankData: tankData, curWeatherData: curWeatherData } })
 }
 
@@ -75,36 +69,13 @@ export default function Main({ vacuumData, tankData, curWeatherData }) {
                             </Link>
                         </div>
                         <div className={home_styles.current_conditions}>
-                            <h3>Bear Cobble Weather Station<br />Current Conditions</h3>
-                            {curWeatherData &&
-                                <>
-                                    <h2 className={home_styles.temp}>{curWeatherData.observations[0].imperial.temp}°</h2>
-                                    <div className={home_styles.condition_details}>
-                                        <p>
-                                            <span className={home_styles.category}>Wind</span>
-                                            {curWeatherData.observations[0].imperial.windSpeed} mph
-                                        </p>
-                                        <p>
-                                            <span className={home_styles.category}>Gusts</span>
-                                            {curWeatherData.observations[0].imperial.windGust} mph
-                                        </p>
-                                        <p>
-                                            <span className={home_styles.category}>Windchill</span>
-                                            {curWeatherData.observations[0].imperial.windChill}°
-                                        </p>
-                                        <p>
-                                            <span className={home_styles.category}>Barometer</span>
-                                            {curWeatherData.observations[0].imperial.pressure}
-                                        </p>
-                                    </div>
-                                </>
-                            }
+                            <Current_Conditions curWeatherData={curWeatherData} />
                         </div>
                         <div className={home_styles.hourly_forecast}>
                             <Hourly_Forecast_Box />
                         </div>
                         <div className={home_styles.daily_forecast}>
-
+                            <Short_Forecast />
                         </div>
 
                     </div>

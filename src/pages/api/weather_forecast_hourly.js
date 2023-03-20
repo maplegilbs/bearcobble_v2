@@ -15,7 +15,7 @@ function wait(time) {
 
 
 export default async function (req, res) {
-    console.log(req.query, req.query.source)
+    
     try {
         let all_fetched_json = []
         if (req.query.source === undefined) {
