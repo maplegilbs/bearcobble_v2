@@ -29,8 +29,10 @@
 
         .vac_reading {
             color: black;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.25rem;
+            font-family: global_variables.$global_fonts;
+            font-size: 1.15rem;
+            font-weight: 800;
+            text-shadow: .5px .5px white;
         }
 
         .section_label {

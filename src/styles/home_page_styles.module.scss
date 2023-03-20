@@ -66,6 +66,11 @@
     justify-content: flex-end;
     display: flex;
     flex-direction: column;
+
+    .sensor_headers {
+        width: 75%;
+        margin: 1rem auto;
+    }
 }
 
 
@@ -131,9 +136,9 @@
     }
 
     .sensor_summary {
-        grid-row: 1 / 5;
+        grid-row: 1 / 2;
         grid-column: 1 / 2;
-        justify-content: space-evenly;
+        justify-content: flex-start;
     }
 
     .weather {
@@ -170,7 +175,7 @@
     }
 
     .fix_list {
-        grid-row: 3 / 5;
-        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
     }
 }

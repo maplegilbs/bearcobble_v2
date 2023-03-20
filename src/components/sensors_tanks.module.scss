@@ -1,0 +1,14 @@
+.tank_container {
+    display: flex;
+    padding: 8px;
+}
+
+@media screen and (min-width: 720px) {
+
+    .tank_container {
+        p:nth-child(2) {
+            font-size: 1.5rem !important;
+        }
+    }
+    
+}

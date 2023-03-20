@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 //Compontents
 import Link from 'next/link';
 import Image from 'next/image';
+import Tank_Sensors from '@/components/sensors_tanks';
+import Vacuum_Sensors from '@/components/sensors_vacuum';
 import Current_Conditions from '@/components/weather_current_conditions';
 import Hourly_Forecast_Box from '@/components/weather_hourly_box';
 import Short_Forecast from '@/components/weather_short_forecast';
@@ -18,7 +20,7 @@ import MapIcon from '../../public/IconColor-Map.png'
 
 export async function getServerSideProps() {
     let vacuumData = null;
-    let tankData = null;
+    
     let curWeatherData = null;
    
     
@@ -38,11 +40,11 @@ export async function getServerSideProps() {
         console.error(`There was an error fetching current weather data: ${error}`)
         curWeatherData = null
     }
-    return ({ props: { vacuumData: vacuumData, tankData: tankData, curWeatherData: curWeatherData } })
+    return ({ props: { vacuumData: vacuumData, curWeatherData: curWeatherData } })
 }
 
 
-export default function Main({ vacuumData, tankData, curWeatherData }) {
+export default function Main({ vacuumData, curWeatherData }) {
 
     useEffect(() => {
 
@@ -58,8 +60,19 @@ export default function Main({ vacuumData, tankData, curWeatherData }) {
                                 <Image src={SensorIcon} alt='Icon of a sensor' />
                             </Link>
                         </div>
-                        <div className={home_styles.sensor_headers}></div>
+                        <div className={home_styles.sensor_headers}>
+                            <h3>Vacuum Sensors</h3>
+                            <hr/>
+                        </div>
                         <div className={home_styles.sensor_details}>
+                            <Vacuum_Sensors />
+                        </div>
+                        <div className={home_styles.sensor_headers}>
+                            <h3>Tank Sensors</h3>
+                            <hr/>
+                        </div>
+                        <div className={home_styles.sensor_details}>
+                            <Tank_Sensors />
                         </div>
                     </div>
                     <div className={`${home_styles.weather}  ${home_styles.info_box}`}>
