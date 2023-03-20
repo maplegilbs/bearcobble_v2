@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 //Functions
 import { formatTime } from '@/utils/formatDate';
+import { dirDegToText } from '@/utils/weatherHelpers';
 //Styles
 import daily_forecast_styles from './weather_short_forecast.module.scss';
 
@@ -14,7 +15,7 @@ function noaaForecastRow(forecastData) {
         forecastRows.push(
             <div key={row_data.name} className={daily_forecast_styles.day_row}>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.left_box}`}>
-                    <img src={row_data.icon} height={50} width={50} />
+                    <img src={row_data.icon} />
                     <h4>{row_data.isDaytime ? 'High:' : 'Low:'} {row_data.temperature}</h4>
                 </div>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.middle_box}`}>
@@ -40,17 +41,20 @@ function owForecastRow(forecastData) {
                     <img
                         className={daily_forecast_styles.daily_icon}
                         src={`https://openweathermap.org/img/wn/${row_data.weather[0].icon}@2x.png`}
-                        height={50}
-                        width={50}
                     />
                     <h4>Hi: {Math.round(row_data.temp.max)} <br /> Low: {Math.round(row_data.temp.min)}</h4>
                 </div>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.middle_box}`}>
                     <h3>{formatTime(new Date(row_data.dt * 1000)).dow}</h3>
-                    <p>{row_data.weather[0].description}</p>
+                    <p>{row_data.weather[0].description.split('')[0].toUpperCase() + row_data.weather[0].description.slice(1)}</p>
+                    <p>
+                        Morn: {Math.round(row_data.temp.morn)}° &nbsp;
+                        Day: {Math.round(row_data.temp.day)}° &nbsp;
+                        Eve: {Math.round(row_data.temp.eve)}° &nbsp;
+                        Night: {Math.round(row_data.temp.night)}°  </p>
                 </div>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.right_box}`}>
-                    <h4>Winds<br />{Math.round(row_data.wind_speed)} @ </h4>
+                    <h4>Winds</h4><br /><p>{dirDegToText(row_data.wind_deg)} @ {Math.round(row_data.wind_speed)} mph </p>
                 </div>
             </div>
         )

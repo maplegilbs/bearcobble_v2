@@ -1,3 +1,5 @@
+//Functions
+import { formatTime } from '@/utils/formatDate';
 //Styles
 import current_conditions_styles from './weather_current_conditions.module.scss';
 
@@ -24,6 +26,8 @@ export default function Current_Conditions({curWeatherData}) {
                         <span className={current_conditions_styles.category}>Barometer</span>
                         {curWeatherData.observations[0].imperial.pressure}
                     </p>
+                    <br/>
+                    <p>Updated<br/> {`${formatTime(new Date(curWeatherData.observations[0].obsTimeLocal)).dow} @ ${formatTime(new Date(curWeatherData.observations[0].obsTimeLocal)).time} ${formatTime(new Date(curWeatherData.observations[0].obsTimeLocal)).amPm} `}</p>
                 </div>
             </>
         }
