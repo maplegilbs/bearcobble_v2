@@ -15,7 +15,6 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
             setSelectedRowIds(prev => {
                 let updateArray = [...prev];
                 updateArray.splice(updateArray.indexOf(id), 1)
-                console.log(updateArray)
                 return updateArray
             })
             setComparisonRecords(prev => {
@@ -30,7 +29,6 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
         }
     }
 
-    // useEffect()
 
     function ROTableRow({ rowdata }) {
         let recordDate = formatTime(new Date(rowdata.record_date))

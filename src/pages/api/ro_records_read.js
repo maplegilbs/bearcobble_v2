@@ -17,7 +17,7 @@ export default async function (req, res){
     `select * from ro_records order by record_date desc`:
     `select * from ro_records where id in (${recordIds}) order by record_date desc`;
 
-    if(req.method = 'GET'){
+    if(req.method === 'GET'){
         try {
             let selectedRecords = await pool.query(query)
             res.send(selectedRecords[0])

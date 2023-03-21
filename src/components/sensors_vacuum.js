@@ -34,7 +34,10 @@ export default function Vacuum_Sensors() {
             }
             catch (error) { console.error(`There was an error fetching sensor data: ${error}`) }
         }
-        getVacuumData()
+        if (!vacuumSensorData) { getVacuumData() }
+        setInterval(() => {
+            getVacuumData()
+        }, 30000);
     }, [])
 
     

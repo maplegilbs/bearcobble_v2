@@ -33,7 +33,10 @@ export default function Tank_Sensors() {
             }
             catch (error) { console.error(`There was an error fetching sensor data: ${error}`) }
         }
-        getTankData()
+        if (!tankSensorData) { getTankData() }
+        setInterval(() => {
+            getTankData()
+        }, 30000);
     }, [])
 
     return (

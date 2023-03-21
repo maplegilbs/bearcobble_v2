@@ -1,0 +1,45 @@
+.display_controls{
+    display: flex;
+    justify-content: flex-start;
+    width: 95%;
+    margin: 1rem auto;
+}
+.fix_table {
+    background: white;
+    margin: 1rem auto;
+    border: 1px solid #777;
+    width: 95%;
+    text-align: left;
+    border-collapse: collapse;
+
+    thead {
+        th {
+            border: 1px solid #777;
+            text-align: center;
+            padding: 0.25rem;
+            font-size: .85rem;
+        }
+    }
+
+    tbody{
+        td {
+            padding: 5px;
+            border: 1px solid #777;
+            border-bottom: none;
+            border-top: none;
+            font-size: .8rem;
+            text-align: center;
+        }
+
+        td:nth-child(4){
+            text-align: left;
+            padding-left: 8px;
+        }
+
+    }
+
+    tr:nth-child(even) {
+        background-color: rgb(198 218 233);
+    }
+
+}

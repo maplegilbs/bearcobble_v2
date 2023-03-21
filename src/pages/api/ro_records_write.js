@@ -1,12 +1,17 @@
 //Libraries
 import mysql from 'mysql2'
+//Functions
+import { adjustForUTC } from '@/utils/adjForUTCDate';
 
+function convertDateForSQL(inputDate) { return inputDate.toISOString().slice(0, 19).replace('T', ' ') }
 export default async function (req, res){
-
-
+    
+    
     if(req.method === 'POST'){
         try {
             let data = JSON.parse(req.body)
+            console.log(adjustForUTC(new Date(data.record_date)))
+            console.log(data.record_date)
             let values = [data.selected_ro, data.record_date, data.sugar_percent_in, data.sugar_percent_out, data.temperature, data.conc_flow, data.membrane_1, data.membrane_2, data.membrane_3, data.membrane_4, data.membrane_5, data.membrane_6, data.membrane_7, data.membrane_8, data.is_benchmark]
             const pool = mysql.createPool({
                 host: process.env.MYSQL_DB_HOST,

@@ -1,0 +1,83 @@
+//Libraries
+import { useEffect, useState } from "react"
+//Functions
+import { formatTime } from "@/utils/formatDate";
+//Styles
+import fix_list_styles from './fix_list_container.module.scss';
+
+function buildFixListTable(fixListData) {
+    let fixListRows = fixListData.map(record => {
+        return (
+            <tr data-id={record.id}>
+                <td style={{textAlign: 'center'}}>
+                    <input type="checkbox"
+                    // onChange={() => selectRow(rowdata.id)}
+                    // checked={selectedRowIds.includes(rowdata.id) ? true : false}
+                    >
+                    </input>
+                </td>
+                <td>{record.section}</td>
+                <td>{record.lineNum}</td>
+                <td colSpan={2}>{record.note}</td>
+                <td>{formatTime(new Date(record.submitTime)).date}</td>
+            </tr>
+        )
+    })
+    console.log(fixListRows)
+    return (fixListRows)
+}
+
+export default function Fix_List() {
+    const [sortBy, setSortBy] = useState('section');
+    const [selectedFixList, setSelectedFixList] = useState(null)
+    const [selectedRowIds, setSelectedRowIds] = useState([])
+
+    useEffect(() => {
+        async function getFixList() {
+            try {
+                let fix_list_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/fix_list_read?sortBy=${sortBy}`)
+                let fix_list_json = await fix_list_data.json();
+                setSelectedFixList(fix_list_json)
+            } catch (error) {
+                console.error(`There was an error getting fix list information.  Error ${error}`);
+            }
+        }
+        getFixList();
+    }, [sortBy])
+
+
+    console.log(selectedFixList)
+
+    return (
+        <>
+            <div className={fix_list_styles.display_controls}>
+                <select name="sortBy" onChange={(e) => setSortBy(e.target.value)}>
+                    <option value="section">Section</option>
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="priority">Priority</option>
+                </select>
+
+            </div>
+            <div className={fix_list_styles.table_container}>
+                <table className={fix_list_styles.fix_table}>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Section</th>
+                            <th>Line</th>
+                            <th colSpan={2}>Note</th>
+                            <th>Date</th>
+                            {/* <th>Priority</th> */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {selectedFixList &&
+                            buildFixListTable(selectedFixList)}
+                    </tbody>
+                </table>
+
+            </div>
+        </>
+    )
+}

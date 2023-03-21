@@ -8,7 +8,7 @@ import Vacuum_Sensors from '@/components/sensors_vacuum';
 import Current_Conditions from '@/components/weather_current_conditions';
 import Hourly_Forecast_Box from '@/components/weather_hourly_box';
 import Short_Forecast from '@/components/weather_short_forecast';
-import Box_Gauge from '@/components/gauge_box';
+import Fix_List from '@/components/fix_list_container';
 //Functions
 import { extractSensorData } from '@/utils/extractSensorData';
 //Styles
@@ -93,9 +93,12 @@ export default function Main({ vacuumData, curWeatherData }) {
 
                     </div>
                     <div className={`${home_styles.fix_list}  ${home_styles.info_box}`}>
-                        <div className={home_styles.tab}></div>
-                        <div className={home_styles.display_controls}></div>
-                        <div className={home_styles.table_container}></div>
+                        <div className={home_styles.tab}>
+                            <Link href="./map">Woods
+                                <Image src={MapIcon} alt='Icon of a map and marker' />
+                            </Link>
+                        </div>
+                        <Fix_List />
                     </div>
                 </div>
             </div>
