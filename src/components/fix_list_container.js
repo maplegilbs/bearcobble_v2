@@ -78,6 +78,7 @@ export default function Fix_List() {
     return (
         <>
             <div className={fix_list_styles.display_controls}>
+                <div>
                 <span>Sort By: &nbsp;</span>
                 <select name="sortBy" onChange={(e) => setSortBy(e.target.value)}>
                     <option value="section">Section</option>
@@ -85,7 +86,8 @@ export default function Fix_List() {
                     <option value="oldest">Oldest First</option>
                     <option value="priority">Priority</option>
                 </select>
-
+                </div>
+                <button disabled>Add Item To List</button>
             </div>
             <div className={fix_list_styles.table_container}>
                 <table className={fix_list_styles.fix_table}>
