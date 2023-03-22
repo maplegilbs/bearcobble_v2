@@ -46,7 +46,8 @@ function owForecastRow(forecastData) {
                 </div>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.middle_box}`}>
                     <h3>{formatTime(new Date(row_data.dt * 1000)).dow}</h3>
-                    <p>{row_data.weather[0].description.split('')[0].toUpperCase() + row_data.weather[0].description.slice(1)}</p>
+                    {/* <p>{row_data.weather[0].description.split('')[0].toUpperCase() + row_data.weather[0].description.slice(1)}</p> */}
+                    <p>{row_data.weather[0].description}</p>
                     <p>
                         Morn: {Math.round(row_data.temp.morn)}° &nbsp;
                         Day: {Math.round(row_data.temp.day)}° &nbsp;
