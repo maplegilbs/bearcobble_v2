@@ -73,8 +73,6 @@ export default function Fix_List() {
     }, [sortBy])
 
 
-    console.log(selectedFixList)
-
     return (
         <>
             <div className={fix_list_styles.display_controls}>

@@ -3,11 +3,14 @@ import mysql from 'mysql2';
 //Functions
 import { calcVolFromHeight } from '@/utils/tankInfoHelpers';
 import { adjustForUTC } from '@/utils/adjForUTCDate';
+import { extractSensorData } from '@/utils/extractSensorData';
 
 function convertDateForSQL(inputDate) { return inputDate.toISOString().slice(0, 19).replace('T', ' ') }
 
 export default async function (req, res) {
-    let sensor_type = req.body.sensor_type;
+    let body = JSON.parse(req.body)
+    let sensor_type = body.sensor_type;
+    
     const database_lookup_ref = {
         'tank': {
             table_name: 'tanksnapshots',
