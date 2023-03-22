@@ -9,10 +9,10 @@ async function button_handler (type, afterSubmit) {
     try {
         let postedData = await fetch('api/sensor_data_write', {
             method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 sensor_type: type
-            }),
-            headers: {'Content-Type': 'application/json'}
+            })
         })
         let postedJSON = await postedData.json();
         afterSubmit(postedJSON)

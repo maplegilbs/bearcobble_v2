@@ -8,9 +8,10 @@ import { extractSensorData } from '@/utils/extractSensorData';
 function convertDateForSQL(inputDate) { return inputDate.toISOString().slice(0, 19).replace('T', ' ') }
 
 export default async function (req, res) {
-    let body = JSON.parse(req.body)
-    let sensor_type = body.sensor_type;
-    
+    console.log(req.body)
+    const body = req.body
+    const sensor_type = body.sensor_type;
+
     const database_lookup_ref = {
         'tank': {
             table_name: 'tanksnapshots',
