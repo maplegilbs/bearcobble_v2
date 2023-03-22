@@ -4,27 +4,27 @@ export function extractSensorData(rawData) {
             {
                 section1: {
                     section_name: 'Section 1',
-                    vacuum_reading: rawData.database.table.row[1].data_EXT.PRESSURE,
+                    vacuum_reading: rawData.database.table.row[1].data_EXT.PRESSURE+rawData.database.table.row[1].configuration_EXT.CALIBZERO,
                     reading_time: rawData.database.table.row[1].timeTag_EXT.realtime
                 },
                 section2: {
                     section_name: 'Section 2',
-                    vacuum_reading: rawData.database.table.row[1].data_EXT.PRESSURE2,
+                    vacuum_reading: rawData.database.table.row[1].data_EXT.PRESSURE2+rawData.database.table.row[1].configuration_EXT.CALIBZERO2,
                     reading_time: rawData.database.table.row[1].timeTag_EXT.realtime
                 },
                 section3: {
                     section_name: 'Section 3',
-                    vacuum_reading: rawData.database.table.row[2].data_EXT.PRESSURE2,
+                    vacuum_reading: rawData.database.table.row[2].data_EXT.PRESSURE2+rawData.database.table.row[2].configuration_EXT.CALIBZERO2,
                     reading_time: rawData.database.table.row[2].timeTag_EXT.realtime
                 },
                 section4: {
                     section_name: 'Section 4',
-                    vacuum_reading: rawData.database.table.row[3].data_EXT.PRESSURE,
+                    vacuum_reading: rawData.database.table.row[3].data_EXT.PRESSURE+rawData.database.table.row[3].configuration_EXT.CALIBZERO,
                     reading_time: rawData.database.table.row[3].timeTag_EXT.realtime
                 },
                 section5: {
                     section_name: 'Section 5',
-                    vacuum_reading: rawData.database.table.row[3].data_EXT.PRESSURE2,
+                    vacuum_reading: rawData.database.table.row[3].data_EXT.PRESSURE2+rawData.database.table.row[3].configuration_EXT.CALIBZERO2,
                     reading_time: rawData.database.table.row[3].timeTag_EXT.realtime
                 },
             },
