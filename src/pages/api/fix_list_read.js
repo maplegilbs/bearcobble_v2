@@ -30,5 +30,4 @@ export default async function Fix_List_Read(req, res) {
             res.send(null)
         }
     }
-    pool.query()
 }

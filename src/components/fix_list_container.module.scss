@@ -1,9 +1,34 @@
-.display_controls{
+@use '../styles/global_variables.scss';
+
+.display_controls {
     display: flex;
     justify-content: flex-start;
     width: 95%;
     margin: 1rem auto;
+
+    span {
+        font-size: .8rem;
+    }
+
+    select,
+    option {
+        font-family: global_variables.$global_fonts;
+        font-size: .75rem;
+    }
+
+    button {
+        font-family: global_variables.$global_fonts;
+        background-color: #aabbcc;
+        color: white;
+        text-shadow: 1px 1px 3px #333;
+        border: none;
+        border-radius: 2px;
+        padding: 4px 8px;
+        font-weight: 500;
+        cursor: pointer;
+    }
 }
+
 .fix_table {
     background: white;
     margin: 1rem auto;
@@ -21,7 +46,7 @@
         }
     }
 
-    tbody{
+    tbody {
         td {
             padding: 5px;
             border: 1px solid #777;
@@ -31,9 +56,13 @@
             text-align: center;
         }
 
-        td:nth-child(4){
+        td:nth-child(4) {
             text-align: left;
             padding-left: 8px;
+        }
+
+        tr.selected_row {
+            background-color: rgb(255, 255, 150);
         }
 
     }

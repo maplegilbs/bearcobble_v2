@@ -5,14 +5,33 @@ import { formatTime } from "@/utils/formatDate";
 //Styles
 import fix_list_styles from './fix_list_container.module.scss';
 
-function buildFixListTable(fixListData) {
-    let fixListRows = fixListData.map(record => {
+
+
+export default function Fix_List() {
+    const [sortBy, setSortBy] = useState('section');
+    const [selectedFixList, setSelectedFixList] = useState(null)
+    const [selectedRowIds, setSelectedRowIds] = useState([])
+
+    function selectRow(id) {
+        if (selectedRowIds.includes(id)) {
+            setSelectedRowIds(prev => {
+                let updateArray = [...prev];
+                updateArray.splice(updateArray.indexOf(id), 1);
+                return updateArray;
+            })
+        }
+        else {
+            setSelectedRowIds(prev => [...prev, id])
+        }
+    }
+
+    function buildFixListRow(record) {
         return (
-            <tr data-id={record.id}>
-                <td style={{textAlign: 'center'}}>
+            <tr data-id={record.id} className={`${selectedRowIds.includes(record.id) ? fix_list_styles.selected_row : ''}`}>
+                <td style={{ textAlign: 'center' }}>
                     <input type="checkbox"
-                    // onChange={() => selectRow(rowdata.id)}
-                    // checked={selectedRowIds.includes(rowdata.id) ? true : false}
+                        onChange={() => selectRow(record.id)}
+                        checked={selectedRowIds.includes(record.id) ? true : false}
                     >
                     </input>
                 </td>
@@ -22,15 +41,23 @@ function buildFixListTable(fixListData) {
                 <td>{formatTime(new Date(record.submitTime)).date}</td>
             </tr>
         )
-    })
-    console.log(fixListRows)
-    return (fixListRows)
-}
+    }
 
-export default function Fix_List() {
-    const [sortBy, setSortBy] = useState('section');
-    const [selectedFixList, setSelectedFixList] = useState(null)
-    const [selectedRowIds, setSelectedRowIds] = useState([])
+    async function markResolved(ids) {
+        try {
+            let resolved_records = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/fix_list_write`, {
+                method: "POST",
+                header: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'markComplete',
+                    ids: ids
+                })
+            })
+            setSelectedRowIds([])
+        } catch (error) {
+            console.error(`Unable to update selected records.  Error: ${error}`)
+        }
+    }
 
     useEffect(() => {
         async function getFixList() {
@@ -51,6 +78,7 @@ export default function Fix_List() {
     return (
         <>
             <div className={fix_list_styles.display_controls}>
+                <span>Sort By: &nbsp;</span>
                 <select name="sortBy" onChange={(e) => setSortBy(e.target.value)}>
                     <option value="section">Section</option>
                     <option value="newest">Newest First</option>
@@ -73,10 +101,13 @@ export default function Fix_List() {
                     </thead>
                     <tbody>
                         {selectedFixList &&
-                            buildFixListTable(selectedFixList)}
+                            selectedFixList.map(record => buildFixListRow(record))
+                        }
                     </tbody>
                 </table>
-
+            </div>
+            <div className={fix_list_styles.display_controls}>
+                <button onClick={() => markResolved(selectedRowIds)}>Mark Resolved</button>
             </div>
         </>
     )
