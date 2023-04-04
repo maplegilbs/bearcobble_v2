@@ -19,7 +19,7 @@ function Hour_Container({ time, noaaData, owData }) {
         <div key={time} className={hourly_box_styles.hourly_record}>
             <h4>{new Date(time).getHours()}:00</h4>
             {noaaData ?
-                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon.split(',0').join('')} width={30} height={32} /></p> :
+                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon? noaaData.icon.split(',0').join(''): ''} width={30} height={32} /></p> :
                 <p>--</p>
             }
             {owData ?
@@ -75,7 +75,7 @@ export default function Hourly_Forecast_Box() {
     let hourly_columns = [];
     if (hourlyData.length > 0) {
         for (let i = 0; i < hoursToForecast; i++) {
-            hourly_columns.push(<Hour_Container time={hourlyData[i].time} noaaData={hourlyData[i].noaa} owData={hourlyData[i].ow} />)
+            hourly_columns.push(<Hour_Container key={hourlyData[i].time} time={hourlyData[i].time} noaaData={hourlyData[i].noaa} owData={hourlyData[i].ow} />)
         }
     }
 
