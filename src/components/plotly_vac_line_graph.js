@@ -12,21 +12,35 @@ export default function Vac_line_Graph({ graph_data }) {
         [[], []], //section 2
         [[], []], //section 3
         [[], []], //section 4
-        [[], []]  //section 5
+        [[], []], //section 5
+        [[], []]  //barometer
     ]
 
 
     for (let i = 0; i < graph_data.length - 1; i++) { //for every record in our retrieved data
+        let currentData = graph_data[i];
+        let readingTime = currentData['dbEntryTime']
         for (let j = 0; j < 5; j++) { //cycle through 5 times to get the data from each system (1 - 5)
-            let currentData = graph_data[i];
-            let readingTime = currentData['dbEntryTime']
             let vacReading = Number(currentData[`vac${j + 1}`]).toFixed(1);
             if (vacReading && readingTime) {
                 plotPoints[j][0].push(readingTime)
                 plotPoints[j][1].push(vacReading)
             }
         }
+        plotPoints[5][0].push(readingTime);
+        plotPoints[5][1].push(currentData['barometer'] ? Number(currentData['barometer']).toFixed(1) : null)
     }
+
+    let minPlotPoint = 30;
+    let maxPlotPoint = 0;
+    for (let i = 0; i < 6; i++) {
+        plotPoints[i][1].forEach(plotPoint => {
+            if (plotPoint && plotPoint > maxPlotPoint) maxPlotPoint = Number(plotPoint).toFixed(1);
+            if (plotPoint && plotPoint < minPlotPoint) minPlotPoint = Number(plotPoint).toFixed(1);
+        })
+    }
+
+    console.log(minPlotPoint, maxPlotPoint)
 
     return (
         <Plot data={[
@@ -35,7 +49,7 @@ export default function Vac_line_Graph({ graph_data }) {
                 y: plotPoints[0][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'blue', shape: 'spline' },
+                line: { color: 'blue', shape: 'linear' },
                 name: '1'
             },
             {
@@ -43,7 +57,7 @@ export default function Vac_line_Graph({ graph_data }) {
                 y: plotPoints[1][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'orange', shape: 'spline' },
+                line: { color: 'orange', shape: 'linear' },
                 name: '2'
             },
             {
@@ -51,7 +65,7 @@ export default function Vac_line_Graph({ graph_data }) {
                 y: plotPoints[2][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'gold', shape: 'spline' },
+                line: { color: 'gold', shape: 'linear' },
                 name: '3'
             },
             {
@@ -59,7 +73,7 @@ export default function Vac_line_Graph({ graph_data }) {
                 y: plotPoints[3][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'gold', shape: 'spline', dash: 'dash' },
+                line: { color: 'gold', shape: 'linear', dash: 'dash' },
                 name: '4'
             },
             {
@@ -67,8 +81,17 @@ export default function Vac_line_Graph({ graph_data }) {
                 y: plotPoints[4][1].reverse(),
                 type: 'line',
                 mode: 'lines',
-                line: { color: 'green', shape: 'spline' },
+                line: { color: 'green', shape: 'linear' },
                 name: '5'
+            },
+            {
+                x: plotPoints[5][0].reverse(),
+                y: plotPoints[5][1].reverse(),
+                type: 'line',
+                mode: 'lines',
+                line: { color: 'black', shape: 'linear' },
+                name: 'Barometer',
+                showlegend: false
             },
 
         ]}
@@ -81,6 +104,9 @@ export default function Vac_line_Graph({ graph_data }) {
                 xaxis: {
                     automargin: true,
                     tickangle: windowSize.current[0] < 720 ? 75 : 'auto'
+                },
+                yaxis: {
+                    range: [minPlotPoint - 1, maxPlotPoint + 5]
                 },
                 width: windowSize.current[0] * .85,
                 autosize: false,
