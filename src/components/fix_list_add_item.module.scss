@@ -1,0 +1,80 @@
+@use '../styles/global_variables.scss';
+
+.new_fix_form_container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    margin: 0 auto;
+    padding-top: 50px;
+    top: 0;
+    left: 0;
+    background-color: rgba(180, 180, 180, .65);
+
+    .new_fix_form {
+        width: 85%;
+        height: 90%;
+        margin: 20px auto;
+        background-color: #e9e9e9;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 8px 8px 3px 3px rgba(33, 33, 33, .5);
+
+        .form_input {
+            margin: 10px 0;
+
+            .radio_inputs {
+                min-width: 50%;
+
+                .radio_input {
+                    display: inline-block;
+                    margin: 5px 10px;
+
+                    label{
+                        margin: 5px;
+                    }
+                }
+
+            }
+
+            label {
+                display: inline-block;
+                margin-bottom: 5px;
+                font-weight: 700;
+            }
+
+            textarea {
+                width: 100%;
+            }
+
+            p {
+                font-size: .9rem;
+                margin: 10px;
+            }
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .buttons_container {
+            margin-top: auto;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                margin: 5px 10px;
+                font-family: global_variables.$global_fonts;
+                background-color: #aabbcc;
+                color: white;
+                text-shadow: 1px 1px 3px #333;
+                border: none;
+                border-radius: 2px;
+                padding: 4px 8px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
+    }
+}
