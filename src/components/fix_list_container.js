@@ -13,7 +13,7 @@ export default function Fix_List() {
     const [sortBy, setSortBy] = useState('section');
     const [selectedFixList, setSelectedFixList] = useState(null)
     const [selectedRowIds, setSelectedRowIds] = useState([])
-    const [addFormVisible, setAddFormVisible] = useState(true)
+    const [addFormVisible, setAddFormVisible] = useState(false)
 
     async function getFixList() {
         try {
@@ -112,7 +112,7 @@ export default function Fix_List() {
                 <button onClick={() => markResolved(selectedRowIds)}>Mark Resolved</button>
             </div>
             {addFormVisible &&
-                <Fix_List_Add_Form isVisible={addFormVisible} setIsVisible={setAddFormVisible} />
+                <Fix_List_Add_Form isVisible={addFormVisible} setIsVisible={setAddFormVisible} updateFixList={getFixList}/>
             }
         </>
     )
