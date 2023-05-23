@@ -2,9 +2,32 @@
 import mysql from 'mysql2'
 
 export default async function (req, res){
-    let recordIds = req.query.record_ids;
-    let requestAllRecords = recordIds? false: true; 
-    console.log(recordIds, requestAllRecords)
+    //if not info in query string exists return all recrds by setting selectAll to true
+    let selectAll = Object.keys(req.query).length < 1;
+
+    //pull out necessary query info for filtering records
+    let recordIds = req.query.record_ids;  
+    let selectedRO = req.query.selected_ro;
+    let processType = req.query.process_type;
+    let startDate = req.query.start_date; 
+    let endDate = req.query.end_date;
+    
+    //build sql query string AND clauses
+    let selectedROString = ``;
+    if (selectedRO) selectedROString = `AND selected_ro = '${selectedRO}'`; 
+    let processQueryString = ``;
+    switch(processType){
+        case 'benchmark': processQueryString = `AND is_benchmark = 1`;
+        break;
+        case 'first_pass': processQueryString = `AND sugar_percent_in < 2.5`;
+        break;
+        case 'second_pass': processQueryString = 'AND sugar_percent_in >= 2.5';
+        break;
+    }
+    let dateQueryString = ``;
+    if(startDate && endDate){
+        dateQueryString = `AND record_date between '${startDate}' AND '${endDate}'`
+    }
 
     const pool = mysql.createPool({
             host: process.env.MYSQL_DB_HOST,
@@ -13,9 +36,14 @@ export default async function (req, res){
             database: process.env.MYSQL_DB_NAME
     }).promise();
 
-    let query = requestAllRecords?
-    `select * from ro_records order by record_date desc`:
-    `select * from ro_records where id in (${recordIds}) order by record_date desc`;
+    //build full query string using and clauses created above
+    let query = `select * from ro_records order by record_date desc`;
+    if(!selectAll){
+        if(recordIds) query = `select * from ro_records where id in (${recordIds}) order by record_date desc`;
+        else query = `select * from ro_records where id IS NOT NULL ${selectedROString} ${processQueryString} ${dateQueryString} order by record_date desc`;
+    }
+
+    
 
     if(req.method === 'GET'){
         try {

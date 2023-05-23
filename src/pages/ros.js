@@ -24,13 +24,14 @@ export async function getServerSideProps() {
 
 export default function ROs({ selected_records }) {
     const [selectedRecords, setSelectedRecords] = useState(selected_records)
+    const [recordFilterQuery, setRecordFilterQuery] = useState('');
     const [newestRecord, setNewestRecord] = useState();
     const [comparisonRecords, setComparisonRecords] = useState([]);
     
     useEffect(() => {
         async function getRecords() {
             try {
-                let ro_records = await fetch(ro_records_api_base_url);
+                let ro_records = await fetch(ro_records_api_base_url+recordFilterQuery);
                 let ro_json = await ro_records.json();
                 setSelectedRecords(ro_json);
             } catch (error) {
