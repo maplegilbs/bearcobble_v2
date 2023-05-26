@@ -1,0 +1,74 @@
+@use '../styles/global_variables.scss';
+
+.filter_form_container {
+    padding: 1rem;
+    padding-left: 15px;
+    width: 85vw;
+    top: 10%;
+    height: 80vh;
+    overflow: scroll;
+    position: fixed;
+    background: linear-gradient(170deg, rgba(205, 205, 205, 1) 10%, rgba(200, 200, 200, 1) 60%, rgba(110, 110, 110, 1));
+    border: 1px solid black;
+    transition: all 1s ease;
+
+
+    .filter_form {
+        font-family: global_variables.$global_fonts;
+        font-size: .85rem;
+        width: 96%;
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        min-height: 50%;
+
+        .input_container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: .7rem;
+        }
+
+        .buttons_container {
+            flex-direction: row;
+
+            button {
+                margin: 5px;
+                padding: .25rem;
+                font-weight: 600;
+            }
+
+        }
+    }
+}
+
+.filter_visible {
+    left: -5px;
+}
+
+.filter_hidden {
+    transform: translateX(-100vw)
+}
+
+
+@media screen and (min-width: 720px) {
+
+    .filter_form_container {
+        overflow: auto;
+        padding: 1rem;
+        padding-left: 15px;
+        width: 85vw;
+        box-shadow: 6px 6px rgba(33,33,33,.5)
+    }
+
+
+    .filter_visible {
+        margin: 0 auto;
+        left: 7.5vw;
+    }
+
+    .filter_hidden {
+        transform: translateX(-100vw)
+    }
+
+}

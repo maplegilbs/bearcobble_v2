@@ -1,12 +1,15 @@
 //Functions
 import { formatTime } from '@/utils/formatDate';
 import { useEffect, useState } from 'react';
+//Components
+import RO_Records_Filter from "@/components/ro_records_filter";
 //Styles
 import ro_table_styles from './ro_records_table.module.scss';
 
-export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords }) {
+export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords, recordFilterQuery, setRecordFilterQuery }) {
     const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [isPrimaryRender, setIsPrimaryRender] = useState(true)
+    const [isFilterDisplayed, setIsFilterDisplayed] = useState(false)
 
 
     function selectRow(id) {
@@ -72,6 +75,7 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
         <div className={ro_table_styles.ro_table_container}>
             <div className={ro_table_styles.heading_container}>
                 <h2>RO Performance Records</h2><p>Select Two To Compare</p>
+                <button onClick={() => setIsFilterDisplayed((prev) => !prev)}>Filter</button>
             </div>
             <hr />
             <table className={ro_table_styles.ro_table}>
@@ -104,6 +108,13 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
                 </tbody>
 
             </table>
+
+            <RO_Records_Filter 
+            recordFilterQuery={recordFilterQuery} 
+            setRecordFilterQuery={setRecordFilterQuery} 
+            isFilterDisplayed={isFilterDisplayed}
+            setIsFilterDisplayed={setIsFilterDisplayed}/>
+
 
         </div>
     )

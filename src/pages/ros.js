@@ -39,7 +39,7 @@ export default function ROs({ selected_records }) {
             }
         }
         getRecords();
-    }, [newestRecord])
+    }, [newestRecord, recordFilterQuery])
 
     return (
         <>
@@ -47,7 +47,13 @@ export default function ROs({ selected_records }) {
                 <RO_Form updateTable={setNewestRecord} />
             </div>
             {selected_records &&
-                <RO_Table selectedRecords={selectedRecords} newestRecord={newestRecord} setComparisonRecords={setComparisonRecords} />
+                <RO_Table 
+                selectedRecords={selectedRecords} 
+                newestRecord={newestRecord} 
+                setComparisonRecords={setComparisonRecords} 
+                recordFilterQuery={recordFilterQuery}
+                setRecordFilterQuery={setRecordFilterQuery}
+                />
             }
             {selectedRecords &&
                 <Records_Comparison_Table comparison_records={comparisonRecords} />

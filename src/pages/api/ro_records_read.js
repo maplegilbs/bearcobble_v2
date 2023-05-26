@@ -1,16 +1,19 @@
 //Libraries
 import mysql from 'mysql2'
+import { formatTime } from '@/utils/formatDate';
 
 export default async function (req, res){
     //if not info in query string exists return all recrds by setting selectAll to true
     let selectAll = Object.keys(req.query).length < 1;
+    //get current date
+    let now = formatTime(new Date());
 
     //pull out necessary query info for filtering records
     let recordIds = req.query.record_ids;  
     let selectedRO = req.query.selected_ro;
     let processType = req.query.process_type;
-    let startDate = req.query.start_date; 
-    let endDate = req.query.end_date;
+    let startDate = req.query.start_date || '2015-01-01'; 
+    let endDate = req.query.end_date || `${now.year}-${now.month}-${now.day}T${now.time24Hr}`;
     
     //build sql query string AND clauses
     let selectedROString = ``;
@@ -43,6 +46,7 @@ export default async function (req, res){
         else query = `select * from ro_records where id IS NOT NULL ${selectedROString} ${processQueryString} ${dateQueryString} order by record_date desc`;
     }
 
+    console.log(query)
     
 
     if(req.method === 'GET'){
