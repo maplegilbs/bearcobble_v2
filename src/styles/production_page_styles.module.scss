@@ -1,0 +1,20 @@
+@use '@/styles/global_variables.scss';
+
+.production_animation_container {
+    height: 95%;
+
+    .yearly_row{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 5px;
+    
+        .progress_bar {
+            margin-left: 3px;
+            height: 40px;
+            background-color: lightslategrey;
+        }
+    }
+
+
+}
