@@ -5,7 +5,7 @@ export default function Primary_Footer() {
 
     return (
         <header className={footer_styles.primary_footer}>
-            <p>Footer</p>
+            <p>Built by SG for Bear Cobble Sugarworks 2023</p>
             <p></p>
         </header>
     )
