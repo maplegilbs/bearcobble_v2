@@ -135,25 +135,28 @@ export default function Produciton({ productionData }) {
             setCurrentRecordsDate(Object.keys(sortedOrderedData)[currentRecordIndex])
             let currentRecords = sortedOrderedData[currentRecordsDate]
             for (let year in currentRecords) {
+                console.log(currentRecords[year][1])
                 tempArray.push(<div key={`${currentRecords[year]}-${year}`} className={production_styles.yearly_row}>
                     <h2>{year}</h2>
-                    <div style={{ width: `${currentRecords[year][1] / 18886 * 100}%` }} className={production_styles.progress_bar}>
-                        {currentRecords[year][1] === 0? '': <p>{currentRecords[year][1]}</p>}
+                    <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 100}%)` }} className={production_styles.progress_bar}>
+                        {currentRecords[year][1] === 0 ? '' : <p>{currentRecords[year][1]}</p>}
                     </div>
                 </div>)
             }
             setDataDivs(tempArray.reverse())
-            setCurrentRecordIndex(prev => {
-                return prev + 1
-            });
+
         }
         makeDataDivs()
-    }, [advance])
+    }, [currentRecordIndex])
 
 
 
     return (
         <>
+            <h2 className={production_styles.primary_heading}>Yearly Production Timeline Comparison</h2>
+            <p>Compare YTD production totals from back to 2018.  Adjust the slider to select the date to compare.  Broken down into 8 hour intervals.</p>
+            <hr/>
+            <h4 className={production_styles.date_header}>{currentRecordsDate}</h4>
             <input className={production_styles.date_slider} type="range" min="0" max={Object.keys(sortedOrderedData).length - 1} value={currentRecordIndex} onChange={(e) => {
                 setCurrentRecordsDate(Object.keys(sortedOrderedData)[Number(e.target.value)])
                 setCurrentRecordIndex(Number(e.target.value))
@@ -161,8 +164,10 @@ export default function Produciton({ productionData }) {
                 console.log(Object.keys(sortedOrderedData).length, currentRecordIndex, currentRecordsDate)
 
             }}></input>
-            <button onClick={() => setadvance(prev => prev + 1)}>Advance</button>
-            <p>Date{currentRecordsDate}</p>
+            <div className={production_styles.time_control_button_container}>
+                <button onClick={() => setCurrentRecordIndex(prev => prev - 1)}>&#8678;</button>
+                <button onClick={() => setCurrentRecordIndex(prev => prev + 1)}>&#8680;</button>
+            </div>
             <div className={production_styles.production_animation_container}>
                 {dataDivs}
             </div>
