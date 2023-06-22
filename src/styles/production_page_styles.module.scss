@@ -1,0 +1,97 @@
+@use '@/styles/global_variables.scss';
+
+.primary_heading{
+    font-size: 1.25rem;
+    margin: 5px auto;
+    font-weight: 700;
+    font-family: global_variables.$global_fonts;
+}
+
+.primary_heading + p {
+    font-size: .75rem;
+    margin: 10px auto;
+    font-weight: 500;
+    font-family: global_variables.$global_fonts;
+}
+    .primary_heading + p + hr {
+    width: 50%;
+    margin: 15px auto;
+}
+
+
+.time_control_button_container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-family: global_variables.$global_fonts;
+    
+    button {
+        background-color: white;
+        font-size: 1.5rem;
+        padding: 0px 15px;
+        border-radius: 6px;
+        margin: 5px;
+    }
+}
+
+.date_slider{
+    width: 95%;
+    margin: 1rem auto;
+    display: block;
+}
+
+.date_header {
+    font-family: global_variables.$global_fonts;
+    font-size: 1.35rem;
+    font-weight: 700;
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.production_animation_container {
+    font-family: global_variables.$global_fonts;
+    height: 95%;
+    width: 98%;
+    margin: 10px auto;
+    background-color: white;
+    padding: 15px;
+    border: 2px solid #222;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #333;
+
+    .yearly_row{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 5px;
+
+        h2 {
+            font-size: 1rem;
+            width: 5%;
+        }
+            
+            .progress_bar {
+                // min-width: min-content;
+                margin-left: 5px;
+                height: 1.5rem;
+                background-color: lightslategrey;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                border-left: 1px solid #333;
+                
+                
+                p {
+                    min-width: 0px;
+                    padding: 5px;
+                    text-shadow: 1px 1px 2px white;
+                    font-weight: 700;
+                    font-size: 1.25rem;
+                }
+            }
+       }
+
+
+}
