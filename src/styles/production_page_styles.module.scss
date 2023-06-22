@@ -1,5 +1,11 @@
 @use '@/styles/global_variables.scss';
 
+.date_slider{
+    width: 95%;
+    margin: 1rem auto;
+    display: block;
+}
+
 .production_animation_container {
     height: 95%;
 
@@ -8,13 +14,26 @@
         justify-content: flex-start;
         align-items: center;
         margin: 5px;
-    
-        .progress_bar {
-            margin-left: 3px;
-            height: 40px;
-            background-color: lightslategrey;
-        }
-    }
+            
+            .progress_bar {
+                min-width: max-content;
+                margin-left: 30px;
+                height: 40px;
+                background-color: lightslategrey;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                border-left: 1px solid #333;
+                
+                
+                p {
+                    padding: 5px;
+                    text-shadow: 1px 1px 2px white;
+                    font-weight: 700;
+                    font-size: 1.25rem;
+                }
+            }
+       }
 
 
 }

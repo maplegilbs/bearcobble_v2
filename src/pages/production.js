@@ -10,7 +10,7 @@ import { formatTime } from '@/utils/formatDate';
 //get all production data from db and pass it as a prop to main compoenent
 //be sure the production data is sorted chronologically
 export async function getServerSideProps() {
-    let productionYears = [2023, 2022];
+    let productionYears = [2023, 2022, 2021, 2020, 2019, 2018];
     let productionData = [];
     const pool = mysql.createPool({
         host: process.env.MYSQL_DB_HOST,
@@ -26,8 +26,6 @@ export async function getServerSideProps() {
     return ({ props: { productionData: productionData } })
 
 }
-
-
 
 // take array of data (also arrays) and find the chronologically first and last dates
 // inner arrays of the data array must be sorted chronologically
@@ -73,14 +71,13 @@ function buildEmptyChronologicObject(minMax) {
 // each year should have an array as a value with the first value being the amount produced in the given time period, and the second being the running YTD total
 // ex April 01 12:00 : { 2018: [production in time period, running total], 2019: [production in time period: running total] etc}
 function populateChronologicObject(emptyChronologicObj, sourceData) {
+    console.log('populatingObject')
     let timeStamps = Object.keys(emptyChronologicObj);  //array of our time stamps to cycle through
     for (let sourceIndex = 0; sourceIndex < sourceData.length; sourceIndex++) { //cycling through our source data year by year
         let currentYearData = sourceData[sourceIndex];
         let currentYear = currentYearData[0].barrel_id.slice(0, 4);
-
         let periodTotal = 0;
         let ytdTotal = 0;
-
         //cycle through timestamps one by one
         //for each time stamp, check if there are production records younger or the same age as it, but older than the previous timestamp
         //if so add them up, update the period total and YTD total, then move on to the next timestamp.  
@@ -89,88 +86,66 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionRecordIndex = 0;
         let currentProductionRecord = currentYearData[currentProductionRecordIndex];
         let currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
-
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
         let currentTimeStampDate = new Date(currentTimeStamp).setFullYear(2000)
-
         while (currentTimeStampIndex < timeStamps.length) {
-
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
                 currentTimeStampDate = new Date(currentTimeStamp).setFullYear(2000)
-
             }
-
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
                 periodTotal += currentProductionRecord.gallons;
                 ytdTotal += currentProductionRecord.gallons;
                 currentProductionRecordIndex++
-                if(currentProductionRecordIndex<currentYearData.length-1){
+                if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
                     currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
                 }
-
             }
             emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
             periodTotal = 0;
             currentTimeStampIndex++
-
         }
-
-
     }
 }
 
-function makeProductionBars() {
-    let years = [[2023, 0], [2022, 0], [2021, 0], [2020, 0], [2019, 0], [2018, 0]];
-    let records = {};
-
-    for (let i = 0; i < 10; i++) {
-        records[i] = {};
-        years.forEach(year => {
-            records[i][year[0]] = year[1]
-            year[1] = Math.round(Math.random() * 10) + year[1]
-        })
-    }
-    console.log('records, ', records)
-    return records;
-}
-
-const records = makeProductionBars();
 
 export default function Produciton({ productionData }) {
-    // console.log(productionData)
-    const [sortedOrderedData, setSortedOrderedData] = useState(buildEmptyChronologicObject(findStartAndFinishDates(productionData)))
-    populateChronologicObject(sortedOrderedData, productionData)
-    console.log(sortedOrderedData)
-
+    //set state variables
     const [advance, setadvance] = useState(0)
-    const [currentRecordIndex, setCurrentRecordIndex] = useState(0);
     const [dataDivs, setDataDivs] = useState([]);
+    const [currentDate, setCurrentDate] = useState(formatTime(new Date(Date.now())))
+    const [currentRecordIndex, setCurrentRecordIndex] = useState(0);
+    // build the empty object of data sorted by set interval time periods and populate with production data pulled from the db and passed in as a prop 
+    const [sortedOrderedData, setSortedOrderedData] = useState(buildEmptyChronologicObject(findStartAndFinishDates(productionData)))
+    useEffect(() => {
+        populateChronologicObject(sortedOrderedData, productionData)
+        console.log(sortedOrderedData)
+    }, [])
+    const [currentRecordsDate, setCurrentRecordsDate] = useState(Object.keys(sortedOrderedData)[0])
+
 
     useEffect(() => {
         function makeDataDivs() {
             setDataDivs([])
             let tempArray = [];
-            // let currentRecords = records[currentRecordIndex]
-            let currentRecords = sortedOrderedData[Object.keys(sortedOrderedData)[currentRecordIndex]]
-            console.log(currentRecordIndex)
+            setCurrentRecordsDate(Object.keys(sortedOrderedData)[currentRecordIndex])
+            let currentRecords = sortedOrderedData[currentRecordsDate]
             for (let year in currentRecords) {
-                console.log(year)
                 tempArray.push(<div key={`${currentRecords[year]}-${year}`} className={production_styles.yearly_row}>
                     <h2>{year}</h2>
-                    <div style={{ width: `${currentRecords[year][1]/18886*100}%` }} className={production_styles.progress_bar}></div>
-                    <p>{currentRecords[year][1]}</p>
+                    <div style={{ width: `${currentRecords[year][1] / 18886 * 100}%` }} className={production_styles.progress_bar}>
+                        {currentRecords[year][1] === 0? '': <p>{currentRecords[year][1]}</p>}
+                    </div>
                 </div>)
             }
             setDataDivs(tempArray.reverse())
             setCurrentRecordIndex(prev => {
                 return prev + 1
             });
-
         }
         makeDataDivs()
     }, [advance])
@@ -179,8 +154,15 @@ export default function Produciton({ productionData }) {
 
     return (
         <>
+            <input className={production_styles.date_slider} type="range" min="0" max={Object.keys(sortedOrderedData).length - 1} value={currentRecordIndex} onChange={(e) => {
+                setCurrentRecordsDate(Object.keys(sortedOrderedData)[Number(e.target.value)])
+                setCurrentRecordIndex(Number(e.target.value))
+                setadvance(prev => prev + 1)
+                console.log(Object.keys(sortedOrderedData).length, currentRecordIndex, currentRecordsDate)
+
+            }}></input>
             <button onClick={() => setadvance(prev => prev + 1)}>Advance</button>
-            <p>Date{sortedOrderedData[currentRecordIndex]}</p>
+            <p>Date{currentRecordsDate}</p>
             <div className={production_styles.production_animation_container}>
                 {dataDivs}
             </div>
