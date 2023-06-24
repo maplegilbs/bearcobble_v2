@@ -19,13 +19,13 @@ export default function Primary_Nav({ isMobileMenuDisplayed, setIsMobileMenuDisp
         >
             <Link href="/"><span>Home</span><Image className={nav_styles.home_icon} src={HomeIcon} alt='Icon of a bearclaw'></Image></Link>
             <hr className={nav_styles.nav_hr} />
-            <Link href="/weather"><span>Weather</span><Image src={WeatherIcon} alt='Icon of a cloud and sun'></Image></Link>
-            <hr className={nav_styles.nav_hr} />
             <Link href="/sensors"><span>Sensors</span><Image src={SensorIcon} alt='Icon of a sensor'></Image></Link>
             <hr className={nav_styles.nav_hr} />
-            <Link href="/map"><span>Map</span><Image src={MapIcon} alt='Icon of a map with place locator pin'></Image></Link>
-            <hr className={nav_styles.nav_hr} />
             <Link href="/ros"><span>ROs</span><Image src={ROIcon} alt='Icon of an RO'></Image></Link>
+            <hr className={nav_styles.nav_hr} />
+            <Link href="/weather"><span>Weather</span><Image src={WeatherIcon} alt='Icon of a cloud and sun'></Image></Link>
+            <hr className={nav_styles.nav_hr} />
+            <Link href="/map"><span>Map</span><Image src={MapIcon} alt='Icon of a map with place locator pin'></Image></Link>
         </nav>
     )
 }

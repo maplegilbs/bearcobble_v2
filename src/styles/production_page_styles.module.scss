@@ -35,6 +35,13 @@
     }
 }
 
+.current_date_header {
+    font-family: global_variables.$global_fonts;
+    font-size: .8rem;
+    width: 85%;
+    margin: 1rem;
+}
+
 .date_slider{
     width: 95%;
     margin: 1rem auto;
@@ -43,7 +50,7 @@
 
 .date_header {
     font-family: global_variables.$global_fonts;
-    font-size: 1.35rem;
+    font-size: 1rem;
     font-weight: 700;
     display: block;
     width: max-content;
@@ -61,6 +68,11 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px #333;
 
+    hr {
+        height: 2px;
+        width: 85%;
+        margin: 4px auto;
+    }
     .yearly_row{
         display: flex;
         justify-content: flex-start;
@@ -70,10 +82,10 @@
         h2 {
             font-size: 1rem;
             margin-right: 2%;
+            width: 10%;
         }
             
             .progress_bar {
-                // min-width: min-content;
                 margin-left: 5px;
                 height: 1.5rem;
                 background-color: lightslategrey;
@@ -92,6 +104,18 @@
                 }
             }
        }
+}
+
+@media screen and (min-width: 720px) {
+
+    .production_animation_container {
+        .yearly_row{
+            h2 {
+                width: 5%;
+            }
+        }
+    }
 
 
+    
 }
