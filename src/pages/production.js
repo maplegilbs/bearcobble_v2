@@ -142,8 +142,8 @@ export default function Produciton({ productionData }) {
             for (let year in currentRecords) {
                 tempArray.push(<div key={`${currentRecords[year]}-${year}`} className={production_styles.yearly_row}>
                     <h2>{year}</h2>
-                    <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 100}% - 10%)` }} className={production_styles.progress_bar}>
-                        {currentRecords[year][1] === 0 ? '' : <p>{currentRecords[year][1]}</p>}
+                    <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 90}%)` }} className={production_styles.progress_bar}>
+                        {currentRecords[year][1] === 0 ? '' : <p style={currentRecords[year][1] / 18886 > .1? {padding: '5px'}: {padding: '0px'}}>{currentRecords[year][1]}</p>}
                     </div>
                 </div>)
             }
