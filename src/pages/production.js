@@ -71,7 +71,6 @@ function buildEmptyChronologicObject(minMax) {
 // each year should have an array as a value with the first value being the amount produced in the given time period, and the second being the running YTD total
 // ex April 01 12:00 : { 2018: [production in time period, running total], 2019: [production in time period: running total] etc}
 function populateChronologicObject(emptyChronologicObj, sourceData) {
-    console.log('populatingObject')
     let timeStamps = Object.keys(emptyChronologicObj);  //array of our time stamps to cycle through
     for (let sourceIndex = 0; sourceIndex < sourceData.length; sourceIndex++) { //cycling through our source data year by year
         let currentYearData = sourceData[sourceIndex];
@@ -143,7 +142,7 @@ export default function Produciton({ productionData }) {
             for (let year in currentRecords) {
                 tempArray.push(<div key={`${currentRecords[year]}-${year}`} className={production_styles.yearly_row}>
                     <h2>{year}</h2>
-                    <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 100}%)` }} className={production_styles.progress_bar}>
+                    <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 100}% - 10%)` }} className={production_styles.progress_bar}>
                         {currentRecords[year][1] === 0 ? '' : <p>{currentRecords[year][1]}</p>}
                     </div>
                 </div>)
