@@ -36,7 +36,7 @@ export default function Tank_Container({ tank_num, current_tank_level, reading_t
                 <p className={tank_styles.tank_level}>{Math.round(current_tank_level)}&quot;</p>
                 </>
                 :
-                <p>Sensor Offline</p>
+                <p className={tank_styles.sensor_alert}>Sensor Offline</p>
                 }
                 <p
                     className={tank_styles.reading_time}

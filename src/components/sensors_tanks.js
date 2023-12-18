@@ -15,7 +15,8 @@ function buildTankComponents ({tank1, tank2, tank3, tank4, tank5}){
         key ={tankDataItem.tank_name}
         tank_num={tankDataItem.tank_name} 
         current_tank_level={tankDataItem.tank_level} 
-        reading_time={formatTime(new Date(tankDataItem.reading_time))}/>
+        reading_time={formatTime(new Date(tankDataItem.reading_time))}
+        status={tankDataItem.status}/>
     })
     return tankComponents;
 }

@@ -16,7 +16,8 @@ function buildVacuumComponents ({section1, section2, section3, section4, section
         key ={sectionDataItem.section_name}
         section={sectionDataItem.section_name} 
         current_vacuum_level={sectionDataItem.vacuum_reading.toFixed(1)} 
-        reading_time={formatTime(new Date(sectionDataItem.reading_time))}/>
+        reading_time={formatTime(new Date(sectionDataItem.reading_time))}
+        status={sectionDataItem.status}/>
     })
     return sectionComponents;
 }
