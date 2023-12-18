@@ -39,6 +39,8 @@ export default function Sensors() {
         return targetReached;
     }
 
+    console.log(tankData)
+
     useEffect(() => {
         async function getSensorData() {
             try {
@@ -89,6 +91,7 @@ export default function Sensors() {
                     tank_num={tankData[tank_data].tank_name}
                     current_tank_level={tankData[tank_data].tank_level}
                     reading_time={formatTime(new Date(tankData[tank_data].reading_time))}
+                    status={tankData[tank_data].status}
                 />
             )
         }

@@ -6,7 +6,7 @@ import { calcVolFromHeight } from '@/utils/tankInfoHelpers';
 import tank_styles from './tank.module.scss';
 
 
-export default function Tank_Container({ tank_num, current_tank_level, reading_time }) {
+export default function Tank_Container({ tank_num, current_tank_level, reading_time, status }) {
     const [isStale, setIsStale] = useState(false);
     let msTillDataIsStale = 5 * 60 * 1000 // 5 minute delay then data is considered "stale"
     let msBetweenEachStaleCheck = 1 * 60 * 1000 //check if data is stale every minute
@@ -28,10 +28,16 @@ export default function Tank_Container({ tank_num, current_tank_level, reading_t
         <div className={tank_styles.tank_outer_container}>
             <div
                 className={tank_styles.tank_inner_container}
-                style={{ background: `linear-gradient(white ${100 - percentFull}%, rgba(51, 114, 200, 0.5) ${100 - percentFull}% 100%)` }}>
+                style={status.toLowerCase() !== 'dead node' ? { background: `linear-gradient(white ${100 - percentFull}%, rgba(51, 114, 200, 0.5) ${100 - percentFull}% 100%)` } : {background: `rgba(100,100,100,.35)`}}>
                 <h4 className={tank_styles.tank_number}>{tank_num}</h4>
+                {status.toLowerCase() !== 'dead node' ?
+                <>
                 <p className={tank_styles.tank_volume}>{calcVolFromHeight(current_tank_level)}</p>
                 <p className={tank_styles.tank_level}>{Math.round(current_tank_level)}&quot;</p>
+                </>
+                :
+                <p>Sensor Offline</p>
+                }
                 <p
                     className={tank_styles.reading_time}
                     style={{ backgroundColor: `${isStale ? 'rgba(220,20,20,.5)' : 'transparent'}` }}>
