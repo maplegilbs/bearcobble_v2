@@ -35,12 +35,11 @@ export default function Vac_line_Graph({ graph_data }) {
     let maxPlotPoint = 0;
     for (let i = 0; i < 6; i++) {
         plotPoints[i][1].forEach(plotPoint => {
-            if (plotPoint && plotPoint > maxPlotPoint) maxPlotPoint = Number(plotPoint).toFixed(1);
-            if (plotPoint && plotPoint < minPlotPoint) minPlotPoint = Number(plotPoint).toFixed(1);
+            if (plotPoint && plotPoint > maxPlotPoint) maxPlotPoint = Number(Number(plotPoint).toFixed(1));
+            if (plotPoint && plotPoint < minPlotPoint) minPlotPoint = Number(Number(plotPoint).toFixed(1));
         })
     }
 
-    console.log(minPlotPoint, maxPlotPoint)
 
     return (
         <Plot data={[
