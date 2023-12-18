@@ -7,6 +7,7 @@ import WeatherIcon from '../../public/IconColor-Weather.png'
 import SensorIcon from '../../public/IconColor-Sensor.png'
 import MapIcon from '../../public/IconColor-Map.png'
 import ROIcon from '../../public/IconColor-RO.png'
+import BarrelIcon from '../../public/IconColor-Barrel.png'
 //Styles
 import nav_styles from './primary_nav.module.scss'
 
@@ -26,6 +27,8 @@ export default function Primary_Nav({ isMobileMenuDisplayed, setIsMobileMenuDisp
             <Link href="/weather"><span>Weather</span><Image src={WeatherIcon} alt='Icon of a cloud and sun'></Image></Link>
             <hr className={nav_styles.nav_hr} />
             <Link href="/map"><span>Map</span><Image src={MapIcon} alt='Icon of a map with place locator pin'></Image></Link>
+            <hr className={nav_styles.nav_hr} />
+            <Link href="/production"><span>Production</span><Image src={BarrelIcon} alt='Icon of a barrel of syrup'></Image></Link>
         </nav>
     )
 }

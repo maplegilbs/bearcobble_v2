@@ -34,9 +34,9 @@ function findStartAndFinishDates(dataArray) {
     let yearlyMinMax = [];
     dataArray.forEach(innerArray => {
         let minDate = formatTime(new Date(innerArray[0].barrel_id))
-        let minRelative = minDate.month + minDate.day;
+        let minRelative = minDate.month.toString().concat(minDate.day);
         let maxDate = formatTime(new Date(innerArray[innerArray.length - 1].barrel_id))
-        let maxRelative = maxDate.month + maxDate.day;
+        let maxRelative = maxDate.month.toString().concat(maxDate.day);
         yearlyMinMax.push(minRelative)
         yearlyMinMax.push(maxRelative)
         yearlyMinMax.sort();
