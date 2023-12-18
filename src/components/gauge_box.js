@@ -13,7 +13,7 @@ function getIndicatorColorFromVacLevel(vacLevel) {
     else return 'lightgrey'
 }
 
-export default function Box_Gauge({ section, current_vacuum_level, reading_time }) {
+export default function Box_Gauge({ section, current_vacuum_level, reading_time, status }) {
     const [isStale, setIsStale] = useState(false);
     let msTillDataIsStale = 5 * 60 * 1000 // 5 minute delay then data is considered "stale"
     let msBetweenEachStaleCheck = 1 * 60 * 1000 //check if data is stale every minute
@@ -32,10 +32,14 @@ export default function Box_Gauge({ section, current_vacuum_level, reading_time 
         <div className={gauge_box_styles.box_container}>
             <div
                 className={gauge_box_styles.inner_box}
-                style={{ background: `linear-gradient(white ${100-current_vacuum_level * percentPerVacLevel}%, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${150-current_vacuum_level * percentPerVacLevel}%) 100%` }}
+                style={status.toLowerCase() !== 'dead node' ? { background: `linear-gradient(white ${100-current_vacuum_level * percentPerVacLevel}%, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${150-current_vacuum_level * percentPerVacLevel}%) 100%` } : {backgroundColor: "white"}}
             >
                 <p className={gauge_box_styles.section_label}>{section}</p>
+                {status.toLowerCase() !== 'dead node' ?
                 <h1 className={gauge_box_styles.vac_reading}>{current_vacuum_level}</h1>
+                :
+                <p className={gauge_box_styles.sensor_alert}>Sensor Offline</p>
+                }
                 <p
                     className={gauge_box_styles.reading_time}
                     style={{ backgroundColor: `${isStale ? 'rgba(220,20,20,.5)' : 'transparent'}` }}>

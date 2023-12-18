@@ -39,7 +39,7 @@ export default function Sensors() {
         return targetReached;
     }
 
-    console.log(tankData)
+    console.log(vacuumData)
 
     useEffect(() => {
         async function getSensorData() {
@@ -71,12 +71,14 @@ export default function Sensors() {
                         section={vacuumData[section_data].section_name}
                         current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
                         reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
+                        status={vacuumData[section_data].status}
                     /> :
                     <Dial_Gauge
                         key={vacuumData[section_data].section_name}
                         section={vacuumData[section_data].section_name}
                         current_vacuum_level={Math.round(vacuumData[section_data].vacuum_reading * 10) / 10}
                         reading_time={formatTime(new Date(vacuumData[section_data].reading_time))}
+                        status={vacuumData[section_data].status}
                     />)
             )
         }
