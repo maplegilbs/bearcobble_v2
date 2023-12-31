@@ -93,6 +93,9 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
+                currentTimeStamp = currentTimeStamp.split('')
+                currentTimeStamp.splice(5, 0, '/2000')
+                currentTimeStamp = currentTimeStamp.join('')
                 currentTimeStampDate = new Date(currentTimeStamp).setFullYear(2000)
             }
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
