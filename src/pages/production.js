@@ -1,3 +1,5 @@
+//Components
+import Loader from '@/components/loader';
 //Libraries
 import mysql from 'mysql2';
 import { useEffect, useState } from 'react';
