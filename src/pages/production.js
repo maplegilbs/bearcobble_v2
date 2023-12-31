@@ -53,8 +53,8 @@ function buildEmptyChronologicObject(minMax) {
     let chronologicObj = {};
     let intervalDuration = 8;
     //format as MM-DD HH:MM - formatting the year to be 00 or 2000 so we can compare all years based on month and day
-    let startDate = new Date(`00/${minMax[0].slice(0, 2)}/${minMax[0].slice(2, 4)}`);
-    let endDate = new Date(`00/${minMax[1].slice(0, 2)}/${minMax[1].slice(2, 4)}`);
+    let startDate = new Date(`2000, ${minMax[0].slice(0, 2)}, ${minMax[0].slice(2, 4)}`);
+    let endDate = new Date(`2000, ${minMax[1].slice(0, 2)}, ${minMax[1].slice(2, 4)}`);
     let paddedEndDate = new Date(Date.parse(endDate) + 172800000)
     let curDate = startDate;
     while (curDate < paddedEndDate) {
@@ -112,7 +112,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
 }
 
 //find record index based on input date
-function findRecordIndexByDate(dataToMatchDates, comparisonDate){
+function findRecordIndexByDate(dataToMatchDates, comparisonDate) {
     let dataToMatchDateKeys = Object.keys(dataToMatchDates);
     let indexOfMatchedDate = dataToMatchDateKeys.findIndex(date => {
         let myDate = new Date(date)
@@ -120,11 +120,11 @@ function findRecordIndexByDate(dataToMatchDates, comparisonDate){
         comparisonDate.setFullYear('2000')
         return myDate > comparisonDate
     })
-    return indexOfMatchedDate > 0? indexOfMatchedDate -1: Object.keys(dataToMatchDateKeys).length-1;
+    return indexOfMatchedDate > 0 ? indexOfMatchedDate - 1 : Object.keys(dataToMatchDateKeys).length - 1;
 }
 
 
-export default function Produciton({ productionData }) {
+export default function Production({ productionData }) {
     //set state variables
     const [dataDivs, setDataDivs] = useState([]);
     const [currentDate, setCurrentDate] = useState(formatTime(new Date()))
@@ -133,7 +133,10 @@ export default function Produciton({ productionData }) {
     useEffect(() => populateChronologicObject(sortedOrderedData, productionData), [])
     const [currentRecordIndex, setCurrentRecordIndex] = useState(findRecordIndexByDate(sortedOrderedData, currentDate.inputTime));
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
-    
+    let formattedRecordsDate = currentRecordsDate.split('')
+    formattedRecordsDate.splice(5, 0, '/2000')
+    formattedRecordsDate = formattedRecordsDate.join('')
+
     useEffect(() => {
         function makeDataDivs() {
             let tempArray = [];
@@ -143,7 +146,7 @@ export default function Produciton({ productionData }) {
                 tempArray.push(<div key={`${currentRecords[year]}-${year}`} className={production_styles.yearly_row}>
                     <h2>{year}</h2>
                     <div style={{ width: `calc(${currentRecords[year][1] / 18886 * 90}%)` }} className={production_styles.progress_bar}>
-                        {currentRecords[year][1] === 0 ? '' : <p style={currentRecords[year][1] / 18886 > .1? {padding: '5px'}: {padding: '0px'}}>{currentRecords[year][1]}</p>}
+                        {currentRecords[year][1] === 0 ? '' : <p style={currentRecords[year][1] / 18886 > .1 ? { padding: '5px' } : { padding: '0px' }}>{currentRecords[year][1]}</p>}
                     </div>
                 </div>)
             }
@@ -153,22 +156,26 @@ export default function Produciton({ productionData }) {
     }, [currentRecordIndex])
 
     return (
-        <>
-            <h2 className={production_styles.primary_heading}>Yearly Production Timeline Comparison</h2>
-            <p>Compare YTD production totals from back to 2018.  Adjust the slider to select the date to compare.  Broken down into 8 hour intervals.</p>
-            <hr/>
-            <h3 className={production_styles.current_date_header}>Current Date & Time: {currentDate.date} @ {currentDate.time} {currentDate.amPm}</h3>
-            <div className={production_styles.production_animation_container}>
-            <h4 className={production_styles.date_header}>YTD Produciton as of {`${currentRecordsDate.slice(0,5)} @ ${formatTime(new Date(currentRecordsDate)).time} ${formatTime(new Date(currentRecordsDate)).amPm}`}</h4>
-            <hr/>
-                {dataDivs}
-            </div>
-            <input className={production_styles.date_slider} type="range" min="0" max={Object.keys(sortedOrderedData).length - 1} value={currentRecordIndex} onChange={(e) => setCurrentRecordIndex(Number(e.target.value))}></input>
-            <div className={production_styles.time_control_button_container}>
-                <button disabled={!currentRecordIndex} onClick={(e) =>setCurrentRecordIndex(prev => prev - 1)}>&#8678;</button>
-                <button disabled={currentRecordIndex === Object.keys(sortedOrderedData).length-1} onClick={() => setCurrentRecordIndex(prev => prev + 1)}>&#8680;</button>
-            </div>
-
+        <>{formattedRecordsDate ?
+            <>
+                <h2 className={production_styles.primary_heading}>Yearly Production Timeline Comparison</h2>
+                <p>Compare YTD production totals from back to 2018.  Adjust the slider to select the date to compare.  Broken down into 8 hour intervals.</p>
+                <hr />
+                <h3 className={production_styles.current_date_header}>Current Date & Time: {currentDate.date} @ {currentDate.time} {currentDate.amPm}</h3>
+                <div className={production_styles.production_animation_container}>
+                    <h4 className={production_styles.date_header}>YTD Produciton as of {`${formattedRecordsDate.slice(0, 5)} @ ${formatTime(new Date(formattedRecordsDate)).time} ${formatTime(new Date(formattedRecordsDate)).amPm}`}</h4>
+                    <hr />
+                    {dataDivs}
+                </div>
+                <input className={production_styles.date_slider} type="range" min="0" max={Object.keys(sortedOrderedData).length - 1} value={currentRecordIndex} onChange={(e) => setCurrentRecordIndex(Number(e.target.value))}></input>
+                <div className={production_styles.time_control_button_container}>
+                    <button disabled={!currentRecordIndex} onClick={(e) => setCurrentRecordIndex(prev => prev - 1)}>&#8678;</button>
+                    <button disabled={currentRecordIndex === Object.keys(sortedOrderedData).length - 1} onClick={() => setCurrentRecordIndex(prev => prev + 1)}>&#8680;</button>
+                </div>
+            </>
+            :
+            <Loader />
+        }
         </>
     )
 }
