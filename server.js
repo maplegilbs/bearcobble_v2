@@ -16,7 +16,8 @@ app
             console.log('line 16', 'hostname', req.hostname, 'url', req.url, req.headers['x-forwarded-proto'])
 
             if (req.headers['x-forwarded-proto'] === 'http' || req.hostname === 'bearcobble.herokuapp.com') {
-                res.redirect(301, `https://${hostname}${req.url}`);
+                console.log(`https://${hostname}${req.url}`)
+                res.redirect(301, `https://${hostname}`);
                 return;
             }
             res.setHeader('strict-transport-security', 'max-age=31536000; includeSubDomains; preload');
