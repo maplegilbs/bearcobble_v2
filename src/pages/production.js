@@ -26,7 +26,22 @@ export async function getServerSideProps() {
         productionData.push(returnedResults);
     }
     return ({ props: { productionData: productionData } })
+}
 
+function adjustDateForIOS(date) {
+    let year = date.slice(0, 4);
+    let monthIndex = date.slice(5, 7) - 1;
+    let day = date.slice(8, 10)
+    let hours = date.slice(11, 13)
+    let minutes = date.slice(14, 16)
+    // console.log(`${year}, ${monthIndex}, ${day}, ${hours}, ${minutes}`)
+    return {
+        year,
+        monthIndex,
+        day,
+        hours,
+        minutes
+    }
 }
 
 // take array of data (also arrays) and find the chronologically first and last dates
@@ -35,9 +50,11 @@ function findStartAndFinishDates(dataArray) {
     let absoluteMinMax = [];
     let yearlyMinMax = [];
     dataArray.forEach(innerArray => {
-        let minDate = formatTime(new Date(innerArray[0].barrel_id))
+        let iosMinDate = adjustDateForIOS(innerArray[0].barrel_id)
+        let minDate = formatTime(new Date(iosMinDate.year, iosMinDate.monthIndex, iosMinDate.day, iosMinDate.hours, iosMinDate.minutes))
         let minRelative = minDate.month.toString().concat(minDate.day);
-        let maxDate = formatTime(new Date(innerArray[innerArray.length - 1].barrel_id))
+        let iosMaxDate = adjustDateForIOS(innerArray[innerArray.length - 1].barrel_id)
+        let maxDate = formatTime(new Date(iosMaxDate.year, iosMaxDate.monthIndex, iosMaxDate.day, iosMaxDate.hours, iosMaxDate.minutes))
         let maxRelative = maxDate.month.toString().concat(maxDate.day);
         yearlyMinMax.push(minRelative)
         yearlyMinMax.push(maxRelative)
@@ -86,19 +103,18 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         //keep track of the most recently added production record index
         let currentProductionRecordIndex = 0;
         let currentProductionRecord = currentYearData[currentProductionRecordIndex];
-        let currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
+        let iosProdDate = adjustDateForIOS(currentProductionRecord.barrel_id);
+        let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
+        console.log(iosProdDate)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
-        let currentTimeStampDate = new Date(currentTimeStamp).setFullYear(2000)
+        let currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
         while (currentTimeStampIndex < timeStamps.length) {
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
-                currentTimeStamp = currentTimeStamp.split('')
-                currentTimeStamp.splice(5, 0, '/2000')
-                currentTimeStamp = currentTimeStamp.join('')
-                currentTimeStampDate = new Date(currentTimeStamp).setFullYear(2000)
+                currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
             }
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
                 periodTotal += currentProductionRecord.gallons;
@@ -106,6 +122,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 currentProductionRecordIndex++
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
+                    console.log(currentProductionRecord.barrel_id)
                     currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
                 }
             }
@@ -138,9 +155,13 @@ export default function Production({ productionData }) {
     useEffect(() => populateChronologicObject(sortedOrderedData, productionData), [])
     const [currentRecordIndex, setCurrentRecordIndex] = useState(findRecordIndexByDate(sortedOrderedData, currentDate.inputTime));
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
-    let formattedRecordsDate = currentRecordsDate.split('')
-    formattedRecordsDate.splice(5, 0, '/2000')
-    formattedRecordsDate = formattedRecordsDate.join('')
+    let formattedRecordsDate = null;
+    if (sortedOrderedData && currentRecordIndex) {
+        formattedRecordsDate = currentRecordsDate.split('')
+        formattedRecordsDate.splice(5, 0, '/2000')
+        formattedRecordsDate = formattedRecordsDate.join('')
+    }
+    console.log(formattedRecordsDate)
 
     useEffect(() => {
         function makeDataDivs() {
