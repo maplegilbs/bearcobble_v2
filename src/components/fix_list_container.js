@@ -60,7 +60,7 @@ export default function Fix_List() {
         try {
             let resolved_records = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/fix_list_write`, {
                 method: "POST",
-                header: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: "markComplete", ids: ids })
             })
             setSelectedRowIds([])

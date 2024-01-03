@@ -21,7 +21,9 @@ app
             next();
         });
 
+        server.use(express.json())
         server.get('*', (req, res) => handle(req, res));
+        server.post('*', (req, res) => handle(req, res));
 
         server.listen(
             PORT,

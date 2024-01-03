@@ -3,7 +3,8 @@ import mysql from 'mysql2';
 
 export default async function Fix_List_Write(req, res){
    console.log(typeof req.body, req.body)
-    const body = JSON.parse(req.body);
+    // const body = JSON.parse(req.body);
+    const body = req.body;
     let action = body.action;
     let ids = body.ids;
     

@@ -12,7 +12,7 @@ export default async function (req, res) {
                 let forecast_data = await fetch(api_lookup[req.query.source])
                 if(forecast_data.ok){
                     let forecast_json = await forecast_data.json();
-                    console.log(forecast_json);
+                    // console.log(forecast_json);
                     res.send(forecast_json)
                 }
                 else throw(`The response returned no data from ${api_lookup[req.query.source]}`)

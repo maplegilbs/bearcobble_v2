@@ -35,7 +35,9 @@ export default function Fix_List_Add_Form({ isVisible, setIsVisible, updateFixLi
         try {
             let submittedData = await fetch('../api/fix_list_write', {
                 method: 'POST',
-                header: { 'Content-Type': 'application/json' },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(formData)
             })
             setIsVisible(false)

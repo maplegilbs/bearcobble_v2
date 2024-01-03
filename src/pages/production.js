@@ -105,7 +105,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionRecord = currentYearData[currentProductionRecordIndex];
         let iosProdDate = adjustDateForIOS(currentProductionRecord.barrel_id);
         let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
-        console.log(iosProdDate)
+        //! console.log(iosProdDate)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
         let currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
@@ -122,7 +122,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 currentProductionRecordIndex++
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
-                    console.log(currentProductionRecord.barrel_id)
+                    //! console.log(currentProductionRecord.barrel_id)
                     currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
                 }
             }
@@ -161,7 +161,7 @@ export default function Production({ productionData }) {
         formattedRecordsDate.splice(5, 0, '/2000')
         formattedRecordsDate = formattedRecordsDate.join('')
     }
-    console.log(formattedRecordsDate)
+    //!console.log(formattedRecordsDate)
 
     useEffect(() => {
         function makeDataDivs() {
