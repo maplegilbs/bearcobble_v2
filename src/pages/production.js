@@ -105,7 +105,6 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionRecord = currentYearData[currentProductionRecordIndex];
         let iosProdDate = adjustDateForIOS(currentProductionRecord.barrel_id);
         let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
-        //! console.log(iosProdDate)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
         let currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
@@ -122,8 +121,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 currentProductionRecordIndex++
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
-                    //! console.log(currentProductionRecord.barrel_id)
-                    currentProductionDate = new Date(currentProductionRecord.barrel_id).setFullYear(2000)
+                    currentProductionDate = new Date(currentProductionRecord.barrel_id.slice(0, 4), currentProductionRecord.barrel_id.slice(5, 7)-1, currentProductionRecord.barrel_id.slice(8, 10), currentProductionRecord.barrel_id.slice(11, 13), currentProductionRecord.barrel_id.slice(14,16)).setFullYear(2000)
                 }
             }
             emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
@@ -137,11 +135,11 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
 function findRecordIndexByDate(dataToMatchDates, comparisonDate) {
     let dataToMatchDateKeys = Object.keys(dataToMatchDates);
     let indexOfMatchedDate = dataToMatchDateKeys.findIndex(date => {
-        let myDate = new Date(date)
-        myDate.setFullYear('2000')
+        let myDate = new Date('2000', date.slice(0,2)-1, date.slice(3, 5), date.slice(6).padStart(5,'0').slice(0,2), date.slice(6).padStart(5,'0').slice(4,6) )
         comparisonDate.setFullYear('2000')
         return myDate > comparisonDate
     })
+    console.log(indexOfMatchedDate)
     return indexOfMatchedDate > 0 ? indexOfMatchedDate - 1 : Object.keys(dataToMatchDateKeys).length - 1;
 }
 
@@ -161,7 +159,7 @@ export default function Production({ productionData }) {
         formattedRecordsDate.splice(5, 0, '/2000')
         formattedRecordsDate = formattedRecordsDate.join('')
     }
-    //!console.log(formattedRecordsDate)
+    // console.log(formattedRecordsDate)
 
     useEffect(() => {
         function makeDataDivs() {
