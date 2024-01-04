@@ -39,7 +39,6 @@ export default function Sensors() {
         return targetReached;
     }
 
-    console.log(vacuumData)
 
     useEffect(() => {
         async function getSensorData() {

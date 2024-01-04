@@ -37,7 +37,6 @@ export default async function (req, res){
             where recordDateTime between '${req.query.period_start}' and '${req.query.period_end}'
             order by recordDateTime desc
             `;
-            console.log(query)
             const historical_data = await pool.query(query)
             res.send(historical_data)
             

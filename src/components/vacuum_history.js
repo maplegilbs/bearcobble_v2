@@ -16,7 +16,6 @@ export default function Vacuum_History() {
     const [historicalData, setHistoricalData] = useState([]);
     const [dateRange, setDateRange] = useState([convertDateForSQL(adjustForUTC(new Date(Date.now() - (4 * 60 * 60 * 1000)))), convertDateForSQL(adjustForUTC(new Date()))])
     const [updatedRecordID, setUpdatedRecordID] = useState();
-
     useEffect(() => {
         async function getData() {
             try {
