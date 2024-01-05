@@ -139,7 +139,6 @@ function findRecordIndexByDate(dataToMatchDates, comparisonDate) {
         comparisonDate.setFullYear('2000')
         return myDate > comparisonDate
     })
-    console.log(indexOfMatchedDate)
     return indexOfMatchedDate > 0 ? indexOfMatchedDate - 1 : Object.keys(dataToMatchDateKeys).length - 1;
 }
 
@@ -154,12 +153,11 @@ export default function Production({ productionData }) {
     const [currentRecordIndex, setCurrentRecordIndex] = useState(findRecordIndexByDate(sortedOrderedData, currentDate.inputTime));
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
     let formattedRecordsDate = null;
-    if (sortedOrderedData && currentRecordIndex) {
+    if (sortedOrderedData && currentRecordIndex !== 'undefined') {
         formattedRecordsDate = currentRecordsDate.split('')
         formattedRecordsDate.splice(5, 0, '/2000')
         formattedRecordsDate = formattedRecordsDate.join('')
     }
-    // console.log(formattedRecordsDate)
 
     useEffect(() => {
         function makeDataDivs() {
@@ -187,7 +185,7 @@ export default function Production({ productionData }) {
                 <hr />
                 <h3 className={production_styles.current_date_header}>Current Date & Time: {currentDate.date} @ {currentDate.time} {currentDate.amPm}</h3>
                 <div className={production_styles.production_animation_container}>
-                    <h4 className={production_styles.date_header}>YTD Produciton as of {`${formattedRecordsDate.slice(0, 5)} @ ${formatTime(new Date(formattedRecordsDate)).time} ${formatTime(new Date(formattedRecordsDate)).amPm}`}</h4>
+                    <h4 className={production_styles.date_header}>YTD Produciton as of {`${formattedRecordsDate.slice(0, 5)} @ ${formatTime(new Date(formattedRecordsDate.slice(6,10), formattedRecordsDate.slice(0,2)-1, formattedRecordsDate.slice(3,5), formattedRecordsDate.slice(11).padStart(5,'0').slice(0,2), formattedRecordsDate.slice(11).padStart(5,'0').slice(3,5))).time} ${formatTime(new Date(formattedRecordsDate.slice(6,10), formattedRecordsDate.slice(0,2)-1, formattedRecordsDate.slice(3,5), formattedRecordsDate.slice(11).padStart(5,'0').slice(0,2), formattedRecordsDate.slice(11).padStart(5,'0').slice(3,5))).amPm}`}</h4>
                     <hr />
                     {dataDivs}
                 </div>

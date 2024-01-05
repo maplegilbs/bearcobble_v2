@@ -157,7 +157,7 @@ export default function Weather_Forecast_Hourly_Graph() {
 
     }, [graphData])
 
-
+console.log(windowSize)
 
     
     // console.log(shapes)
@@ -179,7 +179,7 @@ export default function Weather_Forecast_Hourly_Graph() {
                             automargin: true,
                             tickangle: windowSize.current[0] < 720 ? 75 : 'auto'
                         },
-                        width: windowSize.current[0] * .85,
+                        width: windowSize.current[0] * .75,
                         autosize: false,
                         legend: {
                             y: -.75,
