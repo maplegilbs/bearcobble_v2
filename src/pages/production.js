@@ -72,8 +72,8 @@ function buildEmptyChronologicObject(minMax) {
     let chronologicObj = {};
     let intervalDuration = 8;
     //format as MM-DD HH:MM - formatting the year to be 00 or 2000 so we can compare all years based on month and day
-    let startDate = new Date(`2000, ${minMax[0].slice(0, 2)}, ${minMax[0].slice(2, 4)}`);
-    let endDate = new Date(`2000, ${minMax[1].slice(0, 2)}, ${minMax[1].slice(2, 4)}`);
+    let startDate = new Date(`2000-${minMax[0].slice(0, 2)}-${minMax[0].slice(2, 4)}`);
+    let endDate = new Date(`2000-${minMax[1].slice(0, 2)}-${minMax[1].slice(2, 4)}`);
     let paddedEndDate = new Date(Date.parse(endDate) + 172800000)
     let curDate = startDate;
     while (curDate < paddedEndDate) {
@@ -107,13 +107,13 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
-        let currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
+        let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(0,2)}-${currentTimeStamp.slice(3,5)}`)
         while (currentTimeStampIndex < timeStamps.length) {
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
-                currentTimeStampDate = new Date(`2000, ${currentTimeStamp.slice(0,2)}, ${currentTimeStamp.slice(3,5)}`)
+                currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(0,2)}-${currentTimeStamp.slice(3,5)}`)
             }
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
                 periodTotal += currentProductionRecord.gallons;
@@ -121,7 +121,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 currentProductionRecordIndex++
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
-                    currentProductionDate = new Date(currentProductionRecord.barrel_id.slice(0, 4), currentProductionRecord.barrel_id.slice(5, 7)-1, currentProductionRecord.barrel_id.slice(8, 10), currentProductionRecord.barrel_id.slice(11, 13), currentProductionRecord.barrel_id.slice(14,16)).setFullYear(2000)
+                    currentProductionDate = new Date(`2000-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14,16)}`)
                 }
             }
             emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
@@ -135,7 +135,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
 function findRecordIndexByDate(dataToMatchDates, comparisonDate) {
     let dataToMatchDateKeys = Object.keys(dataToMatchDates);
     let indexOfMatchedDate = dataToMatchDateKeys.findIndex(date => {
-        let myDate = new Date('2000', date.slice(0,2)-1, date.slice(3, 5), date.slice(6).padStart(5,'0').slice(0,2), date.slice(6).padStart(5,'0').slice(4,6) )
+        let myDate = new Date(`2000-${date.slice(0,2)}-${date.slice(3, 5)}T${date.slice(6).padStart(5,'0').slice(0,2)}:${date.slice(6).padStart(5,'0').slice(3,5)}` )
         comparisonDate.setFullYear('2000')
         return myDate > comparisonDate
     })
