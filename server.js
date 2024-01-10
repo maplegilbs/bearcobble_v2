@@ -12,6 +12,7 @@ app
         const server = express();
         server.use((req, res, next) => {
             const hostname = req.hostname === `bearcobble.herokuapp.com` ? `bearcobble.herokuapp.com` : req.hostname;
+            console.log(`Hostname: ${hostname}`)
 
             if (req.headers['x-forwarded-proto'] === 'http' && req.hostname === 'bearcobble.herokuapp.com') {
                 res.redirect(301, `https://${hostname}`);

@@ -39,7 +39,6 @@ export default function Sensors() {
         return targetReached;
     }
 
-
     useEffect(() => {
         async function getSensorData() {
             try {
