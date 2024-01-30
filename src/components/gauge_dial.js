@@ -30,10 +30,10 @@ export default function Dial_Gauge({ section, current_vacuum_level, reading_time
         <div className={gauge_dial_styles.dial_container}>
             <div
                 className={gauge_dial_styles.outer_dial}
-                style={status.toLowerCase() !== 'dead node'? { background: `conic-gradient(from 270deg, black 1deg, rgba(230,230,230,1) 1deg ${180 - current_vacuum_level * degreesPerVacLevel}deg, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${180 - Math.round(current_vacuum_level * degreesPerVacLevel)}deg 180deg, black 180deg, transparent 181deg  )` } : {background: `conic-gradient(from 270deg, black 1deg, rgba(230,230,230,1) 1deg 1deg, lightgrey 1deg 180deg, black 180deg, transparent 181deg  )`}}
+                style={status === 0? { background: `conic-gradient(from 270deg, black 1deg, rgba(230,230,230,1) 1deg ${180 - current_vacuum_level * degreesPerVacLevel}deg, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${180 - Math.round(current_vacuum_level * degreesPerVacLevel)}deg 180deg, black 180deg, transparent 181deg  )` } : {background: `conic-gradient(from 270deg, black 1deg, rgba(230,230,230,1) 1deg 1deg, lightgrey 1deg 180deg, black 180deg, transparent 181deg  )`}}
             >
                 <div className={gauge_dial_styles.inner_dial}>
-                    {status.toLowerCase() !== 'dead node'?
+                    {status === 0?
                     <h1 className={gauge_dial_styles.vac_reading}>{current_vacuum_level}</h1>
                     :
                     <p>Sensor Offline</p>
