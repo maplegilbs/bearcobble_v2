@@ -28,9 +28,9 @@ export default function Tank_Container({ tank_num, current_tank_level, reading_t
         <div className={tank_styles.tank_outer_container}>
             <div
                 className={tank_styles.tank_inner_container}
-                style={status.toLowerCase() !== 'dead node' ? { background: `linear-gradient(white ${100 - percentFull}%, rgba(51, 114, 200, 0.5) ${100 - percentFull}% 100%)` } : {background: `rgba(100,100,100,.35)`}}>
+                style={status === 0 ? { background: `linear-gradient(white ${100 - percentFull}%, rgba(51, 114, 200, 0.5) ${100 - percentFull}% 100%)` } : {background: `rgba(100,100,100,.35)`}}>
                 <h4 className={tank_styles.tank_number}>{tank_num}</h4>
-                {status.toLowerCase() !== 'dead node' ?
+                {status === 0 ?
                 <>
                 <p className={tank_styles.tank_volume}>{calcVolFromHeight(current_tank_level)}</p>
                 <p className={tank_styles.tank_level}>{Math.round(current_tank_level)}&quot;</p>

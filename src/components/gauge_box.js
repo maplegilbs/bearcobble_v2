@@ -32,10 +32,10 @@ export default function Box_Gauge({ section, current_vacuum_level, reading_time,
         <div className={gauge_box_styles.box_container}>
             <div
                 className={gauge_box_styles.inner_box}
-                style={status.toLowerCase() !== 'dead node' ? { background: `linear-gradient(white ${100-current_vacuum_level * percentPerVacLevel}%, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${150-current_vacuum_level * percentPerVacLevel}%) 100%` } : {backgroundColor: "white"}}
+                style={status === 0 ? { background: `linear-gradient(white ${100-current_vacuum_level * percentPerVacLevel}%, ${getIndicatorColorFromVacLevel(current_vacuum_level)} ${150-current_vacuum_level * percentPerVacLevel}%) 100%` } : {backgroundColor: "white"}}
             >
                 <p className={gauge_box_styles.section_label}>{section}</p>
-                {status.toLowerCase() !== 'dead node' ?
+                {status === 0 ?
                 <h1 className={gauge_box_styles.vac_reading}>{current_vacuum_level}</h1>
                 :
                 <p className={gauge_box_styles.sensor_alert}>Sensor Offline</p>
