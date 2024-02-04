@@ -11,10 +11,10 @@ app
     .then(() => {
         const server = express();
         server.use((req, res, next) => {
-            const hostname = req.hostname === `bearcobble.herokuapp.com` ? `bearcobble.herokuapp.com` : req.hostname;
+            const hostname = req.hostname === `bearcobblehq.vercel.app` ? `bearcobblehq.vercel.app` : req.hostname;
             console.log(`Hostname: ${hostname}`)
 
-            if (req.headers['x-forwarded-proto'] === 'http' && req.hostname === 'bearcobble.herokuapp.com') {
+            if (req.headers['x-forwarded-proto'] === 'http' && req.hostname === 'bearcobblehq.vercel.app') {
                 res.redirect(301, `https://${hostname}`);
                 return;
             }
