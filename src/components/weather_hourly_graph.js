@@ -157,10 +157,8 @@ export default function Weather_Forecast_Hourly_Graph() {
 
     }, [graphData])
 
-console.log(windowSize)
 
     
-    // console.log(shapes)
     if (isLoading) {
         return (<Loader loader_text={'LOADING HOURLY DATA'}/>)
     }

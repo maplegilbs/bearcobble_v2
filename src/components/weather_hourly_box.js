@@ -15,7 +15,6 @@ function setHourlyArray() {
 }
 
 function Hour_Container({ time, noaaData, owData }) {
-    console.log(owData, noaaData)
     return (
         <div key={time} className={hourly_box_styles.hourly_record}>
             <h4>{new Date(time).getHours()}:00</h4>
@@ -34,7 +33,6 @@ function Hour_Container({ time, noaaData, owData }) {
 export default function Hourly_Forecast_Box() {
     const [times, setTimes] = useState(setHourlyArray);
     const [hourlyData, setHourlyData] = useState([]);
-console.log(hourlyData)
     useEffect(() => {
         let hourly_array = [];
         times.forEach(time => hourly_array.push(
