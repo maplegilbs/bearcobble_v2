@@ -40,17 +40,12 @@ export async function getServerSideProps() {
         console.error(`There was an error fetching current weather data: ${error}`)
         curWeatherData = null
     }
-    const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-    return ({ props: { baseURL: baseURL, vacuumData: vacuumData, curWeatherData: curWeatherData } })
+    return ({ props: { vacuumData: vacuumData, curWeatherData: curWeatherData } })
 }
 
 
-export default function Main({ baseURL, vacuumData, curWeatherData }) {
-    console.log(baseURL)
+export default function Main({ vacuumData, curWeatherData }) {
 
-    useEffect(() => {
-
-    }, [])
 
     return (
         <>

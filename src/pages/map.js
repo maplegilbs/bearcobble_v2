@@ -29,7 +29,7 @@ export default function Woods_Map({ apiKey }) {
             lng: position.coords.longitude
         }
         map.setCenter(pos);
-        infoWindow.setContent("<img src='https://bearcobble.com/Assets/Images/bearpaw.png' width='17px'>");
+        infoWindow.setContent("<img src='https://sapmappers.com/sensors/bearcobble/Images/bearpaw.png' width='17px'>");
     }
 
     function locateSuccess(position) {
@@ -43,7 +43,7 @@ export default function Woods_Map({ apiKey }) {
     };
 
     function locateError() {
-        alert("Error: Make sure location settings are on and the site is using https - https://bearcobble.com/map.");
+        alert("Error: Make sure location settings are on and the site is using https.");
     };
 
     const options = {
@@ -56,7 +56,7 @@ export default function Woods_Map({ apiKey }) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(
             browserHasGeolocation
-                ? "Error: Make sure location settings are on and the site is using https - https://bearcobble.com/map."
+                ? "Error: Make sure location settings are on and the site is using https"
                 : "Error: Your browser doesn't support geolocation."
         );
         infoWindow.open(map);
@@ -93,35 +93,35 @@ export default function Woods_Map({ apiKey }) {
                 }}
             >
                 <KmlLayer
-                    url='http://bearcobble.com/KML/ConductorsA.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/ConductorsA.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Roads4.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Roads4.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Driveway.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Driveway.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Section1.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Section1.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Section2a.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Section2a.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Section3a.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Section3a.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Section4.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Section4.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='http://bearcobble.com/KML/Section5.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/Section5.kml'
                     options={{ preserveViewport: true }}
                 />
                 <button className={map_styles.zoom_to_me} onClick={locate}>Zoom To Me</button>
