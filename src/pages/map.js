@@ -97,31 +97,31 @@ export default function Woods_Map({ apiKey }) {
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Roads4.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Roads4.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Driveway.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Driveway.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Section1.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Section1.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Section2a.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Section2a.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Section3a.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Section3a.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Section4.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Section4.kml'
                     options={{ preserveViewport: true }}
                 />
                 <KmlLayer
-                    url='https://sapmappers.com/sensors/bearcobble/Section5.kml'
+                    url='https://sapmappers.com/sensors/bearcobble/KML/Section5.kml'
                     options={{ preserveViewport: true }}
                 />
                 <button className={map_styles.zoom_to_me} onClick={locate}>Zoom To Me</button>
