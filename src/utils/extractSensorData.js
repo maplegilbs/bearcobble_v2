@@ -42,27 +42,27 @@ export function extractSensorData(rawData) {
                 },
                 tank2: {
                     tank_name: 'Tank 2',
+                    tank_level: rawData.database.table.row[8].data_1,
+                    reading_time: rawData.database.table.row[8].timeTag_EXT.realtime,
+                    status: rawData.database.table.row[8].data_EXT.ERRCODE
+                },
+                tank3: {
+                    tank_name: 'Tank 3',
                     tank_level: rawData.database.table.row[4].data_1,
                     reading_time: rawData.database.table.row[4].timeTag_EXT.realtime,
                     status: rawData.database.table.row[4].data_EXT.ERRCODE
                 },
-                tank3: {
-                    tank_name: 'Tank 3',
+                tank4: {
+                    tank_name: 'Tank 4',
                     tank_level: rawData.database.table.row[5].data_1,
                     reading_time: rawData.database.table.row[5].timeTag_EXT.realtime,
                     status: rawData.database.table.row[5].data_EXT.ERRCODE
                 },
-                tank4: {
-                    tank_name: 'Tank 4',
+                tank5: {
+                    tank_name: 'Tank 5',
                     tank_level: rawData.database.table.row[6].data_1,
                     reading_time: rawData.database.table.row[6].timeTag_EXT.realtime,
                     status: rawData.database.table.row[6].data_EXT.ERRCODE
-                },
-                tank5: {
-                    tank_name: 'Tank 5',
-                    tank_level: rawData.database.table.row[7].data_1,
-                    reading_time: rawData.database.table.row[7].timeTag_EXT.realtime,
-                    status: rawData.database.table.row[7].data_EXT.ERRCODE
                 }
             }
         ];
