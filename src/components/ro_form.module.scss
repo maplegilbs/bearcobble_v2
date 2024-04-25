@@ -1,6 +1,6 @@
 @use '../styles/global_variables.scss';
 
-.ro_form{
+.ro_form {
     font-family: global_variables.$global_fonts;
     font-size: .85rem;
     width: 96%;
@@ -10,7 +10,11 @@
     align-items: center;
     justify-content: space-evenly;
 
-    .form_row{
+    .membranes_inputs_container {
+        width: 100%;
+    }
+
+    .form_row {
         width: 95%;
         margin: 5px auto;
         display: flex;
@@ -18,39 +22,40 @@
         justify-content: space-evenly;
         align-items: center;
 
-        .membranes_inputs{
+        .membranes_inputs {
             width: 80%;
         }
 
-        .input_container{
+        .input_container {
             display: flex;
             flex-direction: column;
             margin-bottom: .7rem;
         }
 
-        .input_container_row{
+        .input_container_row {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
             margin-bottom: .7rem;
-        
+
             label {
                 margin-right: 1rem;
             }
 
-            input{
+            input {
                 flex-grow: 1;
             }
 
         }
     }
 
-    label{
+    label {
         margin: 5px;
     }
 
-    input, select {
+    input,
+    select {
         padding: 4px;
         border: 1px solid black;
     }
@@ -61,7 +66,7 @@
         margin: 1rem auto;
     }
 
-    input[type='submit']{
+    input[type='submit'] {
         padding: 8px;
         background: linear-gradient(160deg, white 20%, global_variables.$darkbluegrey);
         font-family: global_variables.$global_fonts;
@@ -73,8 +78,4 @@
 
 }
 
-@media  screen and (min-width: 720px) {
-
-    
-}
-
+@media screen and (min-width: 720px) {}
