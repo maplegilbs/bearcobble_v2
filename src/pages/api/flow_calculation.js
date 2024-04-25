@@ -1,10 +1,9 @@
 //Libraries
 //Bring in the multer pacakge for handling form data containing file/image uploads
-import multer from ('multer')
+import multer from 'multer'
 const upload = multer();
 //Bring in the sharp package to handle image processing
-import sharp from ('sharp')
-
+import sharp from 'sharp'
 
 export default async function (req, res) {
     //POST request.
@@ -12,7 +11,7 @@ export default async function (req, res) {
     if (req.method === 'POST') {
         upload.single('image')(req, res, async function (err) {
             if(err){
-                console.log(err)
+                console.error(err)
                 return res.status(500).json({error: 'Error occurred in image upload', message: err.message})
             }
             try {
@@ -44,3 +43,4 @@ export default async function (req, res) {
         })
     }
 }
+
