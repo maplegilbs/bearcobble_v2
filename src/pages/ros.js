@@ -1,5 +1,5 @@
 //Libraries
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 //Components
 import RO_Form from "@/components/ro_form";
 import RO_Table from "@/components/ro_records_table";
@@ -18,7 +18,6 @@ export async function getServerSideProps() {
     } catch (error) {
         console.error(`There was an error fetching the selected records: ${error}`);
         return ({ props: { selected_records: null } })
-        
     }
 }
 
@@ -27,11 +26,15 @@ export default function ROs({ selected_records }) {
     const [recordFilterQuery, setRecordFilterQuery] = useState('');
     const [newestRecord, setNewestRecord] = useState();
     const [comparisonRecords, setComparisonRecords] = useState([]);
-    
+    const formRef = useRef(null);
+    const tableRef = useRef(null);
+    const comparisonRef = useRef(null)
+    console.log(formRef.current, tableRef.current)
+
     useEffect(() => {
         async function getRecords() {
             try {
-                let ro_records = await fetch(ro_records_api_base_url+recordFilterQuery);
+                let ro_records = await fetch(ro_records_api_base_url + recordFilterQuery);
                 let ro_json = await ro_records.json();
                 setSelectedRecords(ro_json);
             } catch (error) {
@@ -43,26 +46,35 @@ export default function ROs({ selected_records }) {
 
     return (
         <>
-            <div className={ro_styles.ro_form_container}>
+            <div className={ro_styles.ro_button_container}>
+                <button type="button" className={ro_styles.ro_button} onClick={() => formRef.current.scrollIntoView({ behavior: 'smooth' })}>New Reading</button>
+                <button type="button" className={ro_styles.ro_button} onClick={() => tableRef.current.scrollIntoView({ behavior: 'smooth' })}>View Records</button>
+            </div>
+            <div ref={formRef} className={ro_styles.ro_form_container}>
                 <RO_Form updateTable={setNewestRecord} />
             </div>
             {selected_records &&
-                <RO_Table 
-                selectedRecords={selectedRecords} 
-                newestRecord={newestRecord} 
-                setComparisonRecords={setComparisonRecords} 
-                recordFilterQuery={recordFilterQuery}
-                setRecordFilterQuery={setRecordFilterQuery}
-                />
+                <div ref={tableRef} className={ro_styles.ro_table_container}>
+                    <RO_Table
+                        selectedRecords={selectedRecords}
+                        newestRecord={newestRecord}
+                        setComparisonRecords={setComparisonRecords}
+                        recordFilterQuery={recordFilterQuery}
+                        setRecordFilterQuery={setRecordFilterQuery}
+                        comparisonRef={comparisonRef}
+                    />
+                </div>
             }
+            <div ref={comparisonRef}>
             {selectedRecords &&
                 <Records_Comparison_Table comparison_records={comparisonRecords} />
             }
             {selectedRecords &&
-                <div className={`${comparisonRecords.length> 1? ro_styles.plotly_container: '' }`}>
+                <div className={`${comparisonRecords.length > 1 ? ro_styles.plotly_container : ''}`}>
                     <Comparison_Bar_Graph graph_data={comparisonRecords} />
                 </div>
             }
+            </div>
         </>
     )
 }

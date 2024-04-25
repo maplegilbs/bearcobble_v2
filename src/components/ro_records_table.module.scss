@@ -16,15 +16,15 @@
         justify-content: space-between;
         align-items: center;
         padding: 5px;
+    }
 
-        button {
-            padding: 3px;
-            background: linear-gradient(160deg, white 20%, global_variables.$darkbluegrey);
-            font-family: global_variables.$global_fonts;
-            font-size: .7rem;
-            font-weight: 600;
-            border-radius: 3px;
-        }
+    button {
+        padding: 3px;
+        background: linear-gradient(160deg, white 20%, global_variables.$darkbluegrey);
+        font-family: global_variables.$global_fonts;
+        font-size: .7rem;
+        font-weight: 600;
+        border-radius: 3px;
     }
 
     .ro_table {

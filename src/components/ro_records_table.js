@@ -6,10 +6,14 @@ import RO_Records_Filter from "@/components/ro_records_filter";
 //Styles
 import ro_table_styles from './ro_records_table.module.scss';
 
-export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords, recordFilterQuery, setRecordFilterQuery }) {
+export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords, recordFilterQuery, setRecordFilterQuery, comparisonRef }) {
     const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [isPrimaryRender, setIsPrimaryRender] = useState(true)
     const [isFilterDisplayed, setIsFilterDisplayed] = useState(false)
+
+    if(selectedRowIds.length === 2){
+        comparisonRef.current.scrollIntoView({behavior: 'smooth'})
+    }
 
 
     function selectRow(id) {
@@ -101,21 +105,23 @@ export default function RO_Table({ selectedRecords, newestRecord, setComparisonR
                         <th>7</th>
                         <th>8</th>
                     </tr>
-
                 </thead>
                 <tbody className={ro_table_styles.table_body}>
-                    {selectedRecords.map(record => <ROTableRow key={record.id} rowdata={record} />)}
+                    {selectedRowIds.length === 2 ?
+                        selectedRecords.filter(record => selectedRowIds.includes(record.id)).map(record => <ROTableRow key={record.id} rowdata={record} />)
+                        :
+                        selectedRecords.map(record => <ROTableRow key={record.id} rowdata={record} />)
+                    }
                 </tbody>
-
             </table>
-
-            <RO_Records_Filter 
-            recordFilterQuery={recordFilterQuery} 
-            setRecordFilterQuery={setRecordFilterQuery} 
-            isFilterDisplayed={isFilterDisplayed}
-            setIsFilterDisplayed={setIsFilterDisplayed}/>
-
-
+            <RO_Records_Filter
+                recordFilterQuery={recordFilterQuery}
+                setRecordFilterQuery={setRecordFilterQuery}
+                isFilterDisplayed={isFilterDisplayed}
+                setIsFilterDisplayed={setIsFilterDisplayed}
+            />
+            <br />
+            {selectedRowIds.length === 2 && <button onClick={() => setSelectedRowIds([])}>Clear Selections</button>}
         </div>
     )
 }

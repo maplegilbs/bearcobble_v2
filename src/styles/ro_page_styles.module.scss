@@ -1,16 +1,29 @@
 @use '@/styles/global_variables.scss';
 
-.ro_form_container {
-    font-family: global_variables.$global_fonts;
+
+.ro_button_container {
     width: 96%;
+    padding: 2px;
+}
+
+.ro_button {
+    padding: 5px;
+    margin: 1rem;
+    font-family: global_variables.$global_fonts;
+    font-weight: 700;
+}
+
+.ro_form_container {
+    width: 96%;
+    font-family: global_variables.$global_fonts;
     margin: 10px auto;
     border: 2px solid #333;
     border-radius: 5px;
-    background: linear-gradient(170deg, rgba(255,255,255,1) 10%, rgba(210,210,210,1) 60%, rgba(180,180,180,1));
+    background: linear-gradient(170deg, rgba(255, 255, 255, 1) 10%, rgba(210, 210, 210, 1) 60%, rgba(180, 180, 180, 1));
     padding-top: 15px;
 }
 
-.plotly_container{
+.plotly_container {
     width: 96%;
     margin: 0 auto;
     display: flex;
