@@ -7,6 +7,7 @@ import sharp from 'sharp'
 
 export default async function (req, res) {
     //POST request.
+    console.log('Interpolating flows')
     //  Use multer middleware to create a single req.file property with the name of 'image' (the name of the field in the form handling the image upload) containing the information of the uploaded file
     if (req.method === 'POST') {
         upload.single('image')(req, res, async function (err) {
