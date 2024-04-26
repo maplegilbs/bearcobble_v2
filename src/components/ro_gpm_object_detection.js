@@ -190,11 +190,10 @@ import styles from './ro_gpm_object_detection.module.scss'
 //     }
 //   ]
 
-function BoundingBox({ x, y, width, height, type, sightGlassImgRef }) {
+function BoundingBox({ x, y, width, height, type, sightGlassImgRef, detectionID }) {
     let resizeFactor = sightGlassImgRef.current.clientWidth / 2000
     return (
-        <div
-            style={{ fontSize: ".7rem", zIndex: 100, position: "absolute", top: `${(y - height / 2) * resizeFactor}px`, left: `${(x - width / 2) * resizeFactor}px`, border: `2px solid ${type === "sight_glass" ? "red" : "blue"}`, height: `${height * resizeFactor}px`, width: `${width * resizeFactor}px` }}>
+        <div key={detectionID} style={{ fontSize: ".7rem", zIndex: 100, position: "absolute", top: `${(y - height / 2) * resizeFactor}px`, left: `${(x - width / 2) * resizeFactor}px`, border: `2px solid ${type === "sight_glass" ? "red" : "blue"}`, height: `${height * resizeFactor}px`, width: `${width * resizeFactor}px` }}>
         </div>
     )
 }
@@ -229,7 +228,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
                 pairedDetections[membraneOrder[index]].sight_glass = sightGlassDetection;
             })
             for (let detectionPair in pairedDetections) {
-                console.log(detectionPair, gpmCalc(pairedDetections[detectionPair].sight_glass.y, pairedDetections[detectionPair].sight_glass.height, pairedDetections[detectionPair].float.y, pairedDetections[detectionPair].float.height))
+                // console.log(detectionPair, gpmCalc(pairedDetections[detectionPair].sight_glass.y, pairedDetections[detectionPair].sight_glass.height, pairedDetections[detectionPair].float.y, pairedDetections[detectionPair].float.height))
                 if (detectionPair === 'concentrate') {
                     gpmValues[`conc_flow`] = gpmCalc(pairedDetections[detectionPair].sight_glass.y, pairedDetections[detectionPair].sight_glass.height, pairedDetections[detectionPair].float.y, pairedDetections[detectionPair].float.height)
                 }
@@ -246,7 +245,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             })
         }
     }, [detections])
-
+console.log(detections)
 
     let handleChange = async (e) => {
         let selectedFile = e.target.files[0];
@@ -283,7 +282,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
                         <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
                     }
                     {(detections && sightGlassImgRef.current) &&
-                        detections.map(detection => <BoundingBox x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} />)
+                        detections.map(detection => <BoundingBox x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
                     }
                 </div>
                 <button className={`${styles.submit_button}`} type="submit" onClick={handleSubmit}>Interpolate Flows</button>
