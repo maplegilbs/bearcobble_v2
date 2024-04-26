@@ -16,6 +16,7 @@ export default async function (req, res) {
                 return res.status(500).json({error: 'Error occurred in image upload', message: err.message})
             }
             try {
+                console.log('resizing images')
                 //Get buffer out of the uploaded file put into the request from multer
                 const imageBuffer = req.file.buffer;
                 //Use sharp to resize the buffer
