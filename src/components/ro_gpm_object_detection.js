@@ -2,6 +2,8 @@
 import Loader from "./loader";
 //Hooks
 import { useState, useRef, useEffect } from "react";
+//Icons
+import camera_icon from 'public/IconColor-Camera.png'
 //Util Functions
 import { gpmCalc } from "@/utils/gpmCalculator";
 //Styles
@@ -28,13 +30,13 @@ function BoundingBox({ x, y, width, height, type, sightGlassImgRef, detectionID 
 
 function LoadingScreen() {
     return (
-        <div className={`${styles.loading_overaly}`}>
+        <div className={`${styles.loading_overlay}`}>
             <Loader loader_text={'Analyzing Image'} />
         </div>
     )
 }
 
-function FailureNotice(){
+function FailureNotice() {
     return (
         <div className={`${styles.failure_overlay}`}>
             <h3>Image analysis failed to locate all necessary items.</h3>
@@ -80,7 +82,7 @@ function imageResize(imageFile, maxSize, setMyImage) {
 export default function SightGlassObjectDetection({ setFormValues }) {
     const [myImage, setMyImage] = useState({ dataType: null, imageData: null })
     const [detections, setDetections] = useState(null)
-    const [loadingStatus, setLoadingStatus] = useState('success') //loading, success, failure
+    const [loadingStatus, setLoadingStatus] = useState('pending') //pending, loading, success, failure
     const sightGlassImgRef = useRef(null)
 
 
@@ -117,6 +119,8 @@ export default function SightGlassObjectDetection({ setFormValues }) {
     }, [detections])
 
     let handleChange = async (e) => {
+        setLoadingStatus('pending')
+        setDetections(null)
         let selectedFile = e.target.files[0];
         //Max size for serverless functions used in API routes in Vercel
         let maxSize = 4.5 * 1000 * 1000;
@@ -154,19 +158,23 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             <div className={`${styles.image_upload_container}`}>
                 <form onSubmit={e => { setLoadingStatus('loading'); handleSubmit(e) }}>
                     {myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Change Image</label>}
-                    <input className={`${styles.img_input}`} type="file" id="imageUpload" name="imageUpload" accept='image/jpg, image/png, image/jpeg' onChange={handleChange} />
+                    <input className={`${styles.img_input}`} type="file" id="imageUpload" name="imageUpload" accept='image/*' capture onChange={handleChange} />
                     <div ref={sightGlassImgRef} className={`${styles.img_upload_div}`}>
                         {loadingStatus === 'failure' && <FailureNotice />}
-                        {!myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Select Image</label>}
+                        {!myImage.imageData &&
+                            <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">
+                                <img alt='Icon of a camera' src={`${process.env.NEXT_PUBLIC_BASE_URL}/IconColor-Camera.png`} style={{height: '25px', width: '25px'}}/>
+                                <p>Capture Image</p>
+                            </label>}
                         {myImage.imageData &&
                             <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
                         }
                         {(detections && sightGlassImgRef.current) &&
                             detections.map(detection => <BoundingBox key={detection.detection_id} x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
                         }
-                        {}
+                        { }
                     </div>
-                    <button className={`${styles.submit_button}`} type="submit" onClick={e => { setLoadingStatus('loading'); handleSubmit(e) }}>Interpolate Flows</button>
+                    <button disabled = {!myImage.imageData} className={`${styles.submit_button}`} type="submit" onClick={e => { setLoadingStatus('loading'); handleSubmit(e) }}>Interpolate Flows</button>
                 </form>
             </div>
         </>
