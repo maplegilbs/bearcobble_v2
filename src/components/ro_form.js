@@ -15,6 +15,8 @@ export default function RO_Form({ updateTable }) {
     const [membraneInputs, setMembraneInputs] = useState([])
     const [wasSubmitted, setWasSubmitted] = useState(false)
 
+    console.log(formValues)
+
     function changeHandler(e) {
         if (e.target.id === 'isBenchmark') { setFormValues({ ...formValues, [e.target.name]: e.target.checked }) }
         else { setFormValues({ ...formValues, [e.target.name]: e.target.value }) }
@@ -114,12 +116,13 @@ export default function RO_Form({ updateTable }) {
                     <br />
                     <div className={`${ro_form_styles.membranes_inputs_container}`}>
                         <h2 style={{ borderBottom: '1px solid black', textAlign: 'left', marginLeft: '10%', width: '70%', alignSelf: 'flex-start' }}>Flows</h2><br />
-                        <SightGlassObjectDetection />
+                        <SightGlassObjectDetection setFormValues={setFormValues}/>
+                        <hr />
                         <div className={ro_form_styles.form_row}>
                             <div className={ro_form_styles.membranes_inputs}>
                                 <div className={ro_form_styles.input_container_row}>
                                     <label htmlFor="concentrateFlow">Concentrate Flow</label>
-                                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name="conc_flow" id="concentrateFlow" placeholder="gpm" onChange={changeHandler} value={formValues.concentrateFlow}></input>
+                                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name="conc_flow" id="concentrateFlow" placeholder="gpm" onChange={changeHandler} value={formValues.conc_flow}></input>
                                 </div>
                             </div>
                         </div>
