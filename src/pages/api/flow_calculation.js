@@ -13,6 +13,7 @@ export const config = {
 
 export default async function (req, res) {
     //POST request.
+    console.log('Interpolating data')
     //  Use multer middleware to create a single req.file property with the name of 'image' (the name of the field in the form handling the image upload) containing the information of the uploaded file
     if (req.method === 'POST') {
         upload.single('image')(req, res, async function (err) {
@@ -22,6 +23,7 @@ export default async function (req, res) {
                 res.status(500).json({error: 'Error occurred in image upload', message: err.message})
             }
             try {
+                console.log('Multer upload success', req.file.name)
                 //Get buffer out of the uploaded file put into the request from multer
                 const imageBuffer = req.file.buffer;
                 //Use sharp to resize the buffer
@@ -42,6 +44,7 @@ export default async function (req, res) {
                     body: base64ResizedImage
                 })
                 let data = await response.json();
+                console.log('Roboflow call made', data.predictions)
                 res.status(200).json({ predictions: data.predictions, image: base64ResizedImage })
             } catch (error) {
                 console.log(error)
