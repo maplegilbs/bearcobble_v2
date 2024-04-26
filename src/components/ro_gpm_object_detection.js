@@ -7,6 +7,19 @@ import { gpmCalc } from "@/utils/gpmCalculator";
 //Styles
 import styles from './ro_gpm_object_detection.module.scss'
 
+//Constants
+const membraneOrder = ["concentrate", 7, 5, 3, 1, 2, 4, 6, 8];
+const pairedDetections = {
+    concentrate: {},
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    5: {},
+    6: {},
+    7: {},
+    8: {},
+}
 // const tempDetections =
 //   [
 //     {
@@ -201,10 +214,43 @@ function BoundingBox({ x, y, width, height, type, sightGlassImgRef, detectionID 
 
 function LoadingScreen() {
     return (
-        <div style={{ height: '100%', width: '100%', backgroundColor: 'rgba(200,200,200,.75)', position: 'fixed', top : '0', left: '0', padding: '0', margin: '0', zIndex: '1000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Loader loader_text={'Analyzing Image'}/>
+        <div style={{ height: '100%', width: '100%', backgroundColor: 'rgba(200,200,200,.75)', position: 'fixed', top: '0', left: '0', padding: '0', margin: '0', zIndex: '1000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Loader loader_text={'Analyzing Image'} />
         </div>
     )
+}
+
+//Given an image file and the maximum size, resize the image and set the myImage state to be the new resized image
+function imageResize(imageFile, maxSize, setMyImage) {
+    //Percent to multiple the current file size by to get it to fall below the max size
+    let scalePercent = maxSize / imageFile.size;
+    //Create new instance of a file reader
+    const reader = new FileReader();
+    //Once file has loaded
+    reader.onload = function (event) {
+        //Create new instance of Image
+        const img = new Image();
+        //Once the image has loaded via the setting of the img.src use the canvas element to resize
+        img.onload = function () {
+            //Create a new canvas, size the canvas to be the image size adjusted by our scaling percentage then draw the image to the canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            let width = Math.floor(img.width * scalePercent);
+            let height = Math.floor(img.height * scalePercent);
+            canvas.width = width;
+            canvas.height = height;
+            // Draw image on canvas
+            ctx.drawImage(img, 0, 0, width, height);
+            // Convert canvas to Blob
+            canvas.toBlob(function (blob) {
+                //Set the image data to be the blob
+                setMyImage({ dataType: 'file', imageData: blob })
+            }, imageFile.type);
+        };
+        //Set the image source to be the file loaded into the file reader
+        img.src = event.target.result
+    };
+    reader.readAsDataURL(imageFile);
 }
 
 export default function SightGlassObjectDetection({ setFormValues }) {
@@ -212,19 +258,9 @@ export default function SightGlassObjectDetection({ setFormValues }) {
     const [detections, setDetections] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const sightGlassImgRef = useRef(null)
+    const imageRef = useRef(null)
 
-    const membraneOrder = ["concentrate", 7, 5, 3, 1, 2, 4, 6, 8];
-    let pairedDetections = {
-        concentrate: {},
-        1: {},
-        2: {},
-        3: {},
-        4: {},
-        5: {},
-        6: {},
-        7: {},
-        8: {},
-    }
+
     useEffect(() => {
         if (detections) {
             let gpmValues = {}
@@ -259,7 +295,16 @@ export default function SightGlassObjectDetection({ setFormValues }) {
 
     let handleChange = async (e) => {
         let selectedFile = e.target.files[0];
-        setMyImage({ dataType: 'file', imageData: selectedFile })
+        //Max size for serverless functions used in API routes in Vercel
+        let maxSize = 4.5 * 1000 * 1000;
+        let curSize = selectedFile.size
+        //if our selected file is larger than the maximum allowable upload for vercel resize it before sending it to the server
+        if (curSize >= maxSize) {
+            imageResize(selectedFile, maxSize, setMyImage)
+        }
+        else {
+            setMyImage({ dataType: 'file', imageData: selectedFile })
+        }
     }
 
 
@@ -276,7 +321,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             setMyImage({ dataType: 'base64', imageData: data.image })
             setDetections(data.predictions)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -290,7 +335,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
                     <div ref={sightGlassImgRef} className={`${styles.img_upload_div}`}>
                         {!myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Select Image</label>}
                         {myImage.imageData &&
-                            <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
+                            <img ref={imageRef} src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
                         }
                         {(detections && sightGlassImgRef.current) &&
                             detections.map(detection => <BoundingBox key={detection.detection_id} x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)

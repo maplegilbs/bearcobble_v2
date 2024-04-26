@@ -33,7 +33,7 @@ export default async function (req, res) {
                 let inputImageWidth = sharpImageInfo.width;
                 let inputImageHeight = sharpImageInfo.height;
                 //Create a resized buffer of either 1000px height or width depending on which is greater
-                let resizedImageBuffer = inputImageHeight > inputImageWidth ? await sharpImage.resize(null, 1000).toBuffer() : await sharpImage.resize(1000).toBuffer()
+                let resizedImageBuffer = inputImageHeight > inputImageWidth ? await sharpImage.resize(null, 2000).toBuffer() : await sharpImage.resize(2000).toBuffer()
                 // Base64 encode the image buffer for use by the roboflow API call
                 const base64ResizedImage = resizedImageBuffer.toString('base64');
 
