@@ -11,12 +11,13 @@ export default async function (req, res) {
     //  Use multer middleware to create a single req.file property with the name of 'image' (the name of the field in the form handling the image upload) containing the information of the uploaded file
     if (req.method === 'POST') {
         upload.single('image')(req, res, async function (err) {
+            console.log(req)
             if(err){
+                console.log('There was an error in the multer package')
                 console.error(err)
                 return res.status(500).json({error: 'Error occurred in image upload', message: err.message})
             }
             try {
-                console.log('resizing images')
                 //Get buffer out of the uploaded file put into the request from multer
                 const imageBuffer = req.file.buffer;
                 //Use sharp to resize the buffer
