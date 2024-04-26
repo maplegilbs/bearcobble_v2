@@ -1,5 +1,45 @@
 @use '../styles/global_variables.scss';
 
+.loading_overlay, .failure_overlay {
+    height: 100%;
+    width: 100%; 
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+}
+
+.loading_overlay{
+    position: fixed;
+    background-color: rgba(200,200,200,.75);
+}
+
+.failure_overlay{
+    position: absolute;
+    background-color: rgba(255,255,255,.85);
+    flex-direction: column;
+
+    h3 {
+        margin: 10px auto;
+        text-align: center;
+        width: 95%;
+    }
+
+    label {
+        background-color: global_variables.$darkbluegrey;
+        padding: 5px;
+        color: white;
+        font-family: global_variables.$global_fonts;
+        font-weight: 600;
+        border-radius: 3px;
+        border: 1px solid black;
+    }
+}
+
 .image_upload_container {
     font-family: global_variables.$global_fonts;
     font-size: .85rem;
