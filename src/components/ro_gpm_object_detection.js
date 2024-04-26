@@ -282,7 +282,7 @@ console.log(detections)
                         <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
                     }
                     {(detections && sightGlassImgRef.current) &&
-                        detections.map(detection => <BoundingBox x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
+                        detections.map(detection => <BoundingBox key={detection.detection_id} x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
                     }
                 </div>
                 <button className={`${styles.submit_button}`} type="submit" onClick={handleSubmit}>Interpolate Flows</button>
