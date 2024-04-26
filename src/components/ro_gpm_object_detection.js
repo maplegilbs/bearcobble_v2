@@ -1,9 +1,10 @@
+//Components
+import Loader from "./loader";
 //Hooks
 import { useState, useRef, useEffect } from "react";
 //Util Functions
 import { gpmCalc } from "@/utils/gpmCalculator";
 //Styles
-// import ro_styles from '../styles/ro_page_styles.module.scss'
 import styles from './ro_gpm_object_detection.module.scss'
 
 // const tempDetections =
@@ -198,9 +199,18 @@ function BoundingBox({ x, y, width, height, type, sightGlassImgRef, detectionID 
     )
 }
 
+function LoadingScreen() {
+    return (
+        <div style={{ height: '100%', width: '100%', backgroundColor: 'rgba(200,200,200,.75)', position: 'fixed', top : '0', left: '0', padding: '0', margin: '0', zIndex: '1000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Loader loader_text={'Analyzing Image'}/>
+        </div>
+    )
+}
+
 export default function SightGlassObjectDetection({ setFormValues }) {
     const [myImage, setMyImage] = useState({ dataType: null, imageData: null })
     const [detections, setDetections] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     const sightGlassImgRef = useRef(null)
 
     const membraneOrder = ["concentrate", 7, 5, 3, 1, 2, 4, 6, 8];
@@ -243,9 +253,9 @@ export default function SightGlassObjectDetection({ setFormValues }) {
                 }
                 return updatedValues
             })
+            setIsLoading(false)
         }
     }, [detections])
-console.log(detections)
 
     let handleChange = async (e) => {
         let selectedFile = e.target.files[0];
@@ -264,7 +274,6 @@ console.log(detections)
             })
             let data = await response.json();
             setMyImage({ dataType: 'base64', imageData: data.image })
-            console.log(data.predictions)
             setDetections(data.predictions)
         } catch (error) {
             console.log(error)
@@ -272,21 +281,24 @@ console.log(detections)
     }
 
     return (
-        <div className={`${styles.image_upload_container}`}>
-            <form onSubmit={e => handleSubmit(e)}>
-                {myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Change Image</label>}
-                <input className={`${styles.img_input}`} type="file" id="imageUpload" name="imageUpload" accept='image/jpg, image/png, image/jpeg' onChange={handleChange} />
-                <div ref={sightGlassImgRef} className={`${styles.img_upload_div}`}>
-                    {!myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Select Image</label>}
-                    {myImage.imageData &&
-                        <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
-                    }
-                    {(detections && sightGlassImgRef.current) &&
-                        detections.map(detection => <BoundingBox key={detection.detection_id} x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
-                    }
-                </div>
-                <button className={`${styles.submit_button}`} type="submit" onClick={handleSubmit}>Interpolate Flows</button>
-            </form>
-        </div>
+        <>
+            {isLoading && <LoadingScreen />}
+            <div className={`${styles.image_upload_container}`}>
+                <form onSubmit={e => { setIsLoading(true); handleSubmit(e) }}>
+                    {myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Change Image</label>}
+                    <input className={`${styles.img_input}`} type="file" id="imageUpload" name="imageUpload" accept='image/jpg, image/png, image/jpeg' onChange={handleChange} />
+                    <div ref={sightGlassImgRef} className={`${styles.img_upload_div}`}>
+                        {!myImage.imageData && <label className={`${styles.img_upload_label}`} htmlFor="imageUpload">Select Image</label>}
+                        {myImage.imageData &&
+                            <img src={myImage.dataType === 'file' ? URL.createObjectURL(myImage.imageData) : `data:image/jpeg;base64, ${myImage.imageData}`} />
+                        }
+                        {(detections && sightGlassImgRef.current) &&
+                            detections.map(detection => <BoundingBox key={detection.detection_id} x={detection.x} y={detection.y} width={detection.width} height={detection.height} type={detection.class} sightGlassImgRef={sightGlassImgRef} detectionID={detection.detection_id} />)
+                        }
+                    </div>
+                    <button className={`${styles.submit_button}`} type="submit" onClick={e => { setIsLoading(true); handleSubmit(e) }}>Interpolate Flows</button>
+                </form>
+            </div>
+        </>
     );
 }

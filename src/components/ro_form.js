@@ -15,8 +15,6 @@ export default function RO_Form({ updateTable }) {
     const [membraneInputs, setMembraneInputs] = useState([])
     const [wasSubmitted, setWasSubmitted] = useState(false)
 
-    console.log(formValues)
-
     function changeHandler(e) {
         if (e.target.id === 'isBenchmark') { setFormValues({ ...formValues, [e.target.name]: e.target.checked }) }
         else { setFormValues({ ...formValues, [e.target.name]: e.target.value }) }
@@ -69,9 +67,8 @@ export default function RO_Form({ updateTable }) {
                 updateTable(submittedJSON.inserted_id)
                 setWasSubmitted(prev => !prev)
             }
-
         } catch (error) {
-
+            console.error(error)
         }
     }
 
@@ -116,7 +113,7 @@ export default function RO_Form({ updateTable }) {
                     <br />
                     <div className={`${ro_form_styles.membranes_inputs_container}`}>
                         <h2 style={{ borderBottom: '1px solid black', textAlign: 'left', marginLeft: '10%', width: '70%', alignSelf: 'flex-start' }}>Flows</h2><br />
-                        <SightGlassObjectDetection setFormValues={setFormValues}/>
+                        <SightGlassObjectDetection setFormValues={setFormValues} />
                         <hr />
                         <div className={ro_form_styles.form_row}>
                             <div className={ro_form_styles.membranes_inputs}>

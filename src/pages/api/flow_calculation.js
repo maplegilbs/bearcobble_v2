@@ -13,15 +13,13 @@ export const config = {
 
 export default async function (req, res) {
     //POST request.
-    console.log('Interpolating flows')
     //  Use multer middleware to create a single req.file property with the name of 'image' (the name of the field in the form handling the image upload) containing the information of the uploaded file
     if (req.method === 'POST') {
         upload.single('image')(req, res, async function (err) {
-            console.log(req)
             if(err){
                 console.log('There was an error in the multer package')
                 console.error(err)
-                return res.status(500).json({error: 'Error occurred in image upload', message: err.message})
+                res.status(500).json({error: 'Error occurred in image upload', message: err.message})
             }
             try {
                 //Get buffer out of the uploaded file put into the request from multer
@@ -44,7 +42,7 @@ export default async function (req, res) {
                     body: base64ResizedImage
                 })
                 let data = await response.json();
-                res.json({ predictions: data.predictions, image: base64ResizedImage })
+                res.status(200).json({ predictions: data.predictions, image: base64ResizedImage })
             } catch (error) {
                 console.log(error)
                 res.status(500).json({ message: "Error" })

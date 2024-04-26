@@ -29,7 +29,6 @@ export default function ROs({ selected_records }) {
     const formRef = useRef(null);
     const tableRef = useRef(null);
     const comparisonRef = useRef(null)
-    console.log(formRef.current, tableRef.current)
 
     useEffect(() => {
         async function getRecords() {
