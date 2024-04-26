@@ -5,6 +5,12 @@ const upload = multer();
 //Bring in the sharp package to handle image processing
 import sharp from 'sharp'
 
+export const config = {
+    api: {
+      bodyParser: false
+    }
+  }
+
 export default async function (req, res) {
     //POST request.
     console.log('Interpolating flows')
