@@ -32,8 +32,8 @@ export default async function (req, res) {
                 let sharpImageInfo = await new sharp(imageBuffer).metadata()
                 let inputImageWidth = sharpImageInfo.width;
                 let inputImageHeight = sharpImageInfo.height;
-                //Create a resized buffer of either 2000px height or width depending on which is greater
-                let resizedImageBuffer = inputImageHeight > inputImageWidth ? await sharpImage.resize(null, 2000).toBuffer() : await sharpImage.resize(2000).toBuffer()
+                //Create a resized buffer of either 1000px height or width depending on which is greater
+                let resizedImageBuffer = inputImageHeight > inputImageWidth ? await sharpImage.resize(null, 1000).toBuffer() : await sharpImage.resize(1000).toBuffer()
                 // Base64 encode the image buffer for use by the roboflow API call
                 const base64ResizedImage = resizedImageBuffer.toString('base64');
                 let response = await fetch(`https://detect.roboflow.com/ro-flow-sight-glasses/1?api_key=${process.env.ROBOFLOW_API_KEY}`, {
