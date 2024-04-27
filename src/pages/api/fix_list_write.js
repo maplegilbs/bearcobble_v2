@@ -7,6 +7,7 @@ export default async function Fix_List_Write(req, res){
     const body = req.body;
     let action = body.action;
     let ids = body.ids;
+    console.log(action)
     
     const pool = mysql.createPool({
         host: process.env.MYSQL_DB_HOST,
@@ -14,9 +15,9 @@ export default async function Fix_List_Write(req, res){
         password: process.env.MYSQL_DB_PASSWORD,
         database: process.env.MYSQL_DB_NAME
     }).promise();
-
+    
     if(req.method ==='POST' && action === 'markComplete'){
-        console.log('marking resolved')
+        console.log('Marking complete')
         try {
             let query = `update woodsfixlist set isResolved = 1 where id in (${ids.join(', ')})`
             let updated_records = await pool.query(query);
