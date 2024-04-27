@@ -1,5 +1,6 @@
 //Libraries
 import { useEffect, useState } from 'react';
+import { delay } from '@/utils/delay';
 //Styles
 import hourly_box_styles from './weather_hourly_box.module.scss';
 
@@ -19,7 +20,7 @@ function Hour_Container({ time, noaaData, owData }) {
         <div key={time} className={hourly_box_styles.hourly_record}>
             <h4>{new Date(time).getHours()}:00</h4>
             {noaaData ?
-                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon? noaaData.icon.split(',0').join(''): ''} width={30} height={32} /></p> :
+                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon ? noaaData.icon.split(',0').join('') : ''} width={30} height={32} /></p> :
                 <p>--</p>
             }
             {owData ?
@@ -42,10 +43,17 @@ export default function Hourly_Forecast_Box() {
                 'ow': {}
             }
         ))
-        
+
         async function getHourly() {
             try {
                 let noaa_hourly_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/weather_forecast_hourly?source=noaa`);
+                let retryCount = 0;
+                //NOAA API sometimes causes trouble, retry 5 times to get data if res.status is not 200s
+                while ((noaa_hourly_data.status > 299 || noaa_hourly_data.status < 200) && retryCount < 5) {
+                    noaa_hourly_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/weather_forecast_hourly?source=noaa`);
+                    await delay(1000)
+                    retryCount++
+                }
                 let noaa_hourly_json = await noaa_hourly_data.json();
                 let noaa_selected_periods = noaa_hourly_json.properties.periods.filter(period => times.includes(new Date(period.startTime).valueOf()))
                 hourly_array.forEach(record => {
@@ -81,9 +89,9 @@ export default function Hourly_Forecast_Box() {
     return (
         <div className={hourly_box_styles.hourly_container}>
             <h2>Six Hour Forecast</h2>
-            <hr/>
+            <hr />
             <div className={hourly_box_styles.hourly_record}>
-                <h3>Time</h3><h3 style={{justifyContent: 'center'}}>NOAA</h3><h3 style={{justifyContent: 'center'}}>Open Weather</h3>
+                <h3>Time</h3><h3 style={{ justifyContent: 'center' }}>NOAA</h3><h3 style={{ justifyContent: 'center' }}>Open Weather</h3>
             </div>
             {hourly_columns}
         </div>
