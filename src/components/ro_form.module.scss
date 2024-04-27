@@ -22,7 +22,7 @@
             text-align: left;
             margin: 0 auto;
             width: 90%;
-            
+
         }
     }
 
@@ -36,7 +36,48 @@
 
         .membranes_inputs {
             width: 80%;
+
+            .membrane_input {
+                text-align: center;
+            }
+
+            .membrane_input_updated {
+                animation-name: colorslide;
+                animation-duration: 1.5s;
+                animation-timing-function: linear;
+                animation-iteration-count: 1;
+
+                @keyframes colorslide {
+                    0% {
+                        color: transparent;
+                        background: linear-gradient(105deg, white 35%, global_variables.$darkbluegrey 35% 65%, white 65%);
+                        background-size: 400% 100%;
+                        background-position: right;
+                    }
+                    
+                    50% {
+                        color: transparent;
+                        background: linear-gradient(105deg, white 35%, global_variables.$darkbluegrey 35% 65%, white 65%);
+                        background-size: 400% 100%;
+                        background-position: left;
+                    }
+                    90%{
+                        color: transparent
+                    }
+                    100% {
+                        color: black;
+                        background: linear-gradient(105deg, white 35%, global_variables.$darkbluegrey 35% 65%, white 65%);
+                        background-size: 400% 100%;
+                        background-position: right;
+                    }
+                    
+                }
+            }
+
         }
+
+
+
 
         .input_container {
             display: flex;

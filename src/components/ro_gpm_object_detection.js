@@ -79,7 +79,7 @@ function imageResize(imageFile, maxSize, setMyImage) {
     reader.readAsDataURL(imageFile);
 }
 
-export default function SightGlassObjectDetection({ setFormValues }) {
+export default function SightGlassObjectDetection({ setFormValues, setObjDetSubmitted }) {
     const [myImage, setMyImage] = useState({ dataType: null, imageData: null })
     const [detections, setDetections] = useState(null)
     const [loadingStatus, setLoadingStatus] = useState('pending') //pending, loading, success, failure
@@ -117,7 +117,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             }
         }
     }, [detections])
-
+    
     let handleChange = async (e) => {
         setLoadingStatus('pending')
         setDetections(null)
@@ -133,8 +133,8 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             setMyImage({ dataType: 'file', imageData: selectedFile })
         }
     }
-
-
+    
+    
     let handleSubmit = async (e) => {
         let formData = new FormData();
         formData.append("image", myImage.imageData)
@@ -147,6 +147,7 @@ export default function SightGlassObjectDetection({ setFormValues }) {
             let data = await response.json();
             setMyImage({ dataType: 'base64', imageData: data.image })
             setDetections(data.predictions)
+            setObjDetSubmitted(true)
         } catch (error) {
             console.error(error)
         }

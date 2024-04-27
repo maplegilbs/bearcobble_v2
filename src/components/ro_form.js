@@ -12,13 +12,14 @@ import ro_form_styles from './ro_form.module.scss'
 
 export default function RO_Form({ updateTable }) {
     const [formValues, setFormValues] = useState({ is_benchmark: false })
-    const [membraneInputs, setMembraneInputs] = useState([])
+    const [membraneInputs, setMembraneInputs] = useState([]) //hold input elements for membranes
+    const [concInput, setConcInput] = useState([]); //hold input element for conc flow
     const [wasSubmitted, setWasSubmitted] = useState(false)
+    const [objDetSubmitted, setObjDetSubmitted] = useState(false) //flag for if information was updated via objDetection model
 
     function changeHandler(e) {
         if (e.target.id === 'isBenchmark') { setFormValues({ ...formValues, [e.target.name]: e.target.checked }) }
         else { setFormValues({ ...formValues, [e.target.name]: e.target.value }) }
-        // setFormValues(Object.assign(formValues, {[e.target.name]: e.target.value })) //this doesn't work why
     }
 
     useEffect(() => {
@@ -27,12 +28,21 @@ export default function RO_Form({ updateTable }) {
             membrane_inputs.push(
                 <div key={`membrane${i}Row`} className={ro_form_styles.input_container_row}>
                     <label htmlFor={`membrane${i}`}>Membrane {i}</label>
-                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.25} min={0} max={20} name={`membrane_${i}`} onChange={(e) => changeHandler(e, formValues)} id={`membrane${i}`} placeholder="gpm" value={formValues[`membrane_${i}`] ? formValues[`membrane_${i}`] : ''}></input>
+                    <input required className={`${ro_form_styles.membrane_input} ${objDetSubmitted ? ro_form_styles.membrane_input_updated : ""}`} type="number" step={.25} min={0} max={20} name={`membrane_${i}`} onChange={(e) => changeHandler(e, formValues)} id={`membrane${i}`} placeholder="gpm" value={formValues[`membrane_${i}`] ? formValues[`membrane_${i}`] : ''}></input>
                 </div>
             )
         }
+        let conc_input = [];
+        conc_input.push(
+            <div className={ro_form_styles.input_container_row}>
+                <label htmlFor="concentrateFlow">Concentrate</label>
+                <input required className={`${ro_form_styles.membrane_input} ${objDetSubmitted ? ro_form_styles.membrane_input_updated : ""}`} type="number" step={.5} min={0} max={20} name="conc_flow" id="concentrateFlow" placeholder="gpm" onChange={changeHandler} value={formValues.conc_flow}></input>
+            </div>
+        )
+        if (objDetSubmitted) {setTimeout(()=>setObjDetSubmitted(false),3000)}
+        setConcInput(conc_input)
         setMembraneInputs(membrane_inputs);
-    }, [formValues])
+    }, [formValues, objDetSubmitted])
 
     useEffect(() => {
         function timeSetter() {
@@ -114,13 +124,10 @@ export default function RO_Form({ updateTable }) {
                     <div className={`${ro_form_styles.membranes_inputs_container}`}>
                         <h2>Flows</h2><br />
                         <p>Powered by computer vision.  Take a picture of the sight glass flow-meters from head-on ensuring all 9 are included in the image.  Then click the &#34;Interpolate Flows&#34; button to calculate flow rates and populate the fields below.  Adjust the form manually for any necessary corrections.</p>
-                        <SightGlassObjectDetection setFormValues={setFormValues} />
+                        <SightGlassObjectDetection setFormValues={setFormValues} setObjDetSubmitted={setObjDetSubmitted} />
                         <div className={ro_form_styles.form_row}>
                             <div className={ro_form_styles.membranes_inputs}>
-                                <div className={ro_form_styles.input_container_row}>
-                                    <label htmlFor="concentrateFlow">Concentrate</label>
-                                    <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name="conc_flow" id="concentrateFlow" placeholder="gpm" onChange={changeHandler} value={formValues.conc_flow}></input>
-                                </div>
+                                {concInput}
                             </div>
                         </div>
                         <div className={ro_form_styles.form_row}>
