@@ -12,6 +12,18 @@
 
     .membranes_inputs_container {
         width: 100%;
+
+        >p {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: left;
+            margin: 0 auto;
+            width: 90%;
+            
+        }
     }
 
     .form_row {
@@ -76,6 +88,14 @@
     }
 
 
+
 }
 
-@media screen and (min-width: 720px) {}
+@media screen and (min-width: 720px) {
+    .membranes_inputs_container {
+        >p {
+            width: 70%;
+            margin: 0 auto;
+        }
+    }
+}

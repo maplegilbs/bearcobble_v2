@@ -112,13 +112,13 @@ export default function RO_Form({ updateTable }) {
                     </div>
                     <br />
                     <div className={`${ro_form_styles.membranes_inputs_container}`}>
-                        <h2 style={{ borderBottom: '1px solid black', textAlign: 'left', marginLeft: '10%', width: '70%', alignSelf: 'flex-start' }}>Flows</h2><br />
+                        <h2>Flows</h2><br />
+                        <p>Powered by computer vision.  Take a picture of the sight glass flow-meters from head ensuring all 9 are included in the image.  Then click the "Interpolate Flows" button to calculate flow rates and populate the fields below.  Adjust the form manually for any necessary corrections.</p>
                         <SightGlassObjectDetection setFormValues={setFormValues} />
-                        <hr />
                         <div className={ro_form_styles.form_row}>
                             <div className={ro_form_styles.membranes_inputs}>
                                 <div className={ro_form_styles.input_container_row}>
-                                    <label htmlFor="concentrateFlow">Concentrate Flow</label>
+                                    <label htmlFor="concentrateFlow">Concentrate</label>
                                     <input required className={`${ro_form_styles.membrane_input}`} type="number" step={.5} min={0} max={20} name="conc_flow" id="concentrateFlow" placeholder="gpm" onChange={changeHandler} value={formValues.conc_flow}></input>
                                 </div>
                             </div>

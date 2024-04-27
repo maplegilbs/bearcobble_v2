@@ -43,7 +43,6 @@
 .image_upload_container {
     font-family: global_variables.$global_fonts;
     font-size: .85rem;
-    width: 96%;
     margin: 10px auto;
     display: flex;
     flex-direction: column;
@@ -69,7 +68,7 @@
     }
 
     .img_upload_div {
-        width: 85vw;
+        min-width: 80vw;
         padding: 3px;
         min-height: 53vw;
         border: 2px solid black;
@@ -108,5 +107,16 @@
 
     &:active {
         box-shadow: -2px -2px 2px 2px #333;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    
+    .image_upload_container{
+
+        .img_upload_div {
+            min-width: 60vw;
+            min-height: 50vh;
+        }
     }
 }
