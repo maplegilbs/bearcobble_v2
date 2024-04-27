@@ -14,7 +14,7 @@ app
             const hostname = req.hostname === `bearcobblehq.vercel.app` ? `bearcobblehq.vercel.app` : req.hostname;
             console.log(`Hostname: ${hostname}`)
 
-            if (req.headers['x-forwarded-proto'] === 'http' && req.hostname === 'bearcobblehq.vercel.app') {
+            if (req.headers['x-forwarded-proto'] === 'http' && (req.hostname === 'bearcobblehq.vercel.app' || req.hostname === 'bearcobble.com')) {
                 res.redirect(301, `https://${hostname}`);
                 return;
             }

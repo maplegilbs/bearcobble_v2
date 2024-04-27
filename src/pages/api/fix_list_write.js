@@ -16,6 +16,7 @@ export default async function Fix_List_Write(req, res){
     }).promise();
 
     if(req.method ==='POST' && action === 'markComplete'){
+        console.log('marking resolved')
         try {
             let query = `update woodsfixlist set isResolved = 1 where id in (${ids.join(', ')})`
             let updated_records = await pool.query(query);
