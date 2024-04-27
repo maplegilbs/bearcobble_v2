@@ -72,3 +72,20 @@
     }
 
 }
+
+@media screen and (min-width: 720px) {
+
+    .table_container {
+        max-height: 80vh;
+        overflow-y: scroll;
+    }
+
+    .fix_table {
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: white;
+        }
+    }
+    
+}
