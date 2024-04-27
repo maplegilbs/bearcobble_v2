@@ -58,7 +58,7 @@ export default function Fix_List() {
 
     async function markResolved(ids) {
         try {
-            let resolved_records = await fetch(`$../api/fix_list_write`, {
+            let resolved_records = await fetch(`../api/fix_list_write`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: "markComplete", ids: ids })
