@@ -113,7 +113,7 @@ export default function RO_Form({ updateTable }) {
                     <br />
                     <div className={`${ro_form_styles.membranes_inputs_container}`}>
                         <h2>Flows</h2><br />
-                        <p>Powered by computer vision.  Take a picture of the sight glass flow-meters from head ensuring all 9 are included in the image.  Then click the &#34;Interpolate Flows&#34; button to calculate flow rates and populate the fields below.  Adjust the form manually for any necessary corrections.</p>
+                        <p>Powered by computer vision.  Take a picture of the sight glass flow-meters from head-on ensuring all 9 are included in the image.  Then click the &#34;Interpolate Flows&#34; button to calculate flow rates and populate the fields below.  Adjust the form manually for any necessary corrections.</p>
                         <SightGlassObjectDetection setFormValues={setFormValues} />
                         <div className={ro_form_styles.form_row}>
                             <div className={ro_form_styles.membranes_inputs}>
