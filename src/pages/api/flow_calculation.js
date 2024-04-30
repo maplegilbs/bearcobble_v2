@@ -39,7 +39,7 @@ export default async function (req, res) {
 
                 /*Debugging*/
                 let sharpResizedImageInfo = await new sharp(resizedImageBuffer).metadata()
-                console.log(sharpResizedImageInfo)
+                // console.log(sharpResizedImageInfo)
                 /*End debugging*/
 
                 let response = await fetch(`https://detect.roboflow.com/ro-flow-sight-glasses/1?api_key=${process.env.ROBOFLOW_API_KEY}`, {
@@ -50,7 +50,7 @@ export default async function (req, res) {
                     body: base64ResizedImage
                 })
                 let data = await response.json();
-                console.log('Roboflow call made', data.predictions)
+                // console.log('Roboflow call made', data.predictions)
                 res.status(200).json({ predictions: data.predictions, image: base64ResizedImage })
             } catch (error) {
                 console.log(error)

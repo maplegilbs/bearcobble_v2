@@ -31,6 +31,7 @@ export function gpmCalc(sightGlassY, sightGlassHeight, floatY, floatHeight) {
     let rulerHeight = sightGlassHeight * rulerHeightPercentage; //good
     let rulerTop = sightGlassHeight * rulerShiftPercentage + sightGlassAdjustedY; //good
     let rulerBottom = rulerTop + rulerHeight;
+    if(rulerBottom < floatAdjustedY){ return Number(0).toFixed(2)}
     let floatPercential = Math.abs((floatAdjustedY - rulerBottom) / rulerHeight)
     let percential = rulerGradiation.find(item => floatPercential >= item.bottomPercent && floatPercential < item.topPercent)
     let currentRangeBottomY = rulerBottom - percential.bottomPercent * rulerHeight
