@@ -1,9 +1,64 @@
 @use '@/styles/global_variables.scss';
 
 
+.ro_main_container {
+    position: relative;
+    width: 96%;
+    font-family: global_variables.$global_fonts;
+    margin: 10px auto;
+    border: 2px solid #333;
+    border-radius: 0px 5px 5px 5px;
+    background-color: rgb(218, 222, 224);
+    padding-top: 15px;
+    z-index: 2;
+}
+
 .ro_button_container {
     width: 96%;
-    padding: 2px;
+    position: relative;
+    display: flex;
+    margin: 10px auto;
+    transform: translateY(12px);
+    z-index: 3;
+    transition: z-index 1s;
+    
+    &.ro_button_container_back {
+        z-index: 0;
+    }
+
+    .ro_button {
+        position: relative;
+        z-index: 4;
+        margin: 0;
+        width: 20%;
+        border: 2px solid #333;
+        background-color: rgb(235,235,235);
+        font-weight: 500;
+        font-size: .8rem;
+        cursor: pointer;
+        text-decoration: underline;
+        border-radius: 8px 8px 0 0;
+
+        &:nth-child(1) {
+            border-top-left-radius: 8px;
+        }
+
+        &:last-child {
+            transform: translateX(-2px);
+            border-top-right-radius: 8px;
+        }
+
+        &.selected {
+            text-decoration: none;
+            font-size: .95rem;
+            font-weight: 900;
+            z-index: 3;
+            background-color: rgb(218,222,224);
+            border-bottom: 2px solid rgb(218, 222, 224);
+        }
+    }
+
+
 }
 
 .ro_button {
@@ -14,13 +69,13 @@
 }
 
 .ro_form_container {
-    width: 96%;
-    font-family: global_variables.$global_fonts;
-    margin: 10px auto;
-    border: 2px solid #333;
-    border-radius: 5px;
-    background: linear-gradient(170deg, rgba(255, 255, 255, 1) 10%, rgba(210, 210, 210, 1) 60%, rgba(180, 180, 180, 1));
-    padding-top: 15px;
+    // width: 96%;
+    // font-family: global_variables.$global_fonts;
+    // margin: 10px auto;
+    // border: 2px solid #333;
+    // border-radius: 5px;
+    // background: linear-gradient(170deg, rgba(255, 255, 255, 1) 10%, rgba(240, 240, 240, 1) 60%, rgba(180, 180, 180, 1));
+    // padding-top: 15px;
 }
 
 .plotly_container {

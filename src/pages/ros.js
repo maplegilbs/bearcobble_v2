@@ -26,6 +26,8 @@ export default function ROs({ selected_records }) {
     const [recordFilterQuery, setRecordFilterQuery] = useState('');
     const [newestRecord, setNewestRecord] = useState();
     const [comparisonRecords, setComparisonRecords] = useState([]);
+    const [isFilterDisplayed, setIsFilterDisplayed] = useState(false);
+    const [actionOption, setActionOption] = useState('newRecord') // newRecord, viewRecords
     const formRef = useRef(null);
     const tableRef = useRef(null);
     const comparisonRef = useRef(null)
@@ -45,34 +47,40 @@ export default function ROs({ selected_records }) {
 
     return (
         <>
-            <div className={ro_styles.ro_button_container}>
-                <button type="button" className={ro_styles.ro_button} onClick={() => formRef.current.scrollIntoView({ behavior: 'smooth' })}>New Reading</button>
-                <button type="button" className={ro_styles.ro_button} onClick={() => tableRef.current.scrollIntoView({ behavior: 'smooth' })}>View Records</button>
+            <div className={`${ro_styles.ro_button_container} ${isFilterDisplayed? ro_styles.ro_button_container_back : ""}`}>
+                <button type="button" className={`${ro_styles.ro_button} ${actionOption === 'newRecord' ? ro_styles.selected : ""}`} onClick={() => setActionOption('newRecord')}>New Reading</button>
+                <button type="button" className={`${ro_styles.ro_button} ${actionOption === 'viewRecords' ? ro_styles.selected : ""}`} onClick={() => setActionOption('viewRecords')}>View Records</button>
             </div>
-            <div ref={formRef} className={ro_styles.ro_form_container}>
-                <RO_Form updateTable={setNewestRecord} />
+            <div className={ro_styles.ro_main_container}>
+                {actionOption === 'newRecord' &&
+                    <div ref={formRef} className={ro_styles.ro_form_container}>
+                        <RO_Form updateTable={setNewestRecord} />
+                    </div>
+                }
+                {(selected_records && actionOption === 'viewRecords') &&
+                    <div ref={tableRef} className={ro_styles.ro_table_container}>
+                        <RO_Table
+                            selectedRecords={selectedRecords}
+                            newestRecord={newestRecord}
+                            setComparisonRecords={setComparisonRecords}
+                            recordFilterQuery={recordFilterQuery}
+                            setRecordFilterQuery={setRecordFilterQuery}
+                            isFilterDisplayed={isFilterDisplayed}
+                            setIsFilterDisplayed={setIsFilterDisplayed}
+                            comparisonRef={comparisonRef}
+                        />
+                    </div>
+                }
             </div>
-            {selected_records &&
-                <div ref={tableRef} className={ro_styles.ro_table_container}>
-                    <RO_Table
-                        selectedRecords={selectedRecords}
-                        newestRecord={newestRecord}
-                        setComparisonRecords={setComparisonRecords}
-                        recordFilterQuery={recordFilterQuery}
-                        setRecordFilterQuery={setRecordFilterQuery}
-                        comparisonRef={comparisonRef}
-                    />
-                </div>
-            }
             <div ref={comparisonRef}>
-            {selectedRecords &&
-                <Records_Comparison_Table comparison_records={comparisonRecords} />
-            }
-            {selectedRecords &&
-                <div className={`${comparisonRecords.length > 1 ? ro_styles.plotly_container : ''}`}>
-                    <Comparison_Bar_Graph graph_data={comparisonRecords} />
-                </div>
-            }
+                {selectedRecords &&
+                    <Records_Comparison_Table comparison_records={comparisonRecords} />
+                }
+                {selectedRecords &&
+                    <div className={`${comparisonRecords.length > 1 ? ro_styles.plotly_container : ''}`}>
+                        <Comparison_Bar_Graph graph_data={comparisonRecords} />
+                    </div>
+                }
             </div>
         </>
     )

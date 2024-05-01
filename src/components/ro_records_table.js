@@ -6,10 +6,9 @@ import RO_Records_Filter from "@/components/ro_records_filter";
 //Styles
 import ro_table_styles from './ro_records_table.module.scss';
 
-export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords, recordFilterQuery, setRecordFilterQuery, comparisonRef }) {
+export default function RO_Table({ selectedRecords, newestRecord, setComparisonRecords, recordFilterQuery, setRecordFilterQuery, comparisonRef, isFilterDisplayed, setIsFilterDisplayed }) {
     const [selectedRowIds, setSelectedRowIds] = useState([]);
     const [isPrimaryRender, setIsPrimaryRender] = useState(true)
-    const [isFilterDisplayed, setIsFilterDisplayed] = useState(false)
 
     if(selectedRowIds.length === 2){
         comparisonRef.current.scrollIntoView({behavior: 'smooth'})
