@@ -12,10 +12,11 @@ function noaaForecastRow(forecastData) {
     let forecastRows = [];
     for (let i = 0; i < daysToForecast * 2; i++) {
         let row_data = forecastData.properties.periods[i]
+        let iconURL = row_data.icon.includes('http')? row_data.icon : `https://api.weather.gov${row_data.icon}`
         forecastRows.push(
             <div key={row_data.name} className={daily_forecast_styles.day_row}>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.left_box}`}>
-                    <img src={row_data.icon} />
+                    <img src={iconURL} />
                     <h4>{row_data.isDaytime ? 'High:' : 'Low:'} {row_data.temperature}</h4>
                 </div>
                 <div className={`${daily_forecast_styles.inner_box} ${daily_forecast_styles.middle_box}`}>

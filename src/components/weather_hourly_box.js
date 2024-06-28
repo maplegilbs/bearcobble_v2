@@ -16,11 +16,12 @@ function setHourlyArray() {
 }
 
 function Hour_Container({ time, noaaData, owData }) {
+
     return (
         <div key={time} className={hourly_box_styles.hourly_record}>
             <h4>{new Date(time).getHours()}:00</h4>
             {noaaData ?
-                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon ? noaaData.icon.split(',0').join('') : ''} width={30} height={32} /></p> :
+                <p>{noaaData.temperature}°&nbsp;<img className={hourly_box_styles.hourly_icon} alt='Icon of weather conditions' src={noaaData.icon ? noaaData.icon.includes('http')? noaaData.icon : `https://api.weather.gov${noaaData.icon}` : ''} width={30} height={32} /></p> :
                 <p>--</p>
             }
             {owData ?

@@ -37,7 +37,7 @@ export default function Weather_Forecast_Full() {
                     'period_identifier': period.name,
                     'temperature': period.temperature,
                     'isDay': period.isDaytime,
-                    'icon_url': period.icon,
+                    'icon_url': period.icon.includes('http')? period.icon : `https://api.weather.gov${period.icon}`,
                     'forecast': period.detailedForecast,
                     'wind_speed': period.windSpeed,
                     'wind_dir': period.windDirection,
