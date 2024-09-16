@@ -47,8 +47,8 @@ export default function ROs({ selected_records }) {
 
     return (
         <>
-            <div className={`${ro_styles.ro_button_container} ${isFilterDisplayed? ro_styles.ro_button_container_back : ""}`}>
-                <button type="button" className={`${ro_styles.ro_button} ${actionOption === 'newRecord' ? ro_styles.selected : ""}`} onClick={() => setActionOption('newRecord')}>New Reading</button>
+            <div className={`${ro_styles.ro_button_container} ${isFilterDisplayed ? ro_styles.ro_button_container_back : ""}`}>
+                <button type="button" className={`${ro_styles.ro_button} ${actionOption === 'newRecord' ? ro_styles.selected : ""}`} onClick={() => {setActionOption('newRecord'); setComparisonRecords([])}}>New Reading</button>
                 <button type="button" className={`${ro_styles.ro_button} ${actionOption === 'viewRecords' ? ro_styles.selected : ""}`} onClick={() => setActionOption('viewRecords')}>View Records</button>
             </div>
             <div className={ro_styles.ro_main_container}>
