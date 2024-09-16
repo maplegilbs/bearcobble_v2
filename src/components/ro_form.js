@@ -68,7 +68,7 @@ export default function RO_Form({ updateTable }) {
         try {
             let submittedData = await fetch('../api/ro_records_write', {
                 method: 'POST',
-                header: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formValues)
             })
             let submittedJSON = await submittedData.json();
