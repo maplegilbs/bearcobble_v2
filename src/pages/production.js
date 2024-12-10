@@ -46,39 +46,31 @@ function adjustDateForIOS(date) {
 
 
 //find startAndEndDates
-// function findStartAndFinishDates(dataArray){
-// dataArray.forEach(individualYearInnerArray => {
-
-// })
-// }
-
-// take array of data (also arrays) and find the chronologically first and last dates
-// inner arrays of the data array must be sorted chronologically
 function findStartAndFinishDates(dataArray) {
-    let absoluteMinMax = [];
-    let yearlyMinMax = [];
+    let minArray = [];
+    let maxArray = [];
     dataArray.forEach(innerArray => {
         let iosMinDate = adjustDateForIOS(innerArray[0].barrel_id)
-        let minDate = formatTime(new Date(iosMinDate.year, iosMinDate.monthIndex, iosMinDate.day, iosMinDate.hours, iosMinDate.minutes))
-        let minRelative = minDate.month.toString().concat(minDate.day);
+        let min = formatTime(new Date(iosMinDate.year, iosMinDate.monthIndex, iosMinDate.day, iosMinDate.hours, iosMinDate.minutes))
         let iosMaxDate = adjustDateForIOS(innerArray[innerArray.length - 1].barrel_id)
-        let maxDate = formatTime(new Date(iosMaxDate.year, iosMaxDate.monthIndex, iosMaxDate.day, iosMaxDate.hours, iosMaxDate.minutes))
-        let maxRelative = maxDate.month.toString().concat(maxDate.day);
-        yearlyMinMax.push(minRelative)
-        yearlyMinMax.push(maxRelative)
-        yearlyMinMax.sort();
-    });
-    absoluteMinMax[0] = yearlyMinMax[0];
-    absoluteMinMax[1] = yearlyMinMax[yearlyMinMax.length - 1];
-    return absoluteMinMax;
+        let max = formatTime(new Date(iosMaxDate.year, iosMaxDate.monthIndex, iosMaxDate.day, iosMaxDate.hours, iosMaxDate.minutes))
+        minArray.push(min)
+        maxArray.push(max)
+    })
+    minArray.filter(date=> date.month > 5)
+    minArray.sort();
+    maxArray.sort();
+    let minMaxArray = [minArray[0].month.toString().concat(minArray[0].day), maxArray[maxArray.length-1].month.toString().concat(maxArray[maxArray.length-1].day)]
+    console.log(minMaxArray)
+    return minMaxArray
 }
+
 
 //Build an empty object with keys containing date + times, incrementing by 8 hour intervals (or whatever amount we want to adjust by)
 //The first and last date/time will be dictated by the minMax array arguement minMax[0] being our start date & time minMax[1] being our end date and time
 //This object will be later populated by the production data.
 function buildEmptyChronologicObject(minMax) {
     console.log(minMax)
-    minMax = ['1130', '0530']
     let chronologicObj = {};
     let intervalDuration = 8;
     //format as MM-DD HH:MM - formatting the year to be 00 or 2000 so we can compare all years based on month and day
@@ -93,7 +85,6 @@ function buildEmptyChronologicObject(minMax) {
     }
     return (chronologicObj)
 }
-
 
 
 // take our empty object with chornologically ordered timestamps (arg1) and populate each time stamp with yearly production from our production data (arg2)
@@ -118,15 +109,14 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(currentProductionYear)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
-        let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(5,7)}-${currentTimeStamp.slice(8,10)}`)
+        let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(5, 7)}-${currentTimeStamp.slice(8, 10)}`)
         while (currentTimeStampIndex < timeStamps.length) {
             //if the production record is greater than the current time stamp, update the time stamp index and check again
-            console.log(currentProductionDate, currentTimeStampDate, periodTotal, ytdTotal)
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
-                currentTimeStampDate = new Date(`${currentTimeStamp.slice(0,4)}-${currentTimeStamp.slice(5,7)}-${currentTimeStamp.slice(8,10)}`)
+                currentTimeStampDate = new Date(`${currentTimeStamp.slice(0, 4)}-${currentTimeStamp.slice(5, 7)}-${currentTimeStamp.slice(8, 10)}`)
             }
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
                 periodTotal += currentProductionRecord.gallons;
@@ -135,7 +125,7 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
                     let adjYear = Number(currentProductionRecord.barrel_id.slice(5, 7)) > 5 ? '2000' : '2001';
-                    currentProductionDate = new Date(`${adjYear}-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14,16)}`)
+                    currentProductionDate = new Date(`${adjYear}-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14, 16)}`)
                 }
             }
             emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
@@ -167,7 +157,7 @@ export default function Production({ productionData }) {
     const [currentRecordIndex, setCurrentRecordIndex] = useState(findRecordIndexByDate(sortedOrderedData, currentDate.inputTime));
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
     let formattedRecordsDate = null;
-    if (sortedOrderedData && currentRecordIndex !== 'undefined') {formattedRecordsDate = currentRecordsDate.substring(5,10)}
+    if (sortedOrderedData && currentRecordIndex !== 'undefined') { formattedRecordsDate = currentRecordsDate.substring(5, 10) }
     useEffect(() => {
         function makeDataDivs() {
             let tempArray = [];
@@ -185,7 +175,7 @@ export default function Production({ productionData }) {
         }
         makeDataDivs()
     }, [currentRecordIndex])
-console.log(sortedOrderedData)
+    console.log(sortedOrderedData)
     return (
         <>{formattedRecordsDate ?
             <>
