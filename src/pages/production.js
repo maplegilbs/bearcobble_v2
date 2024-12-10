@@ -61,7 +61,6 @@ function findStartAndFinishDates(dataArray) {
     minArray.sort();
     maxArray.sort();
     let minMaxArray = [minArray[0].month.toString().concat(minArray[0].day), maxArray[maxArray.length-1].month.toString().concat(maxArray[maxArray.length-1].day)]
-    console.log(minMaxArray)
     return minMaxArray
 }
 
@@ -70,7 +69,6 @@ function findStartAndFinishDates(dataArray) {
 //The first and last date/time will be dictated by the minMax array arguement minMax[0] being our start date & time minMax[1] being our end date and time
 //This object will be later populated by the production data.
 function buildEmptyChronologicObject(minMax) {
-    console.log(minMax)
     let chronologicObj = {};
     let intervalDuration = 8;
     //format as MM-DD HH:MM - formatting the year to be 00 or 2000 so we can compare all years based on month and day
@@ -175,7 +173,7 @@ export default function Production({ productionData }) {
         }
         makeDataDivs()
     }, [currentRecordIndex])
-    console.log(sortedOrderedData)
+
     return (
         <>{formattedRecordsDate ?
             <>
