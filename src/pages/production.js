@@ -101,7 +101,6 @@ function buildEmptyChronologicObject(minMax) {
 // ex April 01 12:00 : { 2018: [production in time period, running total], 2019: [production in time period: running total] etc}
 function populateChronologicObject(emptyChronologicObj, sourceData) {
     let timeStamps = Object.keys(emptyChronologicObj);  //array of our time stamps to cycle through
-    console.log(timeStamps)
     for (let sourceIndex = 0; sourceIndex < sourceData.length; sourceIndex++) { //cycling through our source data year by year
         let currentYearData = sourceData[sourceIndex];
         let currentYear = currentYearData[currentYearData.length - 1].barrel_id.slice(0, 4);
@@ -115,11 +114,14 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionRecordIndex = 0;
         let currentProductionRecord = currentYearData[currentProductionRecordIndex];
         let iosProdDate = adjustDateForIOS(currentProductionRecord.barrel_id);
-        let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
+        let currentProductionYear = Number(currentProductionRecord.barrel_id.slice(5, 7)) > 5 ? '2000' : '2001';
+        let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(currentProductionYear)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
         let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(5,7)}-${currentTimeStamp.slice(8,10)}`)
         while (currentTimeStampIndex < timeStamps.length) {
+            //if the production record is greater than the current time stamp, update the time stamp index and check again
+            console.log(currentProductionDate, currentTimeStampDate, periodTotal, ytdTotal)
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
@@ -133,7 +135,6 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
                     let adjYear = Number(currentProductionRecord.barrel_id.slice(5, 7)) > 5 ? '2000' : '2001';
-                    console.log(adjYear)
                     currentProductionDate = new Date(`${adjYear}-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14,16)}`)
                 }
             }
@@ -148,8 +149,8 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
 function findRecordIndexByDate(dataToMatchDates, comparisonDate) {
     let dataToMatchDateKeys = Object.keys(dataToMatchDates);
     let indexOfMatchedDate = dataToMatchDateKeys.findIndex(date => {
-        let myDate = new Date(`2000-${date.slice(0,2)}-${date.slice(3, 5)}T${date.slice(6).padStart(5,'0').slice(0,2)}:${date.slice(6).padStart(5,'0').slice(3,5)}` )
-        comparisonDate.setFullYear('2000')
+        let myDate = new Date(date)
+        formatTime(comparisonDate).month >= 5 ? comparisonDate.setFullYear('2000') : comparisonDate.setFullYear('2001');
         return myDate > comparisonDate
     })
     return indexOfMatchedDate > 0 ? indexOfMatchedDate - 1 : Object.keys(dataToMatchDateKeys).length - 1;
@@ -167,7 +168,6 @@ export default function Production({ productionData }) {
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
     let formattedRecordsDate = null;
     if (sortedOrderedData && currentRecordIndex !== 'undefined') {formattedRecordsDate = currentRecordsDate.substring(5,10)}
-console.log(currentRecordsDate)
     useEffect(() => {
         function makeDataDivs() {
             let tempArray = [];
@@ -185,7 +185,7 @@ console.log(currentRecordsDate)
         }
         makeDataDivs()
     }, [currentRecordIndex])
-
+console.log(sortedOrderedData)
     return (
         <>{formattedRecordsDate ?
             <>
