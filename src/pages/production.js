@@ -12,7 +12,7 @@ import { formatTime } from '@/utils/formatDate';
 //get all production data from db and pass it as a prop to main compoenent
 //be sure the production data is sorted chronologically
 export async function getServerSideProps() {
-    let productionYears = [2023, 2022, 2021, 2020, 2019, 2018];
+    let productionYears = [2024, 2023, 2022, 2021, 2020, 2019, 2018];
     let productionData = [];
     const pool = mysql.createPool({
         host: process.env.MYSQL_DB_HOST,
@@ -44,6 +44,14 @@ function adjustDateForIOS(date) {
     }
 }
 
+
+//find startAndEndDates
+// function findStartAndFinishDates(dataArray){
+// dataArray.forEach(individualYearInnerArray => {
+
+// })
+// }
+
 // take array of data (also arrays) and find the chronologically first and last dates
 // inner arrays of the data array must be sorted chronologically
 function findStartAndFinishDates(dataArray) {
@@ -69,16 +77,18 @@ function findStartAndFinishDates(dataArray) {
 //The first and last date/time will be dictated by the minMax array arguement minMax[0] being our start date & time minMax[1] being our end date and time
 //This object will be later populated by the production data.
 function buildEmptyChronologicObject(minMax) {
+    console.log(minMax)
+    minMax = ['1130', '0530']
     let chronologicObj = {};
     let intervalDuration = 8;
     //format as MM-DD HH:MM - formatting the year to be 00 or 2000 so we can compare all years based on month and day
     let startDate = new Date(`2000-${minMax[0].slice(0, 2)}-${minMax[0].slice(2, 4)}`);
-    let endDate = new Date(`2000-${minMax[1].slice(0, 2)}-${minMax[1].slice(2, 4)}`);
+    let endDate = new Date(`2001-${minMax[1].slice(0, 2)}-${minMax[1].slice(2, 4)}`);
     let paddedEndDate = new Date(Date.parse(endDate) + 172800000)
     let curDate = startDate;
     while (curDate < paddedEndDate) {
         let tempDate = formatTime(curDate);
-        chronologicObj[`${tempDate.month}/${tempDate.day} ${tempDate.time24Hr}`] = {}
+        chronologicObj[`${tempDate.year}/${tempDate.month}/${tempDate.day} ${tempDate.time24Hr}`] = {}
         curDate = new Date(curDate.setHours(curDate.getHours() + intervalDuration))
     }
     return (chronologicObj)
@@ -91,9 +101,10 @@ function buildEmptyChronologicObject(minMax) {
 // ex April 01 12:00 : { 2018: [production in time period, running total], 2019: [production in time period: running total] etc}
 function populateChronologicObject(emptyChronologicObj, sourceData) {
     let timeStamps = Object.keys(emptyChronologicObj);  //array of our time stamps to cycle through
+    console.log(timeStamps)
     for (let sourceIndex = 0; sourceIndex < sourceData.length; sourceIndex++) { //cycling through our source data year by year
         let currentYearData = sourceData[sourceIndex];
-        let currentYear = currentYearData[0].barrel_id.slice(0, 4);
+        let currentYear = currentYearData[currentYearData.length - 1].barrel_id.slice(0, 4);
         let periodTotal = 0;
         let ytdTotal = 0;
         //cycle through timestamps one by one
@@ -107,13 +118,13 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
         let currentProductionDate = new Date(iosProdDate.year, iosProdDate.monthIndex, iosProdDate.day, iosProdDate.hours, iosProdDate.minutes).setFullYear(2000)
         let currentTimeStampIndex = 0;
         let currentTimeStamp = timeStamps[currentTimeStampIndex]
-        let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(0,2)}-${currentTimeStamp.slice(3,5)}`)
+        let currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(5,7)}-${currentTimeStamp.slice(8,10)}`)
         while (currentTimeStampIndex < timeStamps.length) {
             while (currentProductionDate > currentTimeStampDate && currentTimeStampIndex < timeStamps.length) {
                 emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
                 currentTimeStampIndex++
                 currentTimeStamp = timeStamps[currentTimeStampIndex]
-                currentTimeStampDate = new Date(`2000-${currentTimeStamp.slice(0,2)}-${currentTimeStamp.slice(3,5)}`)
+                currentTimeStampDate = new Date(`${currentTimeStamp.slice(0,4)}-${currentTimeStamp.slice(5,7)}-${currentTimeStamp.slice(8,10)}`)
             }
             while (currentProductionDate <= currentTimeStampDate && currentProductionRecordIndex < currentYearData.length) {
                 periodTotal += currentProductionRecord.gallons;
@@ -121,7 +132,9 @@ function populateChronologicObject(emptyChronologicObj, sourceData) {
                 currentProductionRecordIndex++
                 if (currentProductionRecordIndex < currentYearData.length - 1) {
                     currentProductionRecord = currentYearData[currentProductionRecordIndex];
-                    currentProductionDate = new Date(`2000-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14,16)}`)
+                    let adjYear = Number(currentProductionRecord.barrel_id.slice(5, 7)) > 5 ? '2000' : '2001';
+                    console.log(adjYear)
+                    currentProductionDate = new Date(`${adjYear}-${currentProductionRecord.barrel_id.slice(5, 7)}-${currentProductionRecord.barrel_id.slice(8, 10)}T${currentProductionRecord.barrel_id.slice(11, 13)}:${currentProductionRecord.barrel_id.slice(14,16)}`)
                 }
             }
             emptyChronologicObj[timeStamps[currentTimeStampIndex]] = { ...emptyChronologicObj[timeStamps[currentTimeStampIndex]], [currentYear]: [periodTotal, ytdTotal] }
@@ -153,12 +166,8 @@ export default function Production({ productionData }) {
     const [currentRecordIndex, setCurrentRecordIndex] = useState(findRecordIndexByDate(sortedOrderedData, currentDate.inputTime));
     let currentRecordsDate = Object.keys(sortedOrderedData)[currentRecordIndex];
     let formattedRecordsDate = null;
-    if (sortedOrderedData && currentRecordIndex !== 'undefined') {
-        formattedRecordsDate = currentRecordsDate.split('')
-        formattedRecordsDate.splice(5, 0, '/2000')
-        formattedRecordsDate = formattedRecordsDate.join('')
-    }
-
+    if (sortedOrderedData && currentRecordIndex !== 'undefined') {formattedRecordsDate = currentRecordsDate.substring(5,10)}
+console.log(currentRecordsDate)
     useEffect(() => {
         function makeDataDivs() {
             let tempArray = [];
@@ -185,7 +194,7 @@ export default function Production({ productionData }) {
                 <hr />
                 <h3 className={production_styles.current_date_header}>Current Date & Time: {currentDate.date} @ {currentDate.time} {currentDate.amPm}</h3>
                 <div className={production_styles.production_animation_container}>
-                    <h4 className={production_styles.date_header}>YTD Produciton as of {`${formattedRecordsDate.slice(0, 5)} @ ${formatTime(new Date(formattedRecordsDate.slice(6,10), formattedRecordsDate.slice(0,2)-1, formattedRecordsDate.slice(3,5), formattedRecordsDate.slice(11).padStart(5,'0').slice(0,2), formattedRecordsDate.slice(11).padStart(5,'0').slice(3,5))).time} ${formatTime(new Date(formattedRecordsDate.slice(6,10), formattedRecordsDate.slice(0,2)-1, formattedRecordsDate.slice(3,5), formattedRecordsDate.slice(11).padStart(5,'0').slice(0,2), formattedRecordsDate.slice(11).padStart(5,'0').slice(3,5))).amPm}`}</h4>
+                    <h4 className={production_styles.date_header}>YTD Produciton as of {`${formattedRecordsDate.slice(0)} @ ${formatTime(new Date(currentRecordsDate)).time} ${formatTime(new Date(currentRecordsDate)).amPm}`}</h4>
                     <hr />
                     {dataDivs}
                 </div>
