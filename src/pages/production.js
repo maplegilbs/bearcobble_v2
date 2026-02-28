@@ -12,7 +12,7 @@ import { formatTime } from '@/utils/formatDate';
 //get all production data from db and pass it as a prop to main compoenent
 //be sure the production data is sorted chronologically
 export async function getServerSideProps() {
-    let productionYears = [2024, 2023, 2022, 2021, 2020, 2019, 2018];
+    let productionYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018];
     let productionData = [];
     const pool = mysql.createPool({
         host: process.env.MYSQL_DB_HOST,
